@@ -61,6 +61,10 @@ const startMeasuring = function () {
     stats[key] = 0
 
     const element = document.getElementById(key)
+    if (element === null) {
+      continue
+    }
+
     elements.push([key, element])
   }
 

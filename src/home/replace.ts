@@ -26,7 +26,7 @@ const replaceFormerLink = async function () {
     options.home['visibility-and-movement']['hide-or-move-former-link'].id
   const container = document.getElementById(id)
 
-  const selfRegistrationItem = container.querySelector(
+  const selfRegistrationItem = container?.querySelector(
     '#h3-self-registration'
   )?.parentElement
   if (

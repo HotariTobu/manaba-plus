@@ -239,7 +239,7 @@ export default async function () {
   // Initialize constraints.
   for (const [key, section] of sections) {
     const element = document.getElementById(key)
-    element?.querySelectorAll('input').forEach(function (element) {
+    element?.querySelectorAll('input')?.forEach(function (element) {
       initializeConstraint(element, section.dependency)
     })
   }
