@@ -2,6 +2,7 @@ import getOptions from '../options/model'
 import { messages, pushMessages } from '../utils/messages'
 
 let url: string
+let isTransitioning = false
 
 /**
  * Transition to another page.
@@ -14,6 +15,12 @@ const transition = async function (event?: Event) {
       pushMessages(messages.timeout)
     }
   }
+
+  if (isTransitioning) {
+    return
+  }
+
+  isTransitioning = true
 
   window.location.href = url
 }
@@ -31,7 +38,9 @@ getOptions().then(async function ({ options }) {
   if (options.timeout['transition-automatically'].value) {
     // To avoid looping in login sessions.
     setTimeout(transition, options.timeout['transition-delay-time'].value)
-  } else if (options.common['allow-changing'].value) {
+  }
+
+  if (options.common['allow-changing'].value) {
     // Add a button.
     const transitionInput = document.createElement('input')
     transitionInput.id = 'transition-button'
