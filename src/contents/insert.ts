@@ -3,6 +3,9 @@ import errors from './errors.json'
 
 // #region Progress
 const progressBarHolder = document.querySelector('#progress-bars-holder')
+if (progressBarHolder === null) {
+  throw new Error('NullReference: progressBar holder')
+}
 
 const createProgress = function (trace: ScrapingTrace, child?: Element) {
   const container = document.createElement('div')
@@ -49,6 +52,9 @@ export const clearProgress = function () {
 
 // #region Contents
 const contentsHolder = document.querySelector('#contents-holder')
+if (contentsHolder === null) {
+  throw new Error('NullReference: contents holder')
+}
 
 const createContentBody = function (context: ContentContext) {
   const body = document.createElement('div')

@@ -8,6 +8,10 @@ import * as event from './event'
  * @param parent The parent element of the main panel
  */
 export default async function (parent: Element) {
+  if (parent === null) {
+    return
+  }
+
   const module: compileTemplate = require('./module.pug')
   parent.insertAdjacentHTML('afterbegin', module())
 

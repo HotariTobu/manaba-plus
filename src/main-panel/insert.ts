@@ -23,6 +23,9 @@ const insertMessages = async function () {
   }
 
   const messageHolder = document.querySelector('#messages-holder')
+  if (messageHolder === null) {
+    return
+  }
 
   const messages = await popMessages()
   for (const message of messages) {
@@ -133,7 +136,7 @@ const appendAssignment = function (assignment: Assignment) {
     setInterval(setRemainingTime, 1000, deadline, remainingTimeSpan)
   }
 
-  assignmentListHolder.appendChild(row)
+  assignmentListHolder?.appendChild(row)
 }
 
 /**

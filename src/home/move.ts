@@ -7,6 +7,9 @@ export default async function () {
   const { options } = await getOptions()
 
   const contentBody = document.querySelector('#content-body')
+  if (contentBody === null) {
+    return
+  }
 
   const bottom = document.createElement('div')
   bottom.className = 'bottom'
@@ -37,8 +40,11 @@ export default async function () {
 
   // #region infolist-tab
   const infolistTab = document.querySelector('.infolist-tab')
-
   const showmore = document.querySelector('.showmore')
+  if (infolistTab === null || showmore === null) {
+    return
+  }
+
   showmore.className = 'right-align'
   infolistTab.appendChild(showmore)
   // #endregion

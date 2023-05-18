@@ -107,9 +107,11 @@ const createRadioFragment = function (key: string, item: OptionRadioItem) {
       choice.description
     )
     const input = subFragment.querySelector('input')
-    input.name = key
-    input.value = choice.key
-    input.checked = item.value === choice.key
+    if (input !== null) {
+      input.name = key
+      input.value = choice.key
+      input.checked = item.value === choice.key
+    }
 
     buttonsDiv.appendChild(subFragment)
   }
@@ -132,7 +134,9 @@ const createItemElement = function (key: string, item: OptionItem) {
       fragment = createInputFragment(key, item)
 
       const input = fragment.querySelector('input')
-      input.checked = checkboxItem.value
+      if (input !== null) {
+        input.checked = checkboxItem.value
+      }
       break
     }
     case 'collection': {
@@ -144,8 +148,10 @@ const createItemElement = function (key: string, item: OptionItem) {
       fragment = createInputFragment(key, item)
 
       const input = fragment.querySelector('input')
-      input.min = numberItem.min?.toString()
-      input.max = numberItem.max?.toString()
+      if (input !== null) {
+        input.min = numberItem.min?.toString()
+        input.max = numberItem.max?.toString()
+      }
       break
     }
     case 'radio': {
@@ -209,6 +215,9 @@ export default async function () {
 
   // Get the holder to insert option sections and items to.
   const holder = document.querySelector('#options-holder')
+  if (holder === null) {
+    throw new Error('NullReference: options holder')
+  }
 
   const rootTitleH1 = document.createElement('h1')
   rootTitleH1.textContent = options.title

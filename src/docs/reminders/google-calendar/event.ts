@@ -2,7 +2,7 @@ import * as api from '../../../utils/gapi'
 import Assignment from '../../../main-panel/assignment'
 import message from './message'
 import { getCalendarId, insertCalendar } from './calendar'
-import {encode, decode} from '../../../reminders/google-calendar/assignments'
+import { encode, decode } from '../../../reminders/google-calendar/assignments'
 
 let calendarId: string = null
 
@@ -92,12 +92,12 @@ const insertEvent = async function (assignment: Assignment) {
         },
       },
     })
-  
+
     return response.result
   } catch (error) {
     console.error(error)
   }
-  
+
   return null
 }
 
@@ -139,6 +139,10 @@ const registerAssignments = async function (event: Event) {
   const outputAttribute = encode(registeredAssignments)
 
   const callback = document.querySelector('#register .callback')
+  if (callback === null) {
+    throw new Error("NullReference: Buttons");
+  }
+
   callback.setAttribute('assignments', outputAttribute)
 
   callback.dispatchEvent(new Event('click'))
