@@ -26,6 +26,9 @@
   "options_ui": {
     "page": "options/index.html"
   },
+  "background": {
+    "service_worker": "service-worker/index.js"
+  },
   "content_scripts": [
     {
       "matches": [
