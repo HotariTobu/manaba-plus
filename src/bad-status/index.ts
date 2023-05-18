@@ -2,6 +2,7 @@ import getOptions from '../options/model'
 import { messages, pushMessages } from '../utils/messages'
 
 let url: string
+let isTransitioning = false
 
 /**
  * Transition to another page.
@@ -14,6 +15,12 @@ const transition = async function (event?: Event) {
       pushMessages(messages.timeout)
     }
   }
+
+  if (isTransitioning) {
+    return
+  }
+
+  isTransitioning = true
 
   window.location.href = url
 }
