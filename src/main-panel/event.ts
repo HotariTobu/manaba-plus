@@ -9,8 +9,8 @@ import remove from './remove'
  */
 const AddButtonsAction = function () {
   const contentsButton = document.querySelector('#contents-button')
-  contentsButton.removeAttribute('disabled')
   if (contentsButton !== null) {
+    contentsButton.removeAttribute('disabled')
     contentsButton.addEventListener('click', function () {
       window.open(chrome.runtime.getURL('/contents/index.html'))
     })

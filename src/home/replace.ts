@@ -4,17 +4,24 @@ import '../extension/element'
 
 const replaceContentBody = function () {
   const mycourse = document.querySelector('.my-course')
-
   const contentBody = document.createElement('div')
+  if (mycourse === null || contentBody === null) {
+    return
+  }
+
   contentBody.id = 'content-body'
 
   const contentbodyLeft = document.querySelector('.contentbody-left')
-  contentbodyLeft.className = 'left'
-  contentBody.appendChild(contentbodyLeft)
+  if (contentbodyLeft !== null) {
+    contentbodyLeft.className = 'left'
+    contentBody.appendChild(contentbodyLeft)
+  }
 
   const contentbodyRight = document.querySelector('.contentbody-right')
-  contentbodyRight.className = 'right'
-  contentBody.appendChild(contentbodyRight)
+  if (contentbodyRight !== null) {
+    contentbodyRight.className = 'right'
+    contentBody.appendChild(contentbodyRight)
+  }
 
   mycourse.appendChild(contentBody)
 }
@@ -26,7 +33,7 @@ const replaceFormerLink = async function () {
     options.home['visibility-and-movement']['hide-or-move-former-link'].id
   const container = document.getElementById(id)
 
-  const selfRegistrationItem = container.querySelector(
+  const selfRegistrationItem = container?.querySelector(
     '#h3-self-registration'
   )?.parentElement
   if (
@@ -65,7 +72,7 @@ const getContent = function (
 ) {
   if (!(source instanceof Element)) {
     const { parent, selectors } = source
-    source = parent.querySelector(selectors)
+    source = parent?.querySelector(selectors) ?? null
   }
 
   if (source === null) {
@@ -175,7 +182,7 @@ const getTitleAndStatus = function (course: Element) {
         }
 
         const menuAnchor = menu.querySelector('a')
-        newChildren[1].href = menuAnchor.href
+        newChildren[1].href = menuAnchor?.href
         break
       }
     })
@@ -212,10 +219,15 @@ const getYearAndRemarks = function (course: Element) {
     '.courseitemdetail:first-of-type'
   )
 
+  let yearStr = ''
+  let remarksStr = ''
+
   // Extract year and remarks from `textContent`.
-  const match = /(\d{4})(.*)/.exec(element.textContent)
-  const yearStr = match[1]
-  const remarksStr = match[2].trim()
+  const match = /(\d{4})(.*)/.exec(element?.textContent)
+  if (match !== null) {
+    yearStr = match[1]
+    remarksStr = match[2].trim()
+  }
 
   const year = document.createElement('div')
   year.className = 'year'

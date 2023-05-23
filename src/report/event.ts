@@ -1,5 +1,8 @@
 // const form = document.querySelector<HTMLFormElement>('form:has(.report-form)')
 const form = document.querySelector<HTMLFormElement>('.form form')
+if (form === null) {
+  throw new Error('NullReference: form')
+}
 
 /**
  * Upload a file.

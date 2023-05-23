@@ -63,7 +63,9 @@ getOptions().then(async function () {
   const attribute = encode(assignments)
 
   const button = document.querySelector('#register button')
-  button.setAttribute('assignments', attribute)
+  if (button !== null) {
+    button.setAttribute('assignments', attribute)
+  }
 
   event()
 })

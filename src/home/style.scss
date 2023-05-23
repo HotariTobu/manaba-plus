@@ -246,3 +246,7 @@
     width: 230px;
   }
 }
+
+#course-detail {
+  max-width: calc(100vw - 20px);
+}
