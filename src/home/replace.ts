@@ -18,7 +18,7 @@ const replaceContentBody = function () {
   }
 
   const contentbodyRight = document.querySelector('.contentbody-right')
-  if (contentbodyRight === null) {
+  if (contentbodyRight !== null) {
     contentbodyRight.className = 'right'
     contentBody.appendChild(contentbodyRight)
   }
