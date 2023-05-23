@@ -222,13 +222,11 @@ const getYearAndRemarks = function (course: Element) {
   let yearStr = ''
   let remarksStr = ''
 
-  if (element !== null) {
-    // Extract year and remarks from `textContent`.
-    const match = /(\d{4})(.*)/.exec(element?.textContent)
-    if (match !== null) {
-      yearStr = match[1]
-      remarksStr = match[2].trim()
-    }
+  // Extract year and remarks from `textContent`.
+  const match = /(\d{4})(.*)/.exec(element?.textContent)
+  if (match !== null) {
+    yearStr = match[1]
+    remarksStr = match[2].trim()
   }
 
   const year = document.createElement('div')

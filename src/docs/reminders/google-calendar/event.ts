@@ -140,7 +140,7 @@ const registerAssignments = async function (event: Event) {
 
   const callback = document.querySelector('#register .callback')
   if (callback === null) {
-    throw new Error("NullReference: Buttons");
+    throw new Error("NullReference: .callback");
   }
 
   callback.setAttribute('assignments', outputAttribute)

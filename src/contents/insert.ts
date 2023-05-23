@@ -145,8 +145,8 @@ export const updateContents = function (stacks: {
 
   stacks.downloading.forEach(function (context: ContentContext) {
     const { body } = getBody(context)
-    body?.classList.remove('pending')
-    body?.classList.add('downloading')
+    body?.classList?.remove('pending')
+    body?.classList?.add('downloading')
   })
 
   stacks.interrupted.forEach(function ([context, error]: [
@@ -159,14 +159,14 @@ export const updateContents = function (stacks: {
       statusDiv.textContent = message
     }
 
-    body?.classList.remove('pending', 'downloading')
-    body?.classList.add('interrupted')
+    body?.classList?.remove('pending', 'downloading')
+    body?.classList?.add('interrupted')
   })
 
   stacks.completed.forEach(function (context: ContentContext) {
     const { body } = getBody(context)
-    body?.classList.remove('pending', 'downloading')
-    body?.classList.add('completed')
+    body?.classList?.remove('pending', 'downloading')
+    body?.classList?.add('completed')
   })
 }
 
