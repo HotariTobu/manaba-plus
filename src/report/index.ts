@@ -10,6 +10,6 @@ getOptions().then(async function ({ options }) {
   }
 
   replace()
-  insert()
-  event()
+  await insert()
+  await event()
 })

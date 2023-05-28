@@ -417,6 +417,15 @@
       "dependency": "transition-automatically"
     }
   },
+  "assignments": {
+    "title": "レポート画面",
+    "backup-text": {
+      "hint": "バックアップされたテキストのレポート",
+      "description": "レポート画面からバックアップされたテキストは$length$個です。",
+      "type": "collection",
+      "value": []
+    }
+  },
   "other": {
     "title": "その他",
     "reset-options": {
