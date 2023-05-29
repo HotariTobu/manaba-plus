@@ -20,6 +20,10 @@
   @include base.flex-box($wrap: true);
 
   gap: 20px;
+
+  .coursecard {
+    margin: 0 !important;
+  }
 }
 
 .stdlist {
