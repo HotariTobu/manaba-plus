@@ -10,6 +10,8 @@
 }
 
 .mycourses-body {
+  overflow-x: scroll;
+
   > label {
     display: block;
     margin-block: 10px;
@@ -228,7 +230,9 @@
 
 .contentbody-left {
   .my-infolist-header {
-    margin-inline-end: 15px;
+    @include base.mq(lg) {
+      margin-inline-end: 15px;
+    }
   }
 }
 
