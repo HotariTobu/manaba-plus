@@ -143,7 +143,11 @@
     }
 
     .container {
-      @include base.grid-box(auto 1fr auto auto);
+      @include base.flex-box;
+
+      @include base.mq(lg) {
+        @include base.grid-box(auto 1fr auto auto);
+      }
 
       align-items: center;
     }
@@ -202,8 +206,16 @@
   height: unset !important;
 }
 
+.banner-list {
+  width: min-content;
+}
+
 #content-body {
-  @include base.grid-box(1fr auto);
+  padding: 0 10px;
+
+  @include base.mq(lg) {
+    @include base.grid-box(1fr auto);
+  }
 
   gap: 0;
 
@@ -214,7 +226,9 @@
   }
 
   .right {
-    max-width: 245px;
+    @include base.flex-box(column);
+
+    align-items: center;
 
     > div {
       margin-inline-start: 15px;
@@ -224,7 +238,14 @@
   .bottom {
     @include base.flex-box($wrap: true);
 
+    justify-content: center;
     gap: 10px;
+
+    .banner-list {
+      @include base.mq(lg) {
+        width: unset;
+      }
+    }
   }
 }
 
