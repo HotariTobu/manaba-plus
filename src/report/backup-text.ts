@@ -21,7 +21,8 @@ export const mapFrom = function (array: string[]) {
  * @returns storable text array
  */
 export const toArray = function (map: Map<string, string>) {
-  return Array.from(map.entries()).map(function (hash, text) {
+  return Array.from(map.entries()).map(function (pair) {
+    const [hash, text] = pair
     return hash + separator + text
   })
 }
