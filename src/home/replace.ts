@@ -315,14 +315,18 @@ const replaceCourses = function () {
       } else {
         container.appendChild(title)
       }
+
+      const statusActions = document.createElement('div')
+      statusActions.className = 'status-actions'
       if (status === null) {
         const status = document.createElement('div')
         status.className = 'status dummy'
-        container.appendChild(status)
+        statusActions.appendChild(status)
       } else {
-        container.appendChild(status)
+        statusActions.appendChild(status)
       }
-      container.appendChild(actions)
+      statusActions.appendChild(actions)
+      container.appendChild(statusActions)
       titleCell.appendChild(container)
 
       year?.joinIn(course)

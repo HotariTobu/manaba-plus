@@ -10,8 +10,6 @@
 }
 
 .mycourses-body {
-  overflow-x: auto;
-
   > label {
     display: block;
     margin-block: 10px;
@@ -29,6 +27,16 @@
 }
 
 .stdlist {
+  min-width: 650px !important;
+
+  th {
+    width: 16%;
+
+    &:first-of-type {
+      width: unset;
+    }
+  }
+
   .has-course {
     padding: 0 !important;
     border: 2px solid base.$primary-color-dark !important;
@@ -155,14 +163,26 @@
     .icon {
       width: 25px;
       height: 25px;
+      grid-row: span 2;
+
+      @include base.mq(lg) {
+        grid-row: unset;
+      }
     }
 
     .title {
       @extend %omitted-text;
     }
 
+    .status-actions {
+      @include base.flex-box;
+
+      justify-content: end;
+    }
+
     .actions {
       flex-direction: row;
+      align-items: center;
     }
   }
 
