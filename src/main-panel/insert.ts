@@ -96,10 +96,13 @@ const appendAssignment = function (assignment: Assignment) {
 
   const courseUrl = /.+course_\d+/.exec(assignment.url)[0]
 
+  const courseDiv = document.createElement('div')
+  courseDiv.className = 'course-name'
   const courseAnchor = document.createElement('a')
   courseAnchor.href = courseUrl
   courseAnchor.textContent = assignment.course
-  row.insertCell().appendChild(courseAnchor)
+  courseDiv.appendChild(courseAnchor)
+  row.insertCell().appendChild(courseDiv)
 
   const title = document.createElement('div')
   title.className = 'title'
