@@ -12,3 +12,12 @@
     content: 'またはここにファイルをドロップ';
   }
 }
+
+.backup-text-container {
+  text-align: start;
+
+  .backup-text {
+    border: gray 1px solid;
+    padding: 10px;
+  }
+}
