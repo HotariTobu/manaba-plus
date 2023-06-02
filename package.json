@@ -11,10 +11,11 @@
     "format:prettier": "prettier --check --write --loglevel=warn \"**/*.{ts,js,scss,md,pug}\"",
     "format:es": "eslint --max-warnings=0 --fix \"**/*.{ts,js}\"",
     "format:style": "stylelint --fix \"**/*.{css,scss}\"",
-    "watch": "webpack --watch --config config/webpack.dev.js",
+    "watch": "webpack --watch --config .webpack/common.js --config .webpack/dev.js --merge",
     "prebuild": "eslint . && rm -rf dst/*",
-    "build": "webpack --config config/webpack.prod.js",
+    "build": "webpack --config .webpack/common.js --config .webpack/prod.js --merge",
     "postbuild": "sh ./scripts/sync.sh dst/docs/ docs/",
+    "build:all": "npm run build -- --env browser=Chrome ; npm run build -- --env browser=Firefox",
     "version": "auto-changelog -p && npm run format:prettier && git add CHANGELOG.md"
   },
   "devDependencies": {

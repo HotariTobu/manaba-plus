@@ -1,0 +1,12 @@
+{
+    "browser_specific_settings": {
+        "gecko": {
+          "id": "{77fcd6fa-22a1-498c-88a5-cee7bf16b989}"
+        }
+      },
+    "background": {
+        "scripts": [
+            "service-worker/index.js"
+        ]
+      }
+}

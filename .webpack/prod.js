@@ -3,15 +3,12 @@
 const path = require('path')
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { merge } = require('webpack-merge')
 const ZipWebpackPlugin = require('zip-webpack-plugin')
-
-const common = require('./webpack.common.js')
 
 const buildPath = path.resolve('build')
 const manifest = require('../src/manifest.json')
 
-module.exports = merge(common, {
+module.exports = (env) => ({
   mode: 'production',
   module: {
     rules: [
@@ -52,7 +49,9 @@ module.exports = merge(common, {
     // Zip `dst` folder into zip file.
     new ZipWebpackPlugin({
       path: buildPath,
-      filename: `${manifest.name}_${process.env.npm_package_version}.zip`,
+      filename: `${manifest.name}_${process.env.npm_package_version}_${
+        env.browser ?? 'Chrome'
+      }.zip`,
       exclude: 'docs',
     }),
   ],

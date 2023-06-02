@@ -1,11 +1,8 @@
 'use strict'
 
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { merge } = require('webpack-merge')
 
-const common = require('./webpack.common.js')
-
-module.exports = merge(common, {
+module.exports = {
   mode: 'development',
   // Expand source code into the compiled file.
   devtool: 'source-map',
@@ -28,4 +25,4 @@ module.exports = merge(common, {
       ],
     }),
   ],
-})
+}

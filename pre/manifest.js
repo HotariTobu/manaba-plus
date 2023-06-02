@@ -51,6 +51,24 @@ const replaceValues = function (content, valueLists) {
 }
 
 /**
+ * Insert browser-specific properties to manifest string.
+ * @param {string} content The manifest JSON string
+ * @param {string} browser Browser name
+ * @returns The replaced manifest JSON string
+ */
+const insertBrowserSpecificProperties = function (content, browser) {
+  const obj = JSON.parse(content)
+
+  const properties = require(`../src/manifest/${browser ?? 'Chrome'}.json`)
+
+  for (const key in properties) {
+    obj[key] = properties[key]
+  }
+
+  return JSON.stringify(obj, null, '  ')
+}
+
+/**
  * Fix `web_accessible_resources.matches` into the below style.
  *
  * `<scheme>://<host>/*`
@@ -84,9 +102,10 @@ const fixWebAccessibleResources = function (content) {
 /**
  * Transform manifest JSON.
  * @param {Buffer} buffer The source buffer of manifest JSON
+ * @param {Object} env The parameters passed from the command line
  * @returns The transformed manifest JSON string
  */
-module.exports = async function (buffer) {
+module.exports = async function (buffer, env) {
   let content = buffer.toString()
 
   const valueLists = []
@@ -97,6 +116,8 @@ module.exports = async function (buffer) {
   valueLists.push(...(await hosts.valueLists))
 
   content = replaceValues(content, valueLists)
+
+  content = insertBrowserSpecificProperties(content, env.browser)
 
   content = fixWebAccessibleResources(content)
 
