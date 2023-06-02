@@ -22,5 +22,5 @@ export default async function () {
 
   const parent = document.querySelector('.mycourses-body')
   const module: compileTemplate = require('./module.pug')
-  parent.insertAdjacentHTML('afterbegin', module())
+  parent?.insertAdjacentHTML('afterbegin', module())
 }

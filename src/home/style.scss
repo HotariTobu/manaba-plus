@@ -20,9 +20,23 @@
   @include base.flex-box($wrap: true);
 
   gap: 20px;
+
+  .coursecard {
+    margin: 0 !important;
+  }
 }
 
 .stdlist {
+  min-width: 650px !important;
+
+  th {
+    width: 16%;
+
+    &:first-of-type {
+      width: unset;
+    }
+  }
+
   .has-course {
     padding: 0 !important;
     border: 2px solid base.$primary-color-dark !important;
@@ -137,7 +151,11 @@
     }
 
     .container {
-      @include base.grid-box(auto 1fr auto auto);
+      @include base.grid-box(auto 1fr);
+
+      @include base.mq(lg) {
+        @include base.grid-box(auto 1fr auto auto);
+      }
 
       align-items: center;
     }
@@ -145,14 +163,26 @@
     .icon {
       width: 25px;
       height: 25px;
+      grid-row: span 2;
+
+      @include base.mq(lg) {
+        grid-row: unset;
+      }
     }
 
     .title {
       @extend %omitted-text;
     }
 
+    .status-actions {
+      @include base.flex-box;
+
+      justify-content: end;
+    }
+
     .actions {
       flex-direction: row;
+      align-items: center;
     }
   }
 
@@ -196,8 +226,16 @@
   height: unset !important;
 }
 
+.banner-list {
+  width: min-content;
+}
+
 #content-body {
-  @include base.grid-box(1fr auto);
+  padding: 0 10px;
+
+  @include base.mq(lg) {
+    @include base.grid-box(1fr auto);
+  }
 
   gap: 0;
 
@@ -208,7 +246,9 @@
   }
 
   .right {
-    max-width: 245px;
+    @include base.flex-box(column);
+
+    align-items: center;
 
     > div {
       margin-inline-start: 15px;
@@ -218,13 +258,22 @@
   .bottom {
     @include base.flex-box($wrap: true);
 
+    justify-content: center;
     gap: 10px;
+
+    .banner-list {
+      @include base.mq(lg) {
+        width: unset;
+      }
+    }
   }
 }
 
 .contentbody-left {
   .my-infolist-header {
-    margin-inline-end: 15px;
+    @include base.mq(lg) {
+      margin-inline-end: 15px;
+    }
   }
 }
 
@@ -245,4 +294,8 @@
   &.small {
     width: 230px;
   }
+}
+
+#course-detail {
+  max-width: calc(100vw - 20px);
 }

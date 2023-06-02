@@ -55,6 +55,10 @@
     @extend %omitted-text;
   }
 
+  .course-name {
+    display: flex;
+  }
+
   .title {
     @include base.grid-box(minmax(0, 1fr) auto);
   }
@@ -92,6 +96,7 @@
   }
 
   table {
+    min-width: 500px;
     width: 100%;
     border-collapse: collapse;
 

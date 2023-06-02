@@ -1,5 +1,12 @@
+import getOptions from '../options/model'
+import { sha256 } from '../utils/hash'
+import { mapFrom, toArray } from './backup-text'
+
 // const form = document.querySelector<HTMLFormElement>('form:has(.report-form)')
 const form = document.querySelector<HTMLFormElement>('.form form')
+if (form === null) {
+  throw new Error('NullReference: form')
+}
 
 /**
  * Upload a file.
@@ -39,8 +46,28 @@ const submitAll = async function (files: FileList) {
   location.reload()
 }
 
+/**
+ * Add an event to backup text to the storage.
+ */
+const addBackupEvent = async function () {
+  const textarea = document.querySelector<HTMLTextAreaElement>('form textarea')
+  if (textarea === null) {
+    return
+  }
+
+  const { options } = await getOptions()
+
+  const backupTextMap = mapFrom(options.assignments['backup-text'].value)
+  const hash = await sha256(location.href)
+
+  textarea.addEventListener('input', async function () {
+    backupTextMap.set(hash, textarea.value)
+    options.assignments['backup-text'].value = toArray(backupTextMap)
+  })
+}
+
 // Entry point
-export default function () {
+export default async function () {
   if (form === null) {
     return
   }
@@ -65,4 +92,6 @@ export default function () {
       const input = event.target as HTMLInputElement
       submitAll(input.files)
     })
+
+  await addBackupEvent()
 }

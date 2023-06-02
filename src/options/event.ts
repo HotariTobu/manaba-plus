@@ -43,7 +43,7 @@ const addBindings = async function () {
 
   for (const [key, section] of sections) {
     const element = document.getElementById(key)
-    element?.querySelectorAll('input').forEach(function (element) {
+    element?.querySelectorAll('input')?.forEach(function (element) {
       addConstraint(element, section.dependency)
     })
   }

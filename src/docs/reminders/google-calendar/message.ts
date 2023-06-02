@@ -7,5 +7,5 @@ export default function (id: string) {
     element.setAttribute('hidden', '')
   })
 
-  document.getElementById(id).removeAttribute('hidden')
+  document.getElementById(id)?.removeAttribute('hidden')
 }

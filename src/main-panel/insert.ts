@@ -23,6 +23,9 @@ const insertMessages = async function () {
   }
 
   const messageHolder = document.querySelector('#messages-holder')
+  if (messageHolder === null) {
+    return
+  }
 
   const messages = await popMessages()
   for (const message of messages) {
@@ -93,10 +96,13 @@ const appendAssignment = function (assignment: Assignment) {
 
   const courseUrl = /.+course_\d+/.exec(assignment.url)[0]
 
+  const courseDiv = document.createElement('div')
+  courseDiv.className = 'course-name'
   const courseAnchor = document.createElement('a')
   courseAnchor.href = courseUrl
   courseAnchor.textContent = assignment.course
-  row.insertCell().appendChild(courseAnchor)
+  courseDiv.appendChild(courseAnchor)
+  row.insertCell().appendChild(courseDiv)
 
   const title = document.createElement('div')
   title.className = 'title'
@@ -133,7 +139,7 @@ const appendAssignment = function (assignment: Assignment) {
     setInterval(setRemainingTime, 1000, deadline, remainingTimeSpan)
   }
 
-  assignmentListHolder.appendChild(row)
+  assignmentListHolder?.appendChild(row)
 }
 
 /**

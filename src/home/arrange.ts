@@ -65,6 +65,7 @@ const arrangeClasses = function () {
   }
 
   removeClass('.course:not(.course-cell)', 'course')
+  addClass('.mycourses-body, .my-infolist-deactivecourse', 'over-x')
   addClass('.courselist', 'fixed-table')
   addClass('.period', 'center-align')
 

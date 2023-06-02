@@ -1,7 +1,5 @@
 import getOptions from '../options/model'
-import replace from './replace'
-import insert from './insert'
-import event from './event'
+import arrange from './arrange'
 
 // Entry point.
 getOptions().then(async function ({ options }) {
@@ -9,7 +7,5 @@ getOptions().then(async function ({ options }) {
     return
   }
 
-  replace()
-  await insert()
-  await event()
+  await arrange()
 })

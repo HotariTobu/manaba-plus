@@ -9,6 +9,9 @@ export default function () {
   }
 
   const container = document.querySelector('.articlebody')
+  if (container === null) {
+    return
+  }
 
   const anchor = document.createElement('a')
   anchor.className = 'self-registration'

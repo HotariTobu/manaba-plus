@@ -16,7 +16,7 @@ export default async function (element: Element) {
   if (anchor === null) {
     const title = element.querySelector<HTMLAnchorElement>('.title')
     if (title === null) {
-      return
+      return null
     }
 
     hash = await sha256(title.textContent)

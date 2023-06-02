@@ -26,7 +26,21 @@
   "options_ui": {
     "page": "options/index.html"
   },
+  "background": {
+    "service_worker": "service-worker/index.js"
+  },
   "content_scripts": [
+    {
+      "matches": [
+        "$bad-status$"
+      ],
+      "js": [
+        "bad-status/index.js"
+      ],
+      "css": [
+        "bad-status/style.css"
+      ]
+    },
     {
       "matches": [
         "$manaba-url$*"
@@ -36,6 +50,17 @@
       ],
       "css": [
         "common/style.css"
+      ]
+    },
+    {
+      "matches": [
+        "$manaba-url$course*_grade"
+      ],
+      "js": [
+        "grade/index.js"
+      ],
+      "css": [
+        "grade/style.css"
       ]
     },
     {
@@ -55,6 +80,17 @@
     },
     {
       "matches": [
+        "$manaba-url$page_*"
+      ],
+      "js": [
+        "page/index.js"
+      ],
+      "css": [
+        "page/style.css"
+      ]
+    },
+    {
+      "matches": [
         "$manaba-url$course*_report_*"
       ],
       "js": [
@@ -66,17 +102,6 @@
     },
     {
       "matches": [
-        "$manaba-url$course*_grade"
-      ],
-      "js": [
-        "grade/index.js"
-      ],
-      "css": [
-        "grade/style.css"
-      ]
-    },
-    {
-      "matches": [
         "$manaba-url$syllabus_*"
       ],
       "js": [
@@ -84,17 +109,6 @@
       ],
       "css": [
         "syllabus/style.css"
-      ]
-    },
-    {
-      "matches": [
-        "$bad-status$"
-      ],
-      "js": [
-        "bad-status/index.js"
-      ],
-      "css": [
-        "bad-status/style.css"
       ]
     },
     {

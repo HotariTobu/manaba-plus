@@ -10,6 +10,9 @@ import { updateDate } from '../notification/download'
 const startButton = document.querySelector('#start-button')
 const cancelButton = document.querySelector('#cancel-button')
 const testButton = document.querySelector('#test-button')
+if (startButton === null || cancelButton === null || testButton === null) {
+  throw new Error('NullReference: Buttons')
+}
 
 /**
  * An object that downloading stats is in
@@ -61,6 +64,10 @@ const startMeasuring = function () {
     stats[key] = 0
 
     const element = document.getElementById(key)
+    if (element === null) {
+      continue
+    }
+
     elements.push([key, element])
   }
 
@@ -76,7 +83,9 @@ const startMeasuring = function () {
     }
 
     const totalMilliseconds = performance.now() - stats.lastTime
-    elapsedTime.textContent = time.toString(totalMilliseconds)
+    if (elapsedTime !== null) {
+      elapsedTime.textContent = time.toString(totalMilliseconds)
+    }
 
     if (stats.isMeasuring) {
       return

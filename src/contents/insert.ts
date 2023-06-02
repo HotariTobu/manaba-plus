@@ -3,6 +3,9 @@ import errors from './errors.json'
 
 // #region Progress
 const progressBarHolder = document.querySelector('#progress-bars-holder')
+if (progressBarHolder === null) {
+  throw new Error('NullReference: progressBar holder')
+}
 
 const createProgress = function (trace: ScrapingTrace, child?: Element) {
   const container = document.createElement('div')
@@ -49,6 +52,9 @@ export const clearProgress = function () {
 
 // #region Contents
 const contentsHolder = document.querySelector('#contents-holder')
+if (contentsHolder === null) {
+  throw new Error('NullReference: contents holder')
+}
 
 const createContentBody = function (context: ContentContext) {
   const body = document.createElement('div')
@@ -133,14 +139,14 @@ export const updateContents = function (stacks: {
   // Use getElementById because the hash can start with a number and it cannot adapt to the CSS3 selector.
   const getBody = function (context: ContentContext) {
     const statusDiv = document.getElementById(context.hash)
-    const body = statusDiv.closest('.body')
+    const body = statusDiv?.closest('.body')
     return { statusDiv, body }
   }
 
   stacks.downloading.forEach(function (context: ContentContext) {
     const { body } = getBody(context)
-    body.classList.remove('pending')
-    body.classList.add('downloading')
+    body?.classList?.remove('pending')
+    body?.classList?.add('downloading')
   })
 
   stacks.interrupted.forEach(function ([context, error]: [
@@ -148,17 +154,19 @@ export const updateContents = function (stacks: {
     string
   ]) {
     const { statusDiv, body } = getBody(context)
-    body.classList.remove('pending', 'downloading')
-    body.classList.add('interrupted')
+    if (statusDiv !== null) {
+      const message = errors[error] ?? error
+      statusDiv.textContent = message
+    }
 
-    const message = errors[error] ?? error
-    statusDiv.textContent = message
+    body?.classList?.remove('pending', 'downloading')
+    body?.classList?.add('interrupted')
   })
 
   stacks.completed.forEach(function (context: ContentContext) {
     const { body } = getBody(context)
-    body.classList.remove('pending', 'downloading')
-    body.classList.add('completed')
+    body?.classList?.remove('pending', 'downloading')
+    body?.classList?.add('completed')
   })
 }
 

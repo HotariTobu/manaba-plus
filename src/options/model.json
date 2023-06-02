@@ -397,6 +397,12 @@
       "type": "text",
       "value": ""
     },
+    "timeout-button-label": {
+      "hint": "ボタンのラベル",
+      "description": "タイムアウト画面に追加されるボタンのラベルです。",
+      "type": "text",
+      "value": "manabaのホーム画面に移動する"
+    },
     "transition-automatically": {
       "hint": "自動的に移動する",
       "description": "チェックを入れると、タイムアウト画面から自動的にリンク先へ移動します。",
@@ -409,13 +415,24 @@
       "type": "number",
       "value": 2000,
       "dependency": "transition-automatically"
-    },
-    "timeout-button-label": {
-      "hint": "ボタンのラベル",
-      "description": "タイムアウト画面に追加されるボタンのラベルです。",
-      "type": "text",
-      "value": "manabaのホーム画面に移動する",
-      "dependency": "!transition-automatically"
+    }
+  },
+  "assignments": {
+    "title": "レポート画面",
+    "backup-text": {
+      "hint": "バックアップされたテキストのレポート",
+      "description": "レポート画面からバックアップされたテキストは$length$個です。",
+      "type": "collection",
+      "value": []
+    }
+  },
+  "resources-page": {
+    "title": "コースコンテンツ",
+    "highlight-open-period": {
+      "hint": "公開期間を強調する",
+      "description": "チェックを入れると、コースコンテンツの公開期間を強調して表示します。",
+      "type": "checkbox",
+      "value": false
     }
   },
   "other": {

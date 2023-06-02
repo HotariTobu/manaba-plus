@@ -33,10 +33,11 @@ const getAssignmentsFromDoc = function* (doc: Document) {
   const rows = doc.querySelectorAll<HTMLTableRowElement>(
     'table.stdlist tr:not(.title)'
   )
-  for (const row of Array.from(rows)) {
+
+  for (const row of rows) {
     const elements = row.children
     if (elements.length < 3) {
-      return
+      continue
     }
 
     const url = elements[0].querySelector('a')?.href
