@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "lint": "npm run lint:prettier && npm run lint:es && npm run lint:style ",
+    "lint": "npm run lint:prettier && npm run lint:es && npm run lint:style",
     "lint:prettier": "prettier --check --loglevel=warn \"**/*.{ts,js,scss,md,pug}\"",
     "lint:es": "eslint --max-warnings=0 \"**/*.{ts,js}\"",
     "lint:style": "stylelint \"**/*.{css,scss}\"",
@@ -12,10 +12,14 @@
     "format:es": "eslint --max-warnings=0 --fix \"**/*.{ts,js}\"",
     "format:style": "stylelint --fix \"**/*.{css,scss}\"",
     "watch": "webpack --watch --config .webpack/common.js --config .webpack/dev.js --merge",
+    "watch:Chrome": "npm run watch -- --env browser=Chrome",
+    "watch:Firefox": "npm run watch -- --env browser=Firefox",
     "prebuild": "eslint . && rm -rf dst/*",
     "build": "webpack --config .webpack/common.js --config .webpack/prod.js --merge",
     "postbuild": "sh ./scripts/sync.sh dst/docs/ docs/",
-    "build:all": "npm run build -- --env browser=Chrome ; npm run build -- --env browser=Firefox",
+    "build:Chrome": "npm run build -- --env browser=Chrome",
+    "build:Firefox": "npm run build -- --env browser=Firefox",
+    "build:all": "npm run build:Chrome && npm run build:Firefox",
     "version": "auto-changelog -p && npm run format:prettier && git add CHANGELOG.md"
   },
   "devDependencies": {

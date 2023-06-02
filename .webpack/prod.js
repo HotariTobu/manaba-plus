@@ -6,7 +6,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ZipWebpackPlugin = require('zip-webpack-plugin')
 
 const buildPath = path.resolve('build')
-const manifest = require('../src/manifest.json')
+
+const name = require('../src/manifest/base.json').name
+const version = process.env.npm_package_version
 
 module.exports = (env) => ({
   mode: 'production',
@@ -48,10 +50,8 @@ module.exports = (env) => ({
     }),
     // Zip `dst` folder into zip file.
     new ZipWebpackPlugin({
-      path: buildPath,
-      filename: `${manifest.name}_${process.env.npm_package_version}_${
-        env.browser ?? 'Chrome'
-      }.zip`,
+      path: `${buildPath}/${version}`,
+      filename: `${name}_${version}_${env.browser ?? 'Chrome'}.zip`,
       exclude: 'docs',
     }),
   ],
