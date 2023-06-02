@@ -143,7 +143,7 @@
     }
 
     .container {
-      @include base.flex-box;
+      @include base.grid-box(auto 1fr);
 
       @include base.mq(lg) {
         @include base.grid-box(auto 1fr auto auto);
