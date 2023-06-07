@@ -150,6 +150,10 @@ npmパッケージが格納されます。
 
 ソースファイルを格納します。
 
+#### `./src/manifest`
+
+`manifest.json`のもとになるファイルを格納します。
+
 ### `./.auto-changelog`
 
 auto-changelogの設定です。
