@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/options.css">
+    <script src="/js/options.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="content" class = "column">
+            <div class="input">
+                <div>
+                    <input type="checkbox" id = "saturday" value = true size="30px">土曜日を追加する
+                </div>
+                <hr>
+                <div>
+                    <p>何限まで表示するか</p>
+                    <select id="column" >
+                        <option value=1>１限</option>
+                        <option value=2>２限</option>
+                        <option value=3>３限</option>
+                        <option value=4>４限</option>
+                        <option value=5>５限</option>
+                        <option value=6>６限</option>
+                        <option value=7>７限</option>
+                    </select>
+                </div>
+                <hr>
+                <div>
+                    <p>追加する行数</p>
+                    <select  id="additionalColumn">
+                        <option value=0>0</option>
+                        <option value=1>1</option>
+                        <option value=2>2</option>
+                    </select>
+                </div>
+                <hr>
+                <div>
+                    <p>追加する行のタイトル</p>
+                    <input type="text" id="additionalTitle" value="他">
+                </div>
+            </div>
+            <div class="register" >
+                <button id="registerButton" >保存</button>
+            </div>
+            
+        </div>
+
+        
+    </div>
+</body>
+</html>
