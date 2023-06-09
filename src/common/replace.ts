@@ -4,7 +4,7 @@ import getOptions from '../options/model'
  * Extract the external URL and replace an anchor element with a new one.
  * @param pastAnchor The anchor element replaced with
  */
-const overwriteExternalUrl = function (pastAnchor: HTMLAnchorElement) {
+const replaceExternalAnchor = function (pastAnchor: HTMLAnchorElement) {
   // Extract the external URL.
   const match = /url=(.+)/.exec(pastAnchor.href)
   if (match === null) {
@@ -24,6 +24,6 @@ export default async function () {
   if (options.common['transition-directly'].value) {
     document
       .querySelectorAll<HTMLAnchorElement>('a[href^="link"]')
-      .forEach(overwriteExternalUrl)
+      .forEach(replaceExternalAnchor)
   }
 }
