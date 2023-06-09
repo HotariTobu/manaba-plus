@@ -16,7 +16,7 @@
     "watch:Firefox": "npm run watch -- --env browser=Firefox",
     "prebuild": "eslint . && rm -rf dst/*",
     "build": "webpack --config .webpack/common.js --config .webpack/prod.js --merge",
-    "postbuild": "sh ./scripts/sync.sh dst/docs/ docs/",
+    "postbuild": "$SHELL ./scripts/sync.sh dst/docs/ docs/",
     "build:Chrome": "npm run build -- --env browser=Chrome",
     "build:Firefox": "npm run build -- --env browser=Firefox",
     "build:all": "npm run build:Chrome && npm run build:Firefox",
