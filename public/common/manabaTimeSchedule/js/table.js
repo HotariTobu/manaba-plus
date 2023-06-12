@@ -79,7 +79,7 @@ export function createTable(setting, courseCardDict) {
   // 表示されてないものがあれば行を追加して表示する
   const leftCards = Object.keys(cellCardInfo).length
   if (leftCards) {
-    const addColumn = Math.ceil(leftCards / (rows.length - 1))
+    const addColumn = Math.floor(leftCards / (rows.length - 1) + 1)
     for (let i = 0; i < addColumn; i++) {
       // 一行分
       const tr = document.createElement('tr')
