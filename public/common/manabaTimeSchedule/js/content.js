@@ -52,7 +52,7 @@ export function main() {
       console.log('init')
       const info = {
         saturday: false,
-        column: 2,
+        column: 5,
         additionalColumn: 1,
         additionalTitle: '他',
       }
