@@ -84,6 +84,15 @@
       "type": "checkbox",
       "value": true
     },
+    "timetable": {
+      "title": "時間割",
+      "show-timetable": {
+        "hint": "時間割を表示する",
+        "description": "チェックを入れると、ホーム画面のコース一覧のサムネイルタブに時間割が表示されます。チェックが入れないと、カード型のコースが表示されます。",
+        "type": "checkbox",
+        "value": true
+      }
+    },
     "starred-courses": {
       "hint": "⭐がついたコース",
       "description": "ホーム画面の⭐がついたコースは$length$個です。",

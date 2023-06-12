@@ -6,7 +6,12 @@ import {
 import { createCourseCard } from './createCourseCard.js'
 import { createTable } from './table.js'
 
-export function main() {
+export async function main() {
+  const pairs = await chrome.storage.sync.get({ 'show-timetable': true })
+  if (!pairs['show-timetable']) {
+    return
+  }
+
   const body = document.getElementsByClassName('mycourses-body')[0]
   // 時間割が表示できない部分だった場合終了
   if (!body) {
