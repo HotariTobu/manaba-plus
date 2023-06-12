@@ -21,6 +21,21 @@
       "page": "options/index.html"
     },
     "content_scripts": [
+
+
+      {
+        "matches": [
+          "$manaba-url$*"
+        ],
+        "js": [
+          "manabaTimeSchedule/loader.js"
+        ],
+        "css": [
+          "manabaTimeSchedule/css/courseCard.css"
+        ]
+      },
+
+
       {
         "matches": [
           "$bad-status$"
@@ -112,6 +127,21 @@
       }
     ],
     "web_accessible_resources": [
+
+
+      {
+        "resources": [
+          "manabaTimeSchedule/js/content.js",
+          "manabaTimeSchedule/js/createCourseCard.js",
+          "manabaTimeSchedule/js/courseCardDrag.js",
+          "manabaTimeSchedule/js/table.js"
+        ],
+        "matches": [
+          "$manaba-url$"
+        ]
+      },
+
+
       {
         "resources": [
           "contents/index.html",
