@@ -2,8 +2,8 @@ export function createTable(setting, courseCardDict) {
   // 時間割用の表だけを作成
   const table = document.createElement('table')
   table.border = '1'
-  table.width = '670'
-
+  table.width = document.getElementsByClassName('mycourses-body').width
+  console.log(document.getElementsByClassName('mycourses-body'))
   // 設定に応じた変数定義
   let rows
   let wid
