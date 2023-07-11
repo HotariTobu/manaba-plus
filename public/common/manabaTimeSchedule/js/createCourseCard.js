@@ -2,15 +2,15 @@ export function createCourseCard(courseCard) {
   // 必要な要素を抽出
   const title = courseCard.getElementsByTagName('a')[0]
   const teacher = courseCard.getElementsByClassName('teachers')[0]
+  const courseLinkStatus = courseCard.getElementsByClassName('link-state')[0] // 無いかもしれない
   const courseCardStatus = courseCard.getElementsByClassName('status')[0]
   const id = courseCard.getElementsByClassName('code')[0].innerText
-
   // 要素を成型
   title.setAttribute('draggable', false)
-  title.classList.add('course-title')
+  title.className = 'course-title'
   courseCardStatus.setAttribute('draggable', false)
   for (const item of courseCardStatus.children) {
-    item.classList.add('course-card-status-child')
+    item.className = 'course-card-status-child'
     item.setAttribute('draggable', false)
   }
 
@@ -20,6 +20,9 @@ export function createCourseCard(courseCard) {
   newCourseCard.id = id
   newCourseCard.appendChild(title)
   newCourseCard.appendChild(teacher)
+  if (courseLinkStatus) {
+    newCourseCard.appendChild(courseLinkStatus)
+  }
   newCourseCard.appendChild(courseCardStatus)
   return newCourseCard
 }
