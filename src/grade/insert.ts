@@ -7,7 +7,12 @@ import getDistance from '../lib/edit-distance-onp'
  */
 export const insertLinkToReport = async function () {
   const reportsUrl = location.href.replace(/_grade$/, '_report')
-  const reportsDom = await fetchDOM(reportsUrl)
+  const fetchResult = await fetchDOM(reportsUrl)
+  if (fetchResult.error) {
+    return
+  }
+
+  const reportsDom = fetchResult.data
 
   const reportAnchors =
     reportsDom.querySelectorAll<HTMLAnchorElement>('.report-title a')

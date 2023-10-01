@@ -142,6 +142,16 @@ const appendAssignment = function (assignment: Assignment) {
   assignmentListHolder?.appendChild(row)
 }
 
+const appendError = function (message: string) {
+  const row = document.createElement('tr')
+  row.className = 'error'
+
+  const cell = row.insertCell()
+  cell.textContent = message
+
+  assignmentListHolder?.appendChild(row)
+}
+
 /**
  * Set remaining time of an assignment.
  * @param deadline The deadline of the assignment
@@ -177,9 +187,14 @@ export const insertAssignmentList = async function () {
 
   const assignmentsData: string[] = []
 
-  for await (const assignment of assignments.list()) {
-    appendAssignment(assignment)
-    assignmentsData.push(assignment.toString())
+  try {
+    for await (const assignment of assignments.list()) {
+      appendAssignment(assignment)
+      assignmentsData.push(assignment.toString())
+    }
+  } catch (error) {
+    appendError(error)
+    return
   }
 
   // #region DEBUG Dummy

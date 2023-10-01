@@ -105,3 +105,10 @@ details > *:not(summary) {
     height: 16px;
   }
 }
+
+.error {
+  @include base.flex-box;
+
+  padding: 4px;
+  background-color: base.$error-color;
+}

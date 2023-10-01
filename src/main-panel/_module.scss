@@ -80,6 +80,10 @@
   }
 }
 
+.error {
+  background-color: base.$error-color;
+}
+
 #manaba-plus-container {
   .buttons-container {
     @include base.flex-box;

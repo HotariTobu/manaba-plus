@@ -60,15 +60,20 @@ export default async function* () {
   const { options } = await getOptions()
 
   const rootUrl = options.common['root-url'].value
-
-  const urls = [
-    rootUrl + 'home_summary_query',
-    rootUrl + 'home_summary_survey',
-    rootUrl + 'home_summary_report',
+  const paths = [
+    'home_summary_query',
+    'home_summary_survey',
+    'home_summary_report',
   ]
 
-  for (const url of urls) {
-    const doc = await fetchDOM(url)
-    yield* getAssignmentsFromDoc(doc)
+  for (const path of paths) {
+    const url = rootUrl + path
+
+    const fetchResult = await fetchDOM(url)
+    if (fetchResult.error) {
+      throw fetchResult.message
+    } else {
+      yield* getAssignmentsFromDoc(fetchResult.data)
+    }
   }
 }

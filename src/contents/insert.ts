@@ -174,3 +174,22 @@ export const clearContents = function () {
   contentsHolder.replaceChildren()
 }
 // #endregion
+
+// #region
+export const appendError = function (url: string, message: string) {
+  const errorDiv = document.createElement('div')
+  errorDiv.className = 'error'
+
+  const urlDiv = document.createElement('div')
+  urlDiv.className = 'url'
+  urlDiv.textContent = url
+  errorDiv.appendChild(urlDiv)
+
+  const messageDiv = document.createElement('div')
+  messageDiv.className = 'message'
+  messageDiv.textContent = message
+  errorDiv.appendChild(messageDiv)
+
+  contentsHolder.insertAdjacentElement('afterbegin', errorDiv)
+}
+// #endregion

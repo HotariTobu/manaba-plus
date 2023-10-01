@@ -171,7 +171,12 @@ const getTitleAndStatus = function (course: Element) {
   // Set assignment link.
   const img = children[1] as HTMLImageElement
   if (img.src.endsWith('on.png')) {
-    fetchDOM(courseUrl).then(function (doc) {
+    fetchDOM(courseUrl).then(function (fetchResult) {
+      if (fetchResult.error) {
+        return
+      }
+
+      const doc = fetchResult.data
       const menus = doc.querySelectorAll(
         '.course-menu-query, .course-menu-report, .course-menu-survey'
       )

@@ -1,4 +1,4 @@
-import * as scrape from './scrape'
+import Scraper from './scrape'
 import * as insert from './insert'
 import * as notify from './notify'
 import * as history from './history'
@@ -13,6 +13,8 @@ const testButton = document.querySelector('#test-button')
 if (startButton === null || cancelButton === null || testButton === null) {
   throw new Error('NullReference: Buttons')
 }
+
+let scraper: Scraper = null
 
 /**
  * An object that downloading stats is in
@@ -76,7 +78,10 @@ const startMeasuring = function () {
 
   // Refresh the stats in the view per 500ms.
   const timer = setInterval(function () {
-    stats['fetch-count'] = scrape.fetchCount
+    if (scraper !== null) {
+      insert.updateProgress(scraper.currentTraces)
+      stats['fetch-count'] = scraper.fetchCount
+    }
 
     for (const [key, element] of elements) {
       element.textContent = stats[key]
@@ -101,8 +106,6 @@ const stopMeasuring = function () {
   stats.isMeasuring = false
 }
 
-let isDownloadStopped = true
-
 /**
  * The callback to prevent closing the tab while downloading
  */
@@ -113,12 +116,9 @@ const preventClosing = function (event: Event) {
 }
 
 const startDownload = async function () {
-  if (!isDownloadStopped) {
+  if (scraper !== null) {
     return
   }
-
-  isDownloadStopped = false
-  let isCanceled = true
 
   startMeasuring()
 
@@ -136,9 +136,22 @@ const startDownload = async function () {
     exclusionList.add(context.hash)
   }
 
-  const progressTimer = setInterval(function () {
-    insert.updateProgress(scrape.currentTraces)
-  }, 500)
+  scraper = new Scraper(async function (context: ContentContext) {
+    context.hash = await sha256(context.url)
+    context.excluded = exclusionList.has(context.hash)
+
+    insert.appendContent(context)
+
+    if (context.excluded) {
+      stats['excluded-count']++
+      return
+    }
+
+    download.reserveDownload(context)
+    stats['pending-count']++
+  }, insert.appendError)
+
+  let isCanceled = true
 
   const downloadTimer = setInterval(async function () {
     await download.requestDownload()
@@ -154,7 +167,7 @@ const startDownload = async function () {
     stats['interrupted-count'] += stacks.interrupted.length
     stats['completed-count'] += stacks.completed.length
 
-    if (!isDownloadStopped || !stacks.isEmpty) {
+    if (scraper !== null || !stacks.isEmpty) {
       return
     }
 
@@ -180,55 +193,51 @@ const startDownload = async function () {
     await updateDate()
   }, 1000)
 
-  await scrape.startScraping(async function (context: ContentContext) {
-    context.hash = await sha256(context.url)
-    context.excluded = exclusionList.has(context.hash)
+  await scraper.scrape()
 
-    insert.appendContent(context)
-
-    if (context.excluded) {
-      stats['excluded-count']++
-      return
-    }
-
-    download.reserveDownload(context)
-    stats['pending-count']++
-  })
-
-  clearInterval(progressTimer)
-
-  isCanceled = isDownloadStopped
+  isCanceled = scraper === null
   if (!isCanceled) {
     insert.clearProgress()
+    scraper = null
   }
-
-  isDownloadStopped = true
 }
 
 const cancelDownload = async function () {
   cancelButton.setAttribute('disabled', '')
 
-  scrape.stopScraping()
+  scraper?.cancel()
   await download.cancelDownload()
 
-  isDownloadStopped = true
+  scraper = null
 }
 
 const testScraping = async function () {
+  if (scraper !== null) {
+    return
+  }
+
   startMeasuring()
 
+  startButton.setAttribute('disabled', '')
   testButton.setAttribute('disabled', '')
 
   insert.clearContents()
 
-  await scrape.startScraping(function (context: ContentContext) {
+  scraper = new Scraper(function (context: ContentContext) {
     stats['pending-count']++
     insert.appendContent(context)
-  })
+  }, insert.appendError)
 
+  await scraper.scrape()
+
+  insert.clearProgress()
+
+  startButton.removeAttribute('disabled')
   testButton.removeAttribute('disabled')
 
   stopMeasuring()
+
+  scraper = null
 }
 
 // Entry point
