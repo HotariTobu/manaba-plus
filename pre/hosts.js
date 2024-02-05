@@ -5,7 +5,7 @@ const path = require('path')
 /**
  * JSON objects in `./hosts`
  */
-const hosts = glob('hosts/*.json', {
+const hosts = glob.glob('hosts/*.json', {
   ignore: '*/_.json',
 }).then(function (hostFiles) {
   return hostFiles.map(function (hostFile) {

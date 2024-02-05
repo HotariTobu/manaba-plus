@@ -5,7 +5,7 @@ const textEncoder = new TextEncoder()
  * @param text The source string
  * @returns The digested string
  */
-export const sha256 = async function (text) {
+export const sha256 = async function (text: string) {
   const src = textEncoder.encode(text)
   const buffer = await crypto.subtle.digest('SHA-256', src)
   const dst = new Uint8Array(buffer)

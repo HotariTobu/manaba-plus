@@ -13,7 +13,7 @@ export const set = async function <T>(key: string, obj: T) {
  * @param obj The default value returned when the data is not stored
  * @returns The data if it is stored, otherwise `obj`
  */
-export const get = async function <T>(key: string, obj: T = null) {
+export const get = async function <T>(key: string, obj: T | null = null) {
   const pairs = await chrome.storage.local.get({ [key]: obj })
   return pairs[key] as T
 }

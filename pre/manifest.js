@@ -36,7 +36,7 @@ const replaceValues = function (content, valueLists) {
   for (const [key, valueList] of valueLists) {
     const regex = new RegExp(
       `(\\s*?"${chars}*?)\\$${key}\\$(${chars}*?")(\\s*?)`,
-      'g'
+      'g',
     )
 
     const replacer = function (...args) {

@@ -3,10 +3,29 @@
     "sourceMap": true,
     "target": "ESNext",
     "module": "ESNext",
-    "baseUrl": "src",
 
-    "moduleResolution": "node",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+    },
+
+    "useDefineForClassFields": true,
+
+    /* Bundler mode */
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+
+    /* Linting */
+    "strict": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "vueCompilerOptions": {
+    "plugins": [
+      "@vue/language-plugin-pug"
+    ]
   }
 }

@@ -1,0 +1,21 @@
+{
+  "logMessages": {
+    "timeout": "タイムアウトしていたので、ホーム画面に戻りました。",
+    "version": "Manaba Plusがバージョン$version$にアップデートされました！！",
+    "download": "最後にコンテンツをダウンロードしたのは$dayCount$日前です。"
+  },
+
+  "grade": {
+    "reviewAnswer": "回答の確認"
+  },
+
+  "report": {
+    "addFile": "ファイルを追加",
+    "dndMessage": "またはここにファイルをドロップ",
+    "backupText": "バックアップされたレポートはこちら"
+  },
+
+  "syllabus": {
+    "selfRegistration": "自己登録画面へ"
+  }
+}

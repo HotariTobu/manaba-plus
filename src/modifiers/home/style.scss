@@ -1,0 +1,99 @@
+[draggable="true"] {
+}
+
+table {
+  width: 100% !important;
+}
+
+.memo {
+  margin-inline: unset !important;
+}
+
+.my-infolist-header h2 {
+  padding-left: 1rem !important;
+}
+
+.contentbody-left {
+  float: unset !important;
+  width: unset !important;
+  padding-inline: unset !important;
+}
+
+#courselistweekly {
+  padding-inline: unset !important;
+}
+
+.contentbody-right {
+  float: unset !important;
+  width: unset !important;
+  padding-inline: unset !important;
+}
+
+.my-infolist {
+  display: block !important;
+  width: unset !important;
+  max-width: unset !important;
+  margin-inline: unset !important;
+}
+
+:not(.my-infolist-tips)>.my-infolist-header {
+  border: #9ecf4c 1px solid !important;
+  background: #dffabd !important;
+}
+
+.my-infolist-event {
+  width: unset !important;
+}
+
+.banner-list {
+  display: block !important;
+  width: unset !important;
+  max-width: unset !important;
+  margin-right: unset !important;
+}
+
+/* tailwindcss utilities *****************************************/
+
+.col-span-2 {
+  grid-column: span 2 / span 2
+}
+
+.empty\:hidden:empty {
+  display: none
+}
+
+.grid {
+  display: grid
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr))
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-\[1fr_auto\] {
+    grid-template-columns: 1fr auto
+  }
+}
+
+.flex {
+  display: flex
+}
+
+.flex-col {
+  flex-direction: column
+}
+
+.flex-wrap {
+  flex-wrap: wrap
+}
+
+.justify-between {
+  justify-content: space-between
+}
+
+@media (min-width: 1024px){
+  .lg\:ms-2{
+    margin-inline-start: 0.5rem
+  }
+}

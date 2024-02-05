@@ -7,13 +7,11 @@
   },
   "extends": [
     "standard",
-    "prettier",
-    "eslint-config-prettier"
+    "prettier"
   ],
   "rules": {
     "no-undefined": "error",
-    "no-undef-init": "error",
-    "arrow-body-style": ["error", "never"]
+    "no-undef-init": "error"
   },
   "overrides": [
     {
@@ -27,15 +25,18 @@
       "plugins": [
         "@typescript-eslint"
       ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
       "rules": {
+        // Not to report incorrect errors.
+        "no-undef": "off",
+        "no-unused-vars": "off",
         "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/no-unsafe-call": "error",
         "@typescript-eslint/no-unsafe-member-access": "error",
         "@typescript-eslint/no-unsafe-return": "error",
-        
-        // Not to report incorrect errors.
-        "no-undef": "off",
-        "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": "error"
       }
     }

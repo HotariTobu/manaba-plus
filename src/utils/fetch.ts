@@ -1,7 +1,4 @@
-/**
- * Represents fetching info.
- */
-export interface FetchResult<T> {
+interface FetchContext {
   /**
    * The request url.
    */
@@ -11,24 +8,32 @@ export interface FetchResult<T> {
    * The request options.
    */
   options?: RequestInit
+}
 
+/**
+ * Represents fetching info when success
+ */
+interface FetchSuccess<T> extends FetchContext {
   /**
    * Fetch result data.
-   * Undefined when some error occurred.
    */
-  data?: T
+  data: T
+}
 
-  /**
-   * True when an error has occurred, otherwise false.
-   */
-  error: boolean
-
+/**
+ * Represents fetching info when an error
+ */
+interface FetchError extends FetchContext {
   /**
    * The error message.
-   * Undefined when any error did not occur.
    */
-  message?: string
+  message: string
 }
+
+/**
+ * Represents fetching info.
+ */
+export type FetchResult<T> = FetchSuccess<T> | FetchError
 
 /**
  * Fetch a text from a specific URL.
@@ -38,7 +43,7 @@ export interface FetchResult<T> {
  */
 export const fetchText = async function (
   url: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<FetchResult<string>> {
   const context = {
     url,
@@ -50,13 +55,11 @@ export const fetchText = async function (
     return {
       ...context,
       data: await response.text(),
-      error: false,
     }
   } catch (error) {
     const message = (error as object).toString()
     return {
       ...context,
-      error: true,
       message,
     }
   }
@@ -73,14 +76,11 @@ const domParser = new DOMParser()
  */
 export const fetchDOM = async function (
   url: string,
-  options?: RequestInit
+  options?: RequestInit,
 ): Promise<FetchResult<Document>> {
   const fetchResult = await fetchText(url, options)
-  if (fetchResult.error) {
-    return {
-      ...fetchResult,
-      data: null,
-    }
+  if ('message' in fetchResult) {
+    return fetchResult
   }
 
   const text = fetchResult.data

@@ -5,7 +5,7 @@ const removeIgnoredFiles = async (files) => {
   const isIgnored = await Promise.all(
     files.map((file) => {
       return eslint.isPathIgnored(file)
-    })
+    }),
   )
   const filteredFiles = files.filter((_, i) => !isIgnored[i])
   return filteredFiles.join(' ')

@@ -13,38 +13,17 @@
       "48": "img/icon-mp-48.png",
       "128": "img/icon-mp-128.png"
     },
-    "action": {
-      "default_title": "Manaba Plusを開く",
-      "default_popup": "popup/index.html"
-    },
-    "options_ui": {
-      "page": "options/index.html"
-    },
     "content_scripts": [
-
-
-      {
-        "matches": [
-          "$manaba-url$*"
-        ],
-        "js": [
-          "manabaTimeSchedule/loader.js"
-        ],
-        "css": [
-          "manabaTimeSchedule/css/courseCard.css"
-        ]
-      },
-
 
       {
         "matches": [
           "$bad-status$"
         ],
         "js": [
-          "bad-status/index.js"
+          "modifiers/bad-status/index.js"
         ],
         "css": [
-          "bad-status/style.css"
+          "modifiers/bad-status/index.css"
         ]
       },
       {
@@ -52,21 +31,10 @@
           "$manaba-url$*"
         ],
         "js": [
-          "common/index.js"
+          "modifiers/common/index.js"
         ],
         "css": [
-          "common/style.css"
-        ]
-      },
-      {
-        "matches": [
-          "$manaba-url$course*_grade"
-        ],
-        "js": [
-          "grade/index.js"
-        ],
-        "css": [
-          "grade/style.css"
+          "modifiers/common/index.css"
         ]
       },
       {
@@ -78,10 +46,18 @@
           "$manaba-url$home_selfregistration_*"
         ],
         "js": [
-          "home/index.js"
+          "modifiers/home/index.js"
         ],
         "css": [
-          "home/style.css"
+          "modifiers/home/index.css"
+        ]
+      },
+      {
+        "matches": [
+          "$manaba-url$course*_grade"
+        ],
+        "js": [
+          "modifiers/grade/index.js"
         ]
       },
       {
@@ -89,10 +65,7 @@
           "$manaba-url$page_*"
         ],
         "js": [
-          "page/index.js"
-        ],
-        "css": [
-          "page/style.css"
+          "modifiers/page/index.js"
         ]
       },
       {
@@ -100,10 +73,10 @@
           "$manaba-url$course*_report_*"
         ],
         "js": [
-          "report/index.js"
+          "modifiers/report/index.js"
         ],
         "css": [
-          "report/style.css"
+          "modifiers/report/index.css"
         ]
       },
       {
@@ -111,41 +84,15 @@
           "$manaba-url$syllabus_*"
         ],
         "js": [
-          "syllabus/index.js"
-        ],
-        "css": [
-          "syllabus/style.css"
-        ]
-      },
-      {
-        "matches": [
-          "https://hotaritobu.github.io/manaba-plus/reminders/google-calendar/"
-        ],
-        "js": [
-          "reminders/google-calendar/index.js"
+          "modifiers/syllabus/index.js"
         ]
       }
     ],
     "web_accessible_resources": [
 
-
       {
         "resources": [
-          "manabaTimeSchedule/js/content.js",
-          "manabaTimeSchedule/js/createCourseCard.js",
-          "manabaTimeSchedule/js/courseCardDrag.js",
-          "manabaTimeSchedule/js/table.js"
-        ],
-        "matches": [
-          "$manaba-url$"
-        ]
-      },
-
-
-      {
-        "resources": [
-          "contents/index.html",
-          "options/index.html"
+          "style.css"
         ],
         "matches": [
           "$manaba-url$"

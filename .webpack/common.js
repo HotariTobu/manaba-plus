@@ -1,12 +1,18 @@
 'use strict'
 
+const webpack = require('webpack')
+
 const glob = require('glob')
 const path = require('path')
 
+const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
+const { VuetifyPlugin } = require('webpack-plugin-vuetify')
+
+const colors = require('../src/color.json')
 
 require('../pre/index')()
 
@@ -16,7 +22,7 @@ const dstPath = path.resolve('dst')
 // Search entry files.
 const entries = Object.fromEntries(
   glob
-    .sync('{**/style.scss,**/index.{ts,js}}', {
+    .sync('**/index.{ts,js}', {
       cwd: srcPath,
     })
     .map(function (entryPath) {
@@ -25,28 +31,11 @@ const entries = Object.fromEntries(
         path.join(parsedEntryPath.dir, parsedEntryPath.name),
         path.join(srcPath, entryPath),
       ]
-    })
+    }),
 )
+entries[path.join('style')] = path.join(srcPath, 'style.scss')
 console.log('Entries:')
 console.log(entries)
-console.log()
-
-// Search .bug files.
-console.log('Pugs:')
-const pugs = glob
-  .sync('**/index.pug', {
-    cwd: srcPath,
-  })
-  .map(function (entryPath) {
-    console.log(entryPath)
-    const parsedEntryPath = path.parse(entryPath)
-    return new HtmlWebpackPlugin({
-      template: path.join(srcPath, entryPath),
-      filename: path.join(parsedEntryPath.dir, parsedEntryPath.name + '.html'),
-      minify: 'auto',
-      inject: false,
-    })
-  })
 console.log()
 
 // To re-use webpack configuration across templates,
@@ -75,26 +64,37 @@ module.exports = function (env) {
     },
     module: {
       rules: [
-        // Help webpack in understanding CSS files imported in .js files.
+        // Help webpack in understanding Vue files imported in .js files.
         {
-          test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          test: /\.vue\.(s?[ac]ss)$/,
+          use: ['vue-style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
         },
         {
-          test: /\.scss$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          test: /(?<!\.vue)\.(s?[ac]ss)$/,
+          use: [
+            MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader',
+            {
+              loader: 'string-replace-loader',
+              options: {
+                multiple: [
+                  { search: '$primary-color', replace: colors.primary },
+                  { search: '$secondary-color', replace: colors.primaryLight }
+                ]
+              },
+            },
+          ],
         },
-        // Load .pug files with pug-loader.
         {
           test: /\.pug$/,
-          loader: 'pug-loader',
-          options: {
-            pretty: true,
-          },
+          loader: 'pug-plain-loader',
         },
-        // Check for images imported in .js files.
         {
-          test: /\.(png|jpe?g|gif)$/i,
+          test: /\.vue$/,
+          loader: 'vue-loader',
+        },
+        // Check for images referred in .css files.
+        {
+          test: /\.(png|jpe?g|gif|svg)$/i,
           type: 'asset',
           parser: {
             dataUrlCondition: {
@@ -112,6 +112,8 @@ module.exports = function (env) {
       plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
     },
     plugins: [
+      // Enable `process.env.*`.
+      new Dotenv(),
       // Copy static common assets from `public/common` folder to `dst` folder.
       new CopyWebpackPlugin({
         patterns: [
@@ -134,8 +136,13 @@ module.exports = function (env) {
       new MiniCssExtractPlugin({
         filename: '[name].css',
       }),
-      // Register .pug files for converting them into HTML.
-      ...pugs,
+      // Enable Vue.js
+      new VueLoaderPlugin(),
+      new webpack.DefinePlugin({
+        __VUE_OPTIONS_API__: false,
+        __VUE_PROD_DEVTOOLS__: false,
+      }),
+      new VuetifyPlugin(),
     ],
   }
 }

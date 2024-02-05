@@ -93,7 +93,7 @@ function handleDrop(e) {
 
   // 転送データを取得
   const { id, parentId } = JSON.parse(
-    e.dataTransfer.getData('application/json')
+    e.dataTransfer.getData('application/json'),
   )
 
   const draggedCard = document.getElementById(id)

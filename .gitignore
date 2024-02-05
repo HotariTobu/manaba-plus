@@ -11,8 +11,5 @@ build
 # log
 npm-debug.log*
 
-# VS Code
-.vscode
-
-# env
-env
+# .env
+.env

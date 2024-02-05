@@ -17,7 +17,12 @@ module.exports = (env) => ({
       {
         test: /\.ts$/,
         use: [
-          'ts-loader',
+          {
+            loader: 'ts-loader',
+            options: {
+              appendTsSuffixTo: [/\.vue$/],
+            },
+          },
           /**
            * Remove debugging code like:
            *
