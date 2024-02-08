@@ -1,0 +1,4 @@
+# Config files
+.webextrc
+.webextrc.*
+!.webextrc.sample
