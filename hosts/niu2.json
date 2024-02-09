@@ -1,0 +1,13 @@
+{
+    "$schema": "_schema.json",
+
+    "name": "長崎国際大学",
+    "source": "https://niu2.manaba.jp/ct/login",
+    "tags": [
+        "#春からNIU",
+        "#春から長崎国際"
+    ],
+
+    "manaba-url": "https://niu2.manaba.jp/ct/",
+    "bad-status": []
+}

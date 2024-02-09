@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+
+    "title": "Manaba Host",
+    "description": "A host hosting manaba",
+
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "The name of school or university",
+            "type": "string"
+        },
+        "source": {
+            "description": "The URL of a site from which got manaba URL",
+            "type": "string"
+        },
+        "tags": {
+            "description": "SNS tags of the school or university",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+
+        "manaba-url": {
+            "description": "The prefix of manaba URL",
+            "type": "string"
+        },
+        "bad-status": {
+            "description": "URL of pages that should navigate the login page",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        }
+    },
+    "required": [
+        "name",
+        "source",
+        "tags",
+
+        "manaba-url",
+        "bad-status"
+    ]
+}

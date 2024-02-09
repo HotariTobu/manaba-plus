@@ -1,0 +1,15 @@
+{
+    "$schema": "_schema.json",
+
+    "name": "和洋女子大学",
+    "source": "https://www.wayo.ac.jp/students",
+    "tags": [
+        "#春からWWU",
+        "#春から和洋",
+        "#春から和洋女子",
+        "#春から和洋女子大学"
+    ],
+
+    "manaba-url": "https://wayo.manaba.jp/ct/",
+    "bad-status": []
+}

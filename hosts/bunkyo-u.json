@@ -1,0 +1,14 @@
+{
+    "$schema": "_schema.json",
+
+    "name": "文教大学",
+    "source": "https://campus.bunkyo.ac.jp/entrance/manaba.html",
+    "tags": [
+        "#春からBU",
+        "#春から文教",
+        "#春から文教大学"
+    ],
+
+    "manaba-url": "https://bunkyo-u.manaba.jp/ct/",
+    "bad-status": []
+}

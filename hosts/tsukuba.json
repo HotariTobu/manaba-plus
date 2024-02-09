@@ -1,0 +1,14 @@
+{
+    "$schema": "_schema.json",
+
+    "name": "筑波大学",
+    "source": "https://www.ecloud.tsukuba.ac.jp/manaba/guide",
+    "tags": [
+        "#春からITF",
+        "#春から筑波",
+        "#春から筑波大学"
+    ],
+
+    "manaba-url": "https://manaba.tsukuba.ac.jp/ct/",
+    "bad-status": []
+}

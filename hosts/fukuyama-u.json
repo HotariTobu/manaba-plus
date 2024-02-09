@@ -1,0 +1,12 @@
+{
+    "$schema": "_schema.json",
+
+    "name": "福山大学",
+    "source": "https://cerezo.fukuyama-u.ac.jp/ct/login",
+    "tags": [
+        "#春から福山大学"
+    ],
+
+    "manaba-url": "https://cerezo.fukuyama-u.ac.jp/ct/",
+    "bad-status": []
+}

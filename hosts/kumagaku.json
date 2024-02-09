@@ -1,0 +1,13 @@
+{
+    "$schema": "_schema.json",
+
+    "name": "熊本学園大学",
+    "source": "https://www.ecc.kumagaku.ac.jp/technology_information/manaba/sp",
+    "tags": [
+        "#春から学園大",
+        "#春から熊本学園大学"
+    ],
+
+    "manaba-url": "https://lms.kumagaku.ac.jp/ct/",
+    "bad-status": []
+}

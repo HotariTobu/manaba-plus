@@ -1,0 +1,19 @@
+{
+    "$schema": "_schema.json",
+
+    "name": "中央大学",
+    "source": "https://itc.r.chuo-u.ac.jp/com/manaba/",
+    "tags": [
+        "#春から中央",
+        "#春から中大",
+        "#春から中央大学"
+    ],
+
+    "manaba-url": "https://room.chuo-u.ac.jp/ct/",
+    "bad-status": [
+        "https://gakunin-idp.c.chuo-u.ac.jp/sso/timeout.cgi*",
+        "https://gakunin-idp.c.chuo-u.ac.jp/saml/saml2/idp/SSOService.php*",
+        "https://room.chuo-u.ac.jp/Shibboleth.sso/SLO/POST*",
+        "https://room.chuo-u.ac.jp/Shibboleth.sso/SAML2/POST*"
+    ]
+}
