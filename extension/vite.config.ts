@@ -1,19 +1,14 @@
 import { defineConfig } from "vite";
+
 import react from "@vitejs/plugin-react";
 // import react from "@vitejs/plugin-react-swc";
-import webExtension, { readJsonFile } from "vite-plugin-web-extension";
+import webExtension from "vite-plugin-web-extension";
+
+import { getManifest } from "./hooks/manifest"
+
 import path from "node:path";
 
 const browser = process.env.BROWSER || "chrome"
-
-function generateManifest() {
-  const template = readJsonFile("src/manifest.json");
-  const { version } = readJsonFile("package.json");
-  return {
-    version,
-    ...template,
-  };
-}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,12 +19,12 @@ export default defineConfig({
     react(),
     webExtension({
       browser,
-      manifest: generateManifest,
+      manifest: getManifest,
     }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "src"),
     },
   },
 });
