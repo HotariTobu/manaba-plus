@@ -13,7 +13,7 @@ const getValueLists = (objList: object[], excludedKeys: string[]) => {
   const pairs = new Map()
 
   for (const obj of objList) {
-    for (const key in Object.keys(obj)) {
+    for (const key of Object.keys(obj)) {
       // Skip some properties.
       if (excludedKeys.includes(key)) {
         continue

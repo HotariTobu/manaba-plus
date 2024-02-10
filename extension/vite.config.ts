@@ -3,6 +3,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 // import react from "@vitejs/plugin-react-swc";
 import webExtension from "vite-plugin-web-extension";
+import strip from '@rollup/plugin-strip';
+
+import topLevelAwait from "./hooks/rollup-plugin-top-level-await.js";
+import forceFormat from "./hooks/rollup-plugin-force-format.js";
 
 import { getManifest } from "./hooks/manifest.js"
 
@@ -21,6 +25,15 @@ export default defineConfig({
     webExtension({
       browser,
       manifest: getManifest,
+    }),
+    strip({
+      labels: ['debug']
+    }),
+    forceFormat({
+      format: 'es',
+    }),
+    topLevelAwait({
+      include: ['**/src/modifiers/**/*.js']
     }),
   ],
   resolve: {

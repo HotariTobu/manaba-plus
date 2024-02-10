@@ -29,5 +29,18 @@
     "gecko": {
       "id": "{77fcd6fa-22a1-498c-88a5-cee7bf16b989}"
     }
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "$bad-status$"
+      ],
+      "js": [
+        "src/modifiers/bad-status/index.ts"
+      ],
+      "css": [
+        "src/index.css"
+      ]
+    }
+  ]
 }

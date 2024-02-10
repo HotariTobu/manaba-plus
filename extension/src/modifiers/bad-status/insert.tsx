@@ -1,17 +1,16 @@
-import { createApp } from 'vue'
-import HomeButton from './HomeButton.vue'
-import vuetify from '@/plugins/vuetify'
+import { mount } from '@/utils/mount'
 import { classMap } from './config'
-import { c } from '@/utils/element'
+import { HomeButton } from './home-button'
 
 /**
  * Insert a button to jump to the home page in the center of the screen.
  */
 const insertHomeButton = () => {
-  const container = c('div', {
-    className: classMap.container,
-  })
-  createApp(HomeButton).use(vuetify).mount(container)
+  const container = mount(
+    <div className={classMap.container}>
+      <HomeButton />
+    </div>
+  )
   document.body.appendChild(container)
 
   // Remove the button if the page is a redirect page.

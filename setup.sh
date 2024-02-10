@@ -1,3 +1,3 @@
 for p in **/.*.sample; do
-  cp "$p" "${p%.sample}"
+  cp -n "$p" "${p%.sample}"
 done

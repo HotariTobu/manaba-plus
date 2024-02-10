@@ -4,5 +4,46 @@
   },
   "extension_description": {
     "message": "Add awesome modifications to manaba"
+  },
+
+  "notification_timeout": {
+    "message": "Returned to the home page because it seems timed out."
+  },
+  "notification_version": {
+    "message": "$extension_name$ was updated into version $version$!!",
+    "placeholders": {
+      "extension_name": {
+        "content": "Manaba Plus"
+      },
+      "version": {
+        "content": "$1"
+      }
+    }
+  },
+  "notification_download": {
+    "message": "It's $day_count$ days ago that you downloaded contents at the last. How about you to do it again?",
+    "placeholders": {
+      "day_count": {
+        "content": "$1"
+      }
+    }
+  },
+
+  "grade_view_answer": {
+    "message": "View Answers"
+  },
+
+  "report_add_file": {
+    "message": "Add files"
+  },
+  "report_dnd_message": {
+    "message": "...or drop files here"
+  },
+  "report_backup_text": {
+    "message": "The backup assignment is below:"
+  },
+
+  "syllabus_to_self_registration": {
+    "message": "To the self-registration page"
   }
 }

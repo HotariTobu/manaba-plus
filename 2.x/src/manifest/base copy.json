@@ -38,14 +38,6 @@
 
       {
         "matches": [
-          "$bad-status$"
-        ],
-        "js": [
-          "modifiers/bad-status/index.js"
-        ]
-      },
-      {
-        "matches": [
           "$manaba-url$*"
         ],
         "js": [
