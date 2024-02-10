@@ -1,4 +1,5 @@
 {
+  "private": true,
   "scripts": {
     "prepare": "husky",
     "format": "npm run format:prettier && npm run format:eslint",

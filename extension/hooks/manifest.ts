@@ -1,9 +1,9 @@
 import path from "node:path";
-import f from 'manaba-plus-lib/dist/async-fs'
-import h from 'manaba-plus-lib/dist/hosts'
+import { readTextFile } from 'manaba-plus-lib/dist/async-fs'
+import { getHosts } from 'manaba-plus-lib/dist/hosts'
 
 const templatePath = path.resolve(__dirname, '../src/manifest.json')
-const excludedHostKeys = ['name', 'source', 'tags']
+const excludedHostKeys = ['$schema', 'name', 'source', 'tags']
 
 /**
  * Coordinates key-value pairs from object list.
@@ -24,7 +24,7 @@ const getValueLists = (objList: object[], excludedKeys: string[]) => {
 
       if (typeof value === 'string') {
         valueList.push(value)
-      } else {
+      } else if (Array.isArray(value)) {
         valueList.push(...value)
       }
 
@@ -97,12 +97,15 @@ const replaceValues = (content: string, valueLists: [string, string[]][]) => {
  */
 const fixWebAccessibleResources = (content: string) => {
   const obj = JSON.parse(content) as {
-    web_accessible_resources: {
+    web_accessible_resources?: {
       matches: string[],
     }[],
   }
 
   const resources = obj.web_accessible_resources
+  if (typeof resources === 'undefined') {
+    return content
+  }
 
   for (const resource of resources) {
     const matches = resource.matches
@@ -125,10 +128,10 @@ const fixWebAccessibleResources = (content: string) => {
 }
 
 export const getManifest = async () => {
-  const hosts = await h.getHosts()
+  const hosts = await getHosts()
   const valueLists = getValueLists(hosts, excludedHostKeys)
 
-  let content = await f.readTextFile(templatePath)
+  let content = await readTextFile(templatePath)
   content = replaceValues(content, valueLists)
   content = fixWebAccessibleResources(content)
 

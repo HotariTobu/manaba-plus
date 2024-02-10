@@ -25,7 +25,8 @@ export const getHosts = async () => {
       continue
     }
 
-    const process = readTextFile(entry.path)
+    const filepath = path.resolve(entry.path, entry.name)
+    const process = readTextFile(filepath)
     processList.push(process)
   }
 

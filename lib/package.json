@@ -1,11 +1,11 @@
 {
   "name": "manaba-plus-lib",
   "private": true,
-  "type": "module",
   "devDependencies": {
     "typescript": "^5.3.3"
   },
   "scripts": {
+    "prepare": "tsc",
     "build": "tsc"
   }
 }
