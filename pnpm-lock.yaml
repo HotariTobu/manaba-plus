@@ -106,6 +106,12 @@ importers:
         specifier: ^0.10.0
         version: 0.10.0
 
+  lib:
+    devDependencies:
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:

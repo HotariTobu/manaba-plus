@@ -1,6 +1,6 @@
 import path from "node:path";
-import { readTextFile } from 'manaba-plus-lib/dist/async-fs'
-import { getHosts } from 'manaba-plus-lib/dist/hosts'
+import { readTextFile } from 'manaba-plus-lib/dist/async-fs.js'
+import { getHosts } from 'manaba-plus-lib/dist/hosts.js'
 
 const templatePath = path.resolve(__dirname, '../src/manifest.json')
 const excludedHostKeys = ['$schema', 'name', 'source', 'tags']

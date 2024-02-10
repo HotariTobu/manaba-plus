@@ -1,7 +1,7 @@
 import path from "node:path";
-import { listFiles, readTextFile } from "./async-fs";
+import { listFiles, readTextFile } from "./async-fs.js";
 
-const hostsPath = path.resolve(__dirname, '../../hosts')
+const hostsPath = path.resolve(import.meta.dirname, '../../hosts',)
 
 export interface Host {
   name: string
