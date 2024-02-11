@@ -27,9 +27,6 @@
       "id": "{77fcd6fa-22a1-498c-88a5-cee7bf16b989}"
     }
   },
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; worker-src 'self'"
-  },
   "content_scripts": [
     {
       "matches": [
