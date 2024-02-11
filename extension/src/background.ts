@@ -5,3 +5,19 @@ const exitSurveyUrl = import.meta.env.VITE_EXIT_SURVEY_URL
 if (typeof exitSurveyUrl === 'string') {
   browser.runtime.setUninstallURL(exitSurveyUrl)
 }
+
+
+debug: {
+  browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === 'loading') {
+      browser.scripting.executeScript({
+        target: {
+          tabId,
+        },
+        files: [
+          'https://cdn.tailwindcss.com',
+        ],
+      })
+    }
+  });
+}

@@ -3,7 +3,7 @@ import { hide } from '@/utils/element'
 import { selectorMap } from './config'
 
 // Entry point
-export default function () {
+export default () => {
   if (!o.common.showNotes.value) {
     // Hide notes in the document.
     hide(selectorMap.notes)

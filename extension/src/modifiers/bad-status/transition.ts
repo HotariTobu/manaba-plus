@@ -1,5 +1,5 @@
 import { o } from "@/stores/options"
-import isValidUrl from "@/utils/isValidUrl"
+import { isValidUrl } from "@/utils/isValidUrl"
 import { getHomeUrl } from "./config"
 
 let url = o.timeout.destinationOnTimeout.value.trim()
@@ -16,7 +16,7 @@ export const invalidUrl = !isValidUrl(url)
  * Transition to another page.
  */
 let isTransitioning = false
-export default async function () {
+export const transition = async () => {
   if (isTransitioning) {
     return
   }

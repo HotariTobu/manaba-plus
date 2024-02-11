@@ -13,6 +13,7 @@ import { getManifest } from "./hooks/manifest.js"
 import path from "node:path";
 
 const browser = process.env.BROWSER || "chrome"
+console.log('browser:', browser)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -26,9 +27,13 @@ export default defineConfig({
       browser,
       manifest: getManifest,
     }),
+
+    // Remove debug code
     strip({
       labels: ['debug']
     }),
+
+    // Change output format iife -> es and wrap output js with async iif to use toplevel await
     forceFormat({
       format: 'es',
     }),

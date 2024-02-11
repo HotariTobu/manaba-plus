@@ -12,8 +12,6 @@ const urlPattern = new RegExp('^(https?:\\/\\/)?' + // validate protocol
    * @param urlString The string
    * @returns True if the string is a valid url, otherwise false
    */
-const isValidUrl = (urlString: string) => {
+export const isValidUrl = (urlString: string) => {
   return urlPattern.test(urlString);
 }
-
-export default isValidUrl

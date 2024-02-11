@@ -36,17 +36,7 @@
       },
 
 
-      {
-        "matches": [
-          "$manaba-url$*"
-        ],
-        "js": [
-          "modifiers/common/index.js"
-        ],
-        "css": [
-          "modifiers/common/style.css"
-        ]
-      },
+      ,
       {
         "matches": [
           "$manaba-url$home*"

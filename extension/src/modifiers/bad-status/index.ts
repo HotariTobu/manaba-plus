@@ -2,8 +2,8 @@ import { modify } from '@/utils/modify'
 import { t } from "@/utils/i18n";
 import { o } from '@/stores/options'
 import { pushMessages } from '@/stores/messages'
+import { transition } from './transition'
 import insert from './insert'
-import transition from './transition'
 
 modify(() => {
   insert()

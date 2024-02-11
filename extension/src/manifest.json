@@ -13,10 +13,7 @@
     "storage",
     "downloads"
   ],
-  "{{chrome}}.action": {
-    "default_popup": "src/popup.html"
-  },
-  "{{firefox}}.browser_action": {
+  "action": {
     "default_popup": "src/popup.html"
   },
   "background": {
@@ -30,6 +27,9 @@
       "id": "{77fcd6fa-22a1-498c-88a5-cee7bf16b989}"
     }
   },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; worker-src 'self'"
+  },
   "content_scripts": [
     {
       "matches": [
@@ -37,6 +37,17 @@
       ],
       "js": [
         "src/modifiers/bad-status/index.ts"
+      ],
+      "css": [
+        "src/index.css"
+      ]
+    },
+    {
+      "matches": [
+        "$manaba-url$*"
+      ],
+      "js": [
+        "src/modifiers/common/index.ts"
       ],
       "css": [
         "src/index.css"

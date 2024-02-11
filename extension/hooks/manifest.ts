@@ -135,8 +135,10 @@ export const getManifest = async () => {
   content = replaceValues(content, valueLists)
   content = fixWebAccessibleResources(content)
 
-  return {
+  const manifest = {
     version: process.env.npm_package_version,
     ...JSON.parse(content),
   }
+
+  return manifest
 }
