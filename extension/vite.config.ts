@@ -9,6 +9,7 @@ import topLevelAwait from "./hooks/rollup-plugin-top-level-await.js";
 import forceFormat from "./hooks/rollup-plugin-force-format.js";
 
 import { getManifest } from "./hooks/manifest.js"
+import { injectTailwindCSS } from "./hooks/injectTailwindCSS.js";
 
 import path from "node:path";
 
@@ -26,6 +27,7 @@ export default defineConfig({
     webExtension({
       browser,
       manifest: getManifest,
+      transformManifest: injectTailwindCSS
     }),
 
     // Remove debug code
