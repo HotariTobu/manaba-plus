@@ -1,10 +1,8 @@
-import modify from '@/utils/modify'
-import replace from './replace'
-import insert from './insert'
-import event from './event'
+import { modify } from '@/utils/modify'
+import addFileButton from './add-file-button'
+import backupText from './backup-text'
 
-modify(async () => {
-  replace()
-  insert()
-  await event()
+modify(() => {
+  addFileButton()
+  backupText()
 })

@@ -1,5 +1,5 @@
 import { o } from "@/stores/options"
-import { transition, invalidUrl } from "./transition"
+import { transition, invalidUrl } from "../transition"
 
 import { Button } from "@/components/ui/button"
 

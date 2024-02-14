@@ -9,7 +9,9 @@ if (url === '') {
   url = getHomeUrl(rootUrl)
 }
 
-// Whether the url is invalid.
+/**
+ * True if the url is invalid, otherwise false
+ */
 export const invalidUrl = !isValidUrl(url)
 
 /**

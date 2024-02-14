@@ -1,6 +1,6 @@
 import { o } from '@/stores/options'
 import { hide } from '@/utils/element'
-import { selectorMap } from './config'
+import { selectorMap } from '../config'
 
 // Entry point
 export default () => {

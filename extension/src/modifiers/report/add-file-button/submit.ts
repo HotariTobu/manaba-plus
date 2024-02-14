@@ -1,4 +1,4 @@
-import { additionalFormData, selectorMap } from "./config"
+import { additionalFormData, selectorMap } from "../config"
 
 const form = document.querySelector<HTMLFormElement>(selectorMap.form)
 if (form === null) {

@@ -51,10 +51,11 @@ export const c = <K extends keyof HTMLElementTagNameMap, T = HTMLElementTagNameM
 /**
  * Add classes to selected elements.
  * @param item The set object of a selector string and classes to be added
+ * @param root Root node which starts the query
  */
-export const addClass = (item: ArrangeMapItem) => {
+export const addClass = (item: ArrangeMapItem, root: Document | Element = document) => {
   const classes = item.className.split(' ')
-  f(item.selector).forEach(element => {
+  f(item.selector, root).forEach(element => {
     element.classList.add(...classes)
   })
 }
@@ -62,22 +63,38 @@ export const addClass = (item: ArrangeMapItem) => {
 /**
  * Hide selected elements.
  * @param selector The selector string
+ * @param root Root node which starts the query
  */
-export const hide = (selector: string) => {
+export const hide = (selector: string, root: Document | Element = document) => {
   addClass({
     selector,
     className: hiddenClass,
-  })
+  }, root)
 }
 
 /**
  * Replace selected elements with specific created elements.
- * @param selector The selector string
- * @param replacer A function that receives a selected element and returns a new element
+ * @param target The selector string to select target elements, or the target element(s)
+ * @param replacer A function that receives a selected element and returns a new element, or the the new element
+ * @param root Root node which starts the query
  */
-export const replace = <T extends Element>(selector: string, replacer: (pastElement: T) => Element | null) => {
-  f<T>(selector).forEach(pastElement => {
-    const element = replacer(pastElement)
+export const replace = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T) => Element | null) | Element, root: Document | Element = document) => {
+  if (typeof target === 'string') {
+    target = f<T>(target, root)
+  }
+  else if (!Array.isArray(target)) {
+    target = [target]
+  }
+
+  target.forEach(pastElement => {
+    let element: Element | null
+    if (replacer instanceof Element) {
+      element = replacer
+    }
+    else {
+      element = replacer(pastElement)
+    }
+
     if (element === null) {
       return
     }
@@ -89,24 +106,44 @@ export const replace = <T extends Element>(selector: string, replacer: (pastElem
 
 /**
  * Replace selected elements with specific created elements and move them to a specific element.
- * @param selector The selector string
- * @param replacer A function that receives a selected element and returns a new element
+ * @param target The selector string to select target elements, or the target element(s)
+ * @param replacer A function that receives a selected element and returns a new element, or the the new element
  * @param destinationSelector The selector of the destination element
  * @param where Insert position
+ * @param root Root node which starts the query
  */
-export const move = <T extends Element>(selector: string, replacer: (pastElement: T) => Element | null, destinationSelector: string, where: InsertPosition = 'afterbegin') => {
-  const destinationElement = ff(destinationSelector)
-  if (destinationElement === null) {
-    return
+export const move = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T) => Element | null) | Element, destination: string | Element, where: InsertPosition = 'afterbegin', root: Document | Element = document) => {
+  if (typeof destination === 'string') {
+    const element = ff(destination, root)
+    if (element === null) {
+      return
+    }
+    destination = element
   }
 
-  f<T>(selector).forEach(pastElement => {
-    const element = replacer(pastElement.cloneNode() as T)
+  if (typeof target === 'string') {
+    target = f<T>(target, root)
+  }
+  else if (!Array.isArray(target)) {
+    target = [target]
+  }
+
+  const dest = destination
+
+  target.forEach(pastElement => {
+    let element: Element | null
+    if (replacer instanceof Element) {
+      element = replacer
+    }
+    else {
+      element = replacer(pastElement.cloneNode() as T)
+    }
+
     if (element === null) {
       return
     }
 
-    destinationElement.insertAdjacentElement(where, element)
+    dest.insertAdjacentElement(where, element)
     pastElement.classList.add(hiddenClass)
   })
 }

@@ -1,18 +1,10 @@
-import { defineClassMap, defineIdMap, defineSelectorMap } from "@/types/config"
-
-export const idMap = defineIdMap({
-  addFileButton: '',
-})
+import { defineClassMap, defineSelectorMap } from "@/types/config"
 
 export const selectorMap = defineSelectorMap({
   // form: 'form:has(.report-form)',
   form: '.form form',
   addFileButton: '.file-upload-button',
   textarea: 'form textarea',
-})
-
-export const classMap = defineClassMap({
-  formDnD: 'bg-secondary',
 })
 
 /**

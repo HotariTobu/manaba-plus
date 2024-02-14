@@ -1,5 +1,5 @@
 import { mount } from '@/utils/mount'
-import { HomeButton } from './home-button'
+import { HomeButton } from './component'
 
 /**
  * Insert a button to jump to the home page in the center of the screen.

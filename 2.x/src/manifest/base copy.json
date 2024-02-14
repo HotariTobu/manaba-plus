@@ -54,17 +54,6 @@
       },
       {
         "matches": [
-          "$manaba-url$course*_report_*"
-        ],
-        "js": [
-          "modifiers/report/index.js"
-        ],
-        "css": [
-          "modifiers/report/style.css"
-        ]
-      },
-      {
-        "matches": [
           "$manaba-url$syllabus_*"
         ],
         "js": [
