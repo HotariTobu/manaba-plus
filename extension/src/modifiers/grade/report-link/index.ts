@@ -1,8 +1,8 @@
+import { c, f, ff } from '@/utils/element'
 import { fetchDOM } from '@/utils/fetch'
 import getDistance from '@/utils/editDistanceOnp'
-import { distanceThreshold, getReportsUrl, selectorMap } from './config'
-import { t } from '@/composables/useT9n'
-import { c, f, ff } from '@/utils/element'
+import { t } from '@/utils/i18n'
+import { distanceThreshold, getReportsUrl, selectorMap } from '../config'
 
 interface ReportItem {
   reportUrl: string
@@ -65,7 +65,7 @@ const getReportUrl = function (gradeTitle: string) {
  * Insert a link from a grade to the assignment.
  * Determine if the grade is related to the assignment with the string distance.
  */
-const insertLinkToReport = async function () {
+const insertReportLink = async function () {
   await initReportItems()
 
   if (reportItems === null) {
@@ -98,7 +98,7 @@ const insertLinkToReport = async function () {
 
     const reportAnchor = c('a', {
       href: reportUrl,
-      textContent: t.grade.reviewAnswer,
+      textContent: t('grade_view_answer'),
     })
     gradeCell.appendChild(reportAnchor)
   })
@@ -106,5 +106,5 @@ const insertLinkToReport = async function () {
 
 // Entry point
 export default async () => {
-  await insertLinkToReport()
+  await insertReportLink()
 }

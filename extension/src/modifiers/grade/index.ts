@@ -1,6 +1,6 @@
-import modify from '@/utils/modify'
-import insert from './insert'
+import { modify } from '@/utils/modify'
+import reportLink from './report-link'
 
-modify(async () => {
-  await insert()
+modify(() => {
+  reportLink()
 })
