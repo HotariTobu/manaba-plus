@@ -1,4 +1,4 @@
-import { ArrangeMapItem } from "@/types/config"
+import { ArrangeMap, ArrangeMapItem } from "@/types/config"
 
 /**
  * A class to make elements invisible
@@ -50,14 +50,21 @@ export const c = <K extends keyof HTMLElementTagNameMap, T = HTMLElementTagNameM
 
 /**
  * Add classes to selected elements.
- * @param item The set object of a selector string and classes to be added
+ * @param item The set object of a selector string and classes to be added, or a set of the sets
  * @param root Root node which starts the query
  */
-export const addClass = (item: ArrangeMapItem, root: Document | Element = document) => {
-  const classes = item.className.split(' ')
-  f(item.selector, root).forEach(element => {
-    element.classList.add(...classes)
-  })
+export const addClass = (item: ArrangeMapItem | ArrangeMap, root: Document | Element = document) => {
+  if (typeof item.selector === 'string' && typeof item.className === 'string') {
+    const classes = item.className.split(' ')
+    f(item.selector, root).forEach(element => {
+      element.classList.add(...classes)
+    })
+  }
+  else {
+    for (const subItem of Object.values(item)) {
+      addClass(subItem, root)
+    }
+  }
 }
 
 /**
@@ -136,7 +143,7 @@ export const move = <T extends Element>(target: string | T | T[], replacer: ((pa
       element = replacer
     }
     else {
-      element = replacer(pastElement.cloneNode() as T)
+      element = replacer(pastElement.cloneNode(true) as T)
     }
 
     if (element === null) {

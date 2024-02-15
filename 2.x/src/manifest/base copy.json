@@ -39,21 +39,6 @@
       ,
       {
         "matches": [
-          "$manaba-url$home*"
-        ],
-        "exclude_matches": [
-          "$manaba-url$home_coursetable",
-          "$manaba-url$home_selfregistration_*"
-        ],
-        "js": [
-          "modifiers/home/index.js"
-        ],
-        "css": [
-          "modifiers/home/style.css"
-        ]
-      },
-      {
-        "matches": [
           "https://hotaritobu.github.io/manaba-plus/reminders/google-calendar/"
         ],
         "js": [
