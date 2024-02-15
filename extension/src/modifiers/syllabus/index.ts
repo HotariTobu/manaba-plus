@@ -1,6 +1,6 @@
-import modify from '@/utils/modify'
-import insert from './insert'
+import {modify} from '@/utils/modify'
+import selfRegistration from './self-registration'
 
 modify(() => {
-  insert()
+  selfRegistration()
 })

@@ -75,6 +75,14 @@
       "js": [
         "src/modifiers/report/index.ts"
       ]
+    },
+    {
+      "matches": [
+        "$manaba-url$syllabus_*"
+      ],
+      "js": [
+        "src/modifiers/syllabus/index.ts"
+      ]
     }
   ]
 }

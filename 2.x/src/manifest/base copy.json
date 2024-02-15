@@ -54,17 +54,6 @@
       },
       {
         "matches": [
-          "$manaba-url$syllabus_*"
-        ],
-        "js": [
-          "modifiers/syllabus/index.js"
-        ],
-        "css": [
-          "modifiers/syllabus/style.css"
-        ]
-      },
-      {
-        "matches": [
           "https://hotaritobu.github.io/manaba-plus/reminders/google-calendar/"
         ],
         "js": [
