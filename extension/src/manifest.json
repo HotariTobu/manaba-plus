@@ -36,7 +36,8 @@
         "src/modifiers/bad-status/index.ts"
       ],
       "css": [
-        "src/index.css"
+        "src/modifier.css",
+        "src/modifier-component.css"
       ]
     },
     {
@@ -47,7 +48,8 @@
         "src/modifiers/common/index.ts"
       ],
       "css": [
-        "src/index.css"
+        "src/modifier.css",
+        "src/modifier-component.css"
       ]
     },
     {
@@ -56,6 +58,14 @@
       ],
       "js": [
         "src/modifiers/grade/index.ts"
+      ]
+    },
+    {
+      "matches": [
+        "$manaba-url$page_*"
+      ],
+      "js": [
+        "src/modifiers/page/index.ts"
       ]
     },
     {

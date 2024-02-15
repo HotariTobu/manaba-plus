@@ -34,7 +34,7 @@ const initReportItems = async () => {
  * @param gradeTitle The title of the grade item
  * @returns The closest report item from the title
  */
-const getReportUrl = function (gradeTitle: string) {
+const getReportUrl = (gradeTitle: string) => {
   if (reportItems === null) {
     return null
   }
@@ -65,7 +65,7 @@ const getReportUrl = function (gradeTitle: string) {
  * Insert a link from a grade to the assignment.
  * Determine if the grade is related to the assignment with the string distance.
  */
-const insertReportLink = async function () {
+const insertReportLink = async () => {
   await initReportItems()
 
   if (reportItems === null) {

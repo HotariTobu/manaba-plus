@@ -1,6 +1,6 @@
-import modify from '@/utils/modify'
-import replace from './replace'
+import { modify } from '@/utils/modify'
+import openPeriod from './open-period'
 
 modify(() => {
-  replace()
+  openPeriod()
 })

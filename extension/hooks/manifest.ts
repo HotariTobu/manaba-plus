@@ -1,13 +1,13 @@
 /// <reference types="vite/client" />
 
-import { resolve } from "node:path";
+import path from "node:path";
 import { readTextFile } from 'manaba-plus-lib/dist/async-fs.js'
 import { getHosts } from 'manaba-plus-lib/dist/hosts.js'
 
 /**
  * The path to template file of manifest.json
  */
-const templatePath = resolve(__dirname, '../src/manifest.json')
+const templatePath = path.resolve(__dirname, '../src/manifest.json')
 
 /**
  * Keys excluded from host object when replacing placeholders in the template
