@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -10,9 +10,8 @@ import {
   Active,
   closestCorners,
   CollisionDetection,
-  Modifiers,
-  SensorDescriptor,
-  SensorOptions,
+  DndContextProps,
+  pointerWithin,
 } from "@dnd-kit/core";
 import { SortableData, arrayMove } from "@dnd-kit/sortable";
 import { arrayInsert, arrayRemove } from "@/utils/arrayUtils";
@@ -20,23 +19,24 @@ import { Item } from "./item";
 
 type ItemsMap<I> = Map<UniqueIdentifier, I[]>
 
-interface Props<I> extends HTMLAttributes<HTMLDivElement> {
+interface Props<I> extends DndContextProps {
   itemsMap: ItemsMap<I>
   setItemsMap: (itemsMap: ItemsMap<I>) => void
-  modifiers?: Modifiers
-  sensors?: SensorDescriptor<SensorOptions>[]
   Overlay: (props: { item: I }) => ReactNode
 }
 
-export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, modifiers, sensors, Overlay, ...props }: Props<I>) => {
+export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overlay, children, ...props }: Props<I>) => {
   const [activeItem, setActiveItem] = useState<I | null>(null);
 
   const detectCollision: CollisionDetection = args => {
+    const pointerCollisions = pointerWithin(args)
     const cornerCollisions = closestCorners(args)
 
-    const closestContainer = cornerCollisions.find(c => {
-      return itemsMap.has(c.id)
-    })
+    const closestContainer = pointerCollisions
+      .concat(cornerCollisions)
+      .find(c => {
+        return itemsMap.has(c.id)
+      })
 
     if (typeof closestContainer === 'undefined') {
       return cornerCollisions
@@ -130,10 +130,6 @@ export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, modif
 
     const { from, to } = data
 
-    // console.log(event.collisions)
-    // console.log(from)
-    // console.log(to)
-
     if (from.containerId === to.containerId) {
       return
     }
@@ -168,14 +164,13 @@ export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, modif
 
   return (
     <DndContext
-      modifiers={modifiers}
-      sensors={sensors}
       collisionDetection={detectCollision}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      {...props}
     >
-      <div {...props} />
+      {children}
       <DragOverlay>
         {activeItem && <Overlay item={activeItem} />}
       </DragOverlay>

@@ -61,20 +61,38 @@ export const arrangeMap = defineArrangeMap({
           selector: '.my-infolist-body h3',
           className: 'mb-2 indent-0'
         },
+        eventList: {
+          date: {
+            selector: '.center.eventlist-day',
+            className: 'pe-1'
+          },
+          anchors: {
+            selector: '.event-title a',
+            className: 'inline'
+          }
+        },
         kikuzou: {
-          selector: 'tr:has(.right > a)',
-          className: 'flex justify-evenly'
+          container: {
+            selector: '.my-infolist-kikuzou table',
+            className: 'w-full'
+          },
+          banners: {
+            selector: '.my-infolist-kikuzou tr:has(.right > a)',
+            className: 'flex justify-evenly'
+          }
         }
       }
     },
     bannerList: {
       container: {
         selector: '.banner-list ul',
-        className: 'flex justify-evenly flex-wrap'
+        className: 'flex justify-evenly flex-wrap text-[0]'
       },
       children: {
-        selector: '.banner-list li',
-        className: 'block'
+        listItems: {
+          selector: '.banner-list li',
+          className: 'block p-0'
+        }
       }
     }
   }

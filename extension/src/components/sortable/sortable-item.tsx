@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
 import { CSS } from "@dnd-kit/utilities";
-import { useSortable } from "@dnd-kit/sortable";
+import { useSortable, UseSortableArguments } from "@dnd-kit/sortable";
 import { Item } from "./item";
 
-export const SortableItem = <I extends Item>(props: {
+interface Props<I> extends Omit<UseSortableArguments, 'id'> {
   item: I
   Content: (props: { item: I }) => ReactNode
-}) => {
+}
+
+export const SortableItem = <I extends Item>({ item, Content, ...props }: Props<I>) => {
   const {
     active,
     attributes,
@@ -14,17 +16,17 @@ export const SortableItem = <I extends Item>(props: {
     setNodeRef,
     transform,
     transition
-  } = useSortable({ id: props.item.id, });
+  } = useSortable({ id: item.id, ...props });
 
   const style = {
-    opacity: props.item.id === active?.id ? 0 : 1,
+    opacity: item.id === active?.id ? 0 : 1,
     transform: CSS.Transform.toString(transform),
     transition
   };
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <props.Content item={props.item} />
+      <Content item={item} {...props} />
     </div>
   );
 }
