@@ -8,11 +8,11 @@ export const arrangeMap = defineArrangeMap({
   contents: {
     notes: {
       selector: '.coursememo',
-      className: 'min-h-4 !p-2 m-0 rounded overflow-hidden'
+      className: 'min-h-4 p-2 m-0 rounded overflow-hidden'
     },
     alertList: {
       selector: '.alertlist div',
-      className: '!m-0'
+      className: 'm-0'
     },
     myInfoList: {
       container: {
@@ -21,21 +21,21 @@ export const arrangeMap = defineArrangeMap({
       },
       children: {
         selector: '.my-infolist *',
-        className: '!m-0 !p-0 !bg-none'
+        className: 'm-0 p-0 bg-none'
       },
       header: {
         div: {
           selector: '.my-infolist-header',
-          className: '!bg-primary flex items-center !h-fit !p-0 !border-none'
+          className: 'bg-primary flex items-center h-fit p-0 border-none'
         },
         h2: {
           selector: '.my-infolist-header h2',
-          className: '!m-2 !p-0'
+          className: 'm-2 p-0'
         }
       },
       body: {
         selector: '.my-infolist-body',
-        className: '!m-2 !h-fit !border-none'
+        className: 'm-2 h-fit border-none'
       },
       others: {
         search: {
@@ -45,7 +45,7 @@ export const arrangeMap = defineArrangeMap({
           },
           textBox: {
             selector: '.newssearch-box [name="search"]',
-            className: '!px-1 !w-full'
+            className: 'px-1 w-full'
           }
         },
         details: {
@@ -55,11 +55,11 @@ export const arrangeMap = defineArrangeMap({
             '[style*="padding-top:5px"]',
             '.right:has(img+a) :is(li)',
           ].join(', '),
-          className: '!pt-2 !h-fit'
+          className: 'pt-2 h-fit'
         },
         subHeader: {
           selector: '.my-infolist-body h3',
-          className: '!mb-2 !indent-0'
+          className: 'mb-2 indent-0'
         },
         kikuzou: {
           selector: 'tr:has(.right > a)',
@@ -115,13 +115,19 @@ export const arrangeMap = defineArrangeMap({
 
 export const selectorMap = defineSelectorMap({
   pageBody: '.pagebody',
-  pageElements: [
-    '.pageheader-course',
-    '.memo',
-    '.alertlist',
-    '.my-infolist:not(.my-infolist-mycourses)',
-    '.banner-list',
-  ].join(', '),
+  pageElements: {
+    top: [
+      '.pageheader-course',
+      '.memo',
+      '.alertlist',
+    ].join(', '),
+    left: '.contentbody-left .my-infolist:not(.my-infolist-mycourses)',
+    right: [
+      '.contentbody-right .my-infolist',
+      '.banner-list',
+    ].join(', '),
+    bottom: '',
+  }
 
   // pageContent: '.my-course',
   // selfRegistration: '.my-infolist .help-box',

@@ -12,7 +12,7 @@ export const BackupText = (props: { backupText: string }) => {
         </CollapsibleTrigger>
       </Button>
       <CollapsibleContent>
-        <Textarea className='!mt-1' readOnly value={props.backupText} />
+        <Textarea className='mt-1' readOnly value={props.backupText} />
       </CollapsibleContent>
     </Collapsible>
   )

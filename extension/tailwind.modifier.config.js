@@ -5,6 +5,7 @@ export default {
   presets: [
     base,
   ],
+  important: true,
   corePlugins: {
     preflight: false,
   },

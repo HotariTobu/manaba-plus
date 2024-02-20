@@ -65,6 +65,7 @@
         "$manaba-url$home*"
       ],
       "exclude_matches": [
+        "$manaba-url$home_campusnews_*",
         "$manaba-url$home_coursetable",
         "$manaba-url$home_selfregistration_*"
       ],
