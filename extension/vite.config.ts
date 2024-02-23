@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import webExtension from "vite-plugin-web-extension";
 import strip from '@rollup/plugin-strip';
 
+import importMeta from "./hooks/rollup-plugin-import.meta.js";
 import topLevelAwait from "./hooks/rollup-plugin-top-level-await.js";
 import forceFormat from "./hooks/rollup-plugin-force-format.js";
 
@@ -14,7 +15,6 @@ import { injectTailwindCSS } from "./hooks/injectTailwindCSS.js";
 import path from "node:path";
 
 const browser = process.env.BROWSER || "chrome"
-console.log('browser:', browser)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -33,6 +33,12 @@ export default defineConfig({
     // Remove debug code
     strip({
       labels: ['debug']
+    }),
+
+    // Make `import.meta` available in content scripts
+    importMeta({
+      basePath: import.meta.dirname,
+      include: ['**/src/modifiers/**/*.ts']
     }),
 
     // Change output format iife -> es and wrap output js with async iif to use toplevel await

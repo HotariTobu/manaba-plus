@@ -16,10 +16,8 @@ const classNames: Record<Position, string> = {
 
 export const PageColumn = (props: {
   position: Position
-  itemsMap: Map<UniqueIdentifier, NodeItem[]>
+  items: NodeItem[]
 }) => {
-  const items = props.itemsMap.get(props.position) ?? []
-
   const [minHeight, setMinHeight] = useState(0)
 
   const ref = useRef<{
@@ -57,7 +55,7 @@ export const PageColumn = (props: {
     else {
       setMinHeight(last.height)
     }
-  }, [items.length, disabled])
+  }, [props.items.length, disabled])
 
   const style: CSSProperties = {
     minHeight,
@@ -65,9 +63,9 @@ export const PageColumn = (props: {
 
   return (
     <div className={cn(disabled || ['min-h-8 outline outline-dashed outline-offset-2', classNames[props.position]])}>
-      <SortableColumn className="h-full" containerId={props.position} items={items}>
+      <SortableColumn className="h-full" containerId={props.position} items={props.items}>
         <div className="gap-4 flex flex-col" style={style} ref={div => ref.current.div = div}>
-          {items.map(item => (
+          {props.items.map(item => (
             <PageContent item={item} key={item.id} />
           ))}
         </div>

@@ -12,6 +12,7 @@ import {
   CollisionDetection,
   DndContextProps,
   pointerWithin,
+  DragCancelEvent,
 } from "@dnd-kit/core";
 import { SortableData, arrayMove } from "@dnd-kit/sortable";
 import { arrayInsert, arrayRemove } from "@/utils/arrayUtils";
@@ -23,9 +24,10 @@ interface Props<I> extends DndContextProps {
   itemsMap: ItemsMap<I>
   setItemsMap: (itemsMap: ItemsMap<I>) => void
   Overlay: (props: { item: I }) => ReactNode
+  onDropped?: (itemsMap: ItemsMap<I>) => void
 }
 
-export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overlay, children, ...props }: Props<I>) => {
+export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overlay, onDropped = () => { }, children, ...props }: Props<I>) => {
   const [activeItem, setActiveItem] = useState<I | null>(null);
 
   const detectCollision: CollisionDetection = args => {
@@ -139,16 +141,18 @@ export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overl
     const newFromItems = arrayRemove(from.items, from.index)
     const newToItems = arrayInsert(to.items, to.index, item)
 
-    setItemsMap(new Map([
+    const newItemsMap = new Map([
       ...itemsMap.entries(),
       [from.containerId, newFromItems],
       [to.containerId, newToItems],
-    ]))
+    ])
+    setItemsMap(newItemsMap)
   }
 
   const handleDragEnd = (event: DragEndEvent) => {
     const data = getData(event)
     if (data == null) {
+      onDropped(itemsMap)
       return
     }
 
@@ -156,10 +160,16 @@ export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overl
 
     const newFromItems = arrayMove(from.items, from.index, to.index)
 
-    setItemsMap(new Map([
+    const newItemsMap = new Map([
       ...itemsMap.entries(),
       [from.containerId, newFromItems],
-    ]))
+    ])
+    setItemsMap(newItemsMap)
+    onDropped(newItemsMap)
+  }
+
+  const handleDragCancel = (event: DragCancelEvent) => {
+    onDropped(itemsMap)
   }
 
   return (
@@ -168,6 +178,7 @@ export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overl
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
       {...props}
     >
       {children}

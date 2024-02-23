@@ -12,7 +12,7 @@ interface Props<I> extends Omit<SortableContextProps, 'id' | 'items'> {
   items: I[]
   className?: string
   useDroppableProps?: Omit<UseDroppableArguments, 'id'>
-  droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'class'>
+  droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className'>
 }
 
 export const SortableColumn = <I extends Item>({ containerId, items, className, useDroppableProps, droppableDivProps, children, ...props }: Props<I>) => {

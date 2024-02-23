@@ -1,8 +1,23 @@
 import { useEffect } from 'react';
 import "./Popup.css";
 import { Button } from '@/components/ui/button';
+import { local, managed, session, sync } from '@/utils/createStore';
 
-export default function() {
+debug: {
+  const areas = {
+    local: local,
+    managed: managed,
+    session: session,
+    sync: sync,
+  }
+  for (const [name, area] of Object.entries(areas)) {
+    const values = await area.get()
+    console.log(name)
+    console.log(values)
+  }
+}
+
+export default function () {
   useEffect(() => {
     console.log("Hello from the popup!");
   }, []);

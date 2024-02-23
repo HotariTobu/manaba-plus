@@ -1,8 +1,51 @@
 import { addClass, c, f, replace } from "@/utils/element"
 import { mount } from "@/utils/mount"
-import { arrangeMap, selectorMap } from "../config"
 import type { NodeItem } from "./types/nodeItem"
+import { fromLayout } from "./layout"
+import { store } from "./store"
+import { arrangeMap, selectorMap } from "../config"
 import { PageBody } from "./components/page-body"
+
+type Pair = [string, HTMLElement]
+
+const getPageElements = (pageBody: Element) => {
+  const clonePairs: Pair[] = []
+
+  const entries = Object.entries(selectorMap.pageElements)
+  for (const [position, selector] of entries) {
+    if (selector === '') {
+      continue
+    }
+
+    const elements = f(selector, pageBody)
+    const subClonePairs = elements.map<Pair>(element => {
+      const clone = element.cloneNode(true) as HTMLElement
+      clone.setAttribute('default-pos', position)
+      return [position, clone]
+    })
+    clonePairs.push(...subClonePairs)
+  }
+
+  return clonePairs
+}
+
+const arrangePageElements = (clonePairs: Pair[]) => {
+  const container = c('div')
+
+  for (const [, clone] of clonePairs) {
+    // clone.dataset.className = clone.className
+    // clone.removeAttribute('class')
+
+    clone.style.width = 'unset'
+    clone.style.float = 'unset'
+    clone.style.margin = 'unset'
+    clone.style.padding = 'unset'
+
+    container.appendChild(clone)
+  }
+
+  addClass(arrangeMap.contents, container)
+}
 
 const getIdOf = (element: Element) => {
   const entries = Array.from(element.attributes).map(attribute => {
@@ -13,53 +56,33 @@ const getIdOf = (element: Element) => {
   return JSON.stringify(obj)
 }
 
+const cloneToItem = (clonePair: Pair) => {
+  const [position, clone] = clonePair
+  const itemsPair: [string, NodeItem] = [
+    position,
+    {
+      id: getIdOf(clone),
+      node: <div dangerouslySetInnerHTML={{ __html: clone.outerHTML }} />,
+    }
+  ]
+  return itemsPair
+}
+
 export default () => {
   replace(selectorMap.pageBody, pageBody => {
-    const container = c('div')
-
-    const clonesEntries: [string, HTMLElement[]][] = []
-
-    const entries = Object.entries(selectorMap.pageElements)
-    for (const [position, selector] of entries) {
-      const clones: HTMLElement[] = []
-      clonesEntries.push([position, clones])
-
-      if (selector === '') {
-        continue
-      }
-
-      const elements = f(selector, pageBody)
-
-      for (const element of elements) {
-        const clone = element.cloneNode(true) as HTMLElement
-        clone.setAttribute('default-pos', position)
-
-        // clone.dataset.className = clone.className
-        // clone.removeAttribute('class')
-        clone.style.width = 'unset'
-        clone.style.float = 'unset'
-        clone.style.margin = 'unset'
-        clone.style.padding = 'unset'
-
-        container.appendChild(clone)
-        clones.push(clone)
-      }
+    const clonePairs = getPageElements(pageBody)
+    if (clonePairs.length === 0) {
+      return null
     }
 
-    addClass(arrangeMap.contents, container)
+    arrangePageElements(clonePairs)
 
-    const itemsMap = new Map<string, NodeItem[]>(
-      clonesEntries.map(([position, clones]) => [
-        position,
-        clones.map(clone => ({
-          id: getIdOf(clone),
-          node: <div dangerouslySetInnerHTML={{ __html: clone.outerHTML }} />,
-        }))
-      ])
-    )
+    const itemPairs = clonePairs.map(cloneToItem)
 
+    const itemsMap = fromLayout(itemPairs, store.pageLayout)
+
+    const container = c('div')
     mount(<PageBody itemsMap={itemsMap} />, container)
-
     return container
   })
 }

@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { UniqueIdentifier } from '@dnd-kit/core';
 import { SortableContainer } from "@/components/sortable/sortable-container";
-import type { NodeItem } from "../types/nodeItem";
+import type { NodeItem, NodeItemsMap } from "../types/nodeItem";
 import { useLongPress } from "../hooks/longPress";
 import { PageContext, PageSetterContext, PageStatus } from "../hooks/pageContext";
+import { toLayout } from "../layout";
+import { store } from "../store";
 import { PageResizable } from "./page-resizable";
 import { PageColumn } from "./page-column";
 import { ContentBase } from "./page-content";
@@ -13,7 +14,7 @@ const Overlay = (props: {
 }) => <ContentBase className="shadow-xl" item={props.item} />
 
 export const PageBody = (props: {
-  itemsMap: Map<UniqueIdentifier, NodeItem[]>
+  itemsMap: NodeItemsMap
 }) => {
   const [itemsMap, setItemsMap] = useState(props.itemsMap)
   const [status, setStatus] = useState<PageStatus>('normal')
@@ -29,30 +30,38 @@ export const PageBody = (props: {
     }
   })
 
+  const handleDrop = (itemsMap: NodeItemsMap) => {
+    const layout = toLayout(itemsMap)
+    store.pageLayout = layout
+    console.log('drop!!!')
+  }
+
+  const top = itemsMap.get('top') ?? []
   const left = itemsMap.get('left') ?? []
   const right = itemsMap.get('right') ?? []
+  const bottom = itemsMap.get('bottom') ?? []
 
   return (
     <PageContext.Provider value={status}>
       <PageSetterContext.Provider value={setStatus}>
         <div {...longPress}>
-          <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay}>
-            <PageColumn position="top" itemsMap={itemsMap} />
+          <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay} onDropped={handleDrop}>
+            <PageColumn position="top" items={top} />
 
             <div className="my-4">
               <PageResizable
-                initialMiddle={1000}
+                initialMiddle={store.middle}
                 minMiddle={260}
                 maxMiddle={690}
                 className={disabled ? left.length === 0 ? 'grid-cols-[0_0_1fr]' : right.length === 0 ? 'grid-cols-[1fr_0_0]' : '' : ''}
-                left={<PageColumn position="left" itemsMap={itemsMap} />}
-                right={<PageColumn position="right" itemsMap={itemsMap} />}
+                left={<PageColumn position="left" items={left} />}
+                right={<PageColumn position="right" items={right} />}
                 disabled={disabled}
-                onResized={m => console.log(m)}
+                onResized={m => store.middle = m}
               />
             </div>
 
-            <PageColumn position="bottom" itemsMap={itemsMap} />
+            <PageColumn position="bottom" items={bottom} />
           </SortableContainer>
         </div>
       </PageSetterContext.Provider>

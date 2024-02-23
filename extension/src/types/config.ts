@@ -38,13 +38,13 @@ const fillEmptyKeys = (subMap: StringMap) => {
   }
 }
 
-export const defineIdMap = <M extends IdMap>(map: M) => {
+export const defineIdMap = <M extends IdMap>(map: M): Readonly<M> => {
   fillEmptyKeys(map)
   return map
 }
-export const defineArrangeMap = <M extends ArrangeMap>(map: M) => map
-export const defineSelectorMap = <M extends SelectorMap>(map: M) => map
-export const defineClassMap = <M extends ClassMap>(map: M) => {
+export const defineArrangeMap = <M extends ArrangeMap>(map: M): Readonly<M> => map
+export const defineSelectorMap = <M extends SelectorMap>(map: M): Readonly<M> => map
+export const defineClassMap = <M extends ClassMap>(map: M): Readonly<M> => {
   fillEmptyKeys(map)
   return map
 }

@@ -1,7 +1,10 @@
 import { Plugin, createFilter, FilterPattern } from "vite"
 
-const topLevelAwait = (options?: {
-  include?: FilterPattern
+/**
+ * Wrap the output js with async iif.
+ */
+const topLevelAwait = (options: {
+  include: FilterPattern
   exclude?: FilterPattern
 }): Plugin => {
   const filter = createFilter(options.include, options.exclude);
@@ -10,9 +13,7 @@ const topLevelAwait = (options?: {
     name: 'top-level-await',
     enforce: 'post',
 
-    renderChunk(code: string, chunk: {
-      fileName: string
-    }) {
+    renderChunk(code, chunk) {
       const id = chunk.fileName;
       if (!filter(id)) {
         return
@@ -20,7 +21,6 @@ const topLevelAwait = (options?: {
 
       return `
       (async () => {
-
         ${code}
       })()
       `
