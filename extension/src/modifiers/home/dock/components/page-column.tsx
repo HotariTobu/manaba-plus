@@ -12,6 +12,7 @@ const classNames: Record<Position, string> = {
   left: "outline-yellow-300",
   right: "outline-green-300",
   bottom: "outline-blue-300",
+  trash: "outline-slate-300",
 }
 
 export const PageColumn = (props: {

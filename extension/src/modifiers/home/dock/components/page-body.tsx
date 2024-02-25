@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { cn } from "@/lib/utils";
 import { SortableContainer } from "@/components/sortable/sortable-container";
 import type { NodeItem, NodeItemsMap } from "../types/nodeItem";
 import { useLongPress } from "../hooks/longPress";
@@ -33,35 +34,37 @@ export const PageBody = (props: {
   const handleDrop = (itemsMap: NodeItemsMap) => {
     const layout = toLayout(itemsMap)
     store.pageLayout = layout
-    console.log('drop!!!')
   }
 
   const top = itemsMap.get('top') ?? []
   const left = itemsMap.get('left') ?? []
   const right = itemsMap.get('right') ?? []
   const bottom = itemsMap.get('bottom') ?? []
+  const trash = itemsMap.get('trash') ?? []
 
   return (
     <PageContext.Provider value={status}>
       <PageSetterContext.Provider value={setStatus}>
-        <div {...longPress}>
+        <div className=" min-h-screen gap-4 flex flex-col" {...longPress}>
           <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay} onDropped={handleDrop}>
             <PageColumn position="top" items={top} />
 
-            <div className="my-4">
-              <PageResizable
-                initialMiddle={store.middle}
-                minMiddle={260}
-                maxMiddle={690}
-                className={disabled ? left.length === 0 ? 'grid-cols-[0_0_1fr]' : right.length === 0 ? 'grid-cols-[1fr_0_0]' : '' : ''}
-                left={<PageColumn position="left" items={left} />}
-                right={<PageColumn position="right" items={right} />}
-                disabled={disabled}
-                onResized={m => store.middle = m}
-              />
-            </div>
+            <PageResizable
+              initialMiddle={store.middle}
+              minMiddle={260}
+              maxMiddle={690}
+              className={disabled ? left.length === 0 ? 'grid-cols-[0_0_1fr]' : right.length === 0 ? 'grid-cols-[1fr_0_0]' : '' : ''}
+              left={<PageColumn position="left" items={left} />}
+              right={<PageColumn position="right" items={right} />}
+              disabled={disabled}
+              onResized={m => store.middle = m}
+            />
 
             <PageColumn position="bottom" items={bottom} />
+
+            <div className={cn(disabled && 'hidden', 'opacity-50')}>
+              <PageColumn position="trash" items={trash} />
+            </div>
           </SortableContainer>
         </div>
       </PageSetterContext.Provider>

@@ -145,6 +145,7 @@ export const selectorMap = defineSelectorMap({
       '.banner-list',
     ].join(', '),
     bottom: '',
+    trash: '',
   }
 
   // pageContent: '.my-course',

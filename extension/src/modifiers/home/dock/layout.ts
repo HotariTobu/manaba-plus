@@ -2,15 +2,35 @@ import type { Layout } from "./types/layout"
 import type { NodeItem, NodeItemsMap } from "./types/nodeItem"
 import { selectorMap } from "../config"
 
-export const fromLayout = (itemPairs: [string, NodeItem][], layout: Layout) => {
+type ItemPair = [string, NodeItem]
+
+export const fromLayout = (itemPairs: ItemPair[], layout: Layout) => {
+  const flatItemsMap = new Map(
+    itemPairs.map((pair => [
+      String(pair[1].id),
+      pair
+    ])
+  ))
+
   const positions = Object.keys(selectorMap.pageElements)
   const itemsMap: NodeItemsMap = new Map(
     positions.map(position => [position, []])
   )
 
-  for (const [defaultPosition, item] of itemPairs) {
-    const key = String(item.id)
-    const position = layout.get(key) ?? defaultPosition
+  for (const [key, position] of layout) {
+    const pair = flatItemsMap.get(key)
+    if (typeof pair === 'undefined') {
+      continue
+    }
+
+    flatItemsMap.delete(key)
+    const [, item] = pair
+
+    const items = itemsMap.get(position)
+    items?.push(item)
+  }
+
+  for (const [position, item] of flatItemsMap.values()) {
     const items = itemsMap.get(position)
     items?.push(item)
   }
