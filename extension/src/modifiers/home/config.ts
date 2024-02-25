@@ -17,7 +17,7 @@ export const arrangeMap = defineArrangeMap({
     myInfoList: {
       container: {
         selector: '.my-infolist',
-        className: 'border border-primary border-solid rounded overflow-hidden'
+        className: 'border border-primary border-solid rounded-lg overflow-hidden'
       },
       children: {
         selector: '.my-infolist *',

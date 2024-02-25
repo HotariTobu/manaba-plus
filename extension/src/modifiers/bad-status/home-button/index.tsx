@@ -1,4 +1,6 @@
 import { mount } from '@/utils/mount'
+import { addClass } from '@/utils/element'
+import { arrangeMap } from '../config'
 import { HomeButton } from './component'
 
 /**
@@ -14,7 +16,15 @@ const insertHomeButton = () => {
   })
 }
 
+/**
+ * Reset the root font-size.
+ */
+const resetREM = () => {
+  addClass(arrangeMap.rem)
+}
+
 // Entry point
 export default () => {
   insertHomeButton()
+  resetREM()
 }

@@ -5,6 +5,7 @@ import { fromLayout } from "./layout"
 import { store } from "./store"
 import { arrangeMap, selectorMap } from "../config"
 import { PageBody } from "./components/page-body"
+import { coursesItem } from "./courses"
 
 type Pair = [string, HTMLElement]
 
@@ -78,6 +79,8 @@ export default () => {
     arrangePageElements(clonePairs)
 
     const itemPairs = clonePairs.map(cloneToItem)
+
+    itemPairs.push(['left', coursesItem])
 
     const itemsMap = fromLayout(itemPairs, store.pageLayout)
 

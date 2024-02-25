@@ -38,7 +38,7 @@ export default defineConfig({
     // Make `import.meta` available in content scripts
     importMeta({
       basePath: import.meta.dirname,
-      include: ['**/src/modifiers/**/*.ts']
+      include: ['**/src/modifiers/**/*.{ts,tsx}']
     }),
 
     // Change output format iife -> es and wrap output js with async iif to use toplevel await

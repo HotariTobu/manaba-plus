@@ -45,5 +45,15 @@
 
   "syllabus_to_self_registration": {
     "message": "To the self-registration page"
+  },
+
+  "home_courses_timetable": {
+    "message": "Timetable"
+  },
+  "home_courses_thumbnail": {
+    "message": "Thumbnail"
+  },
+  "home_courses_list": {
+    "message": "List"
   }
 }
