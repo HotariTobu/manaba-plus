@@ -50,8 +50,8 @@
   "home_courses_timetable": {
     "message": "Timetable"
   },
-  "home_courses_thumbnail": {
-    "message": "Thumbnail"
+  "home_courses_cards": {
+    "message": "Cards"
   },
   "home_courses_list": {
     "message": "List"

@@ -6,9 +6,17 @@ export const managed = browser.storage.managed
 export const session = browser.storage.session
 export const sync = browser.storage.sync
 
-type Value = StorageItem | Map<StorageItem, StorageItem>
+type StoreItem = StorageItem | Map<StorageItem, StorageItem>
 
-export const createStore = async <T extends Record<string, Value>>(prefix: string, defaultValues: T, area = sync) => {
+/**
+ * Create a store.
+ * The store is an interface to save values and load from the specific storage.
+ * @param prefix The prefix prepended to the keys of the storage
+ * @param defaultValues The default values of the store
+ * @param area Where the store I/O values
+ * @returns A store
+ */
+export const createStore = async <T extends Record<string, StoreItem>>(prefix: string, defaultValues: T, area = sync) => {
   const keys = Object.keys(defaultValues)
   const prefixedKeys = keys.map(key => prefix + key)
 

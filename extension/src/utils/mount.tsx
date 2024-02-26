@@ -4,6 +4,12 @@ import rootClass from '@/root-class.json'
 
 import { c } from "./element";
 
+/**
+ * Mount a React node to the specific container
+ * @param content The node to be rendered
+ * @param container The container element
+ * @returns The container element
+ */
 export const mount = (content: ReactNode, container?: HTMLElement) => {
   if (typeof container === 'undefined') {
     container = c('div', {

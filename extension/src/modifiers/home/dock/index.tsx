@@ -7,8 +7,14 @@ import { arrangeMap, selectorMap } from "../config"
 import { PageBody } from "./components/page-body"
 import { coursesItem } from "./courses"
 
+/** Key-value of positions and elements */
 type Pair = [string, HTMLElement]
 
+/**
+ * Copy page elements from the page body.
+ * @param pageBody The page body element
+ * @returns An array of pairs of positions and clones of selected elements
+ */
 const getPageElements = (pageBody: Element) => {
   const clonePairs: Pair[] = []
 
@@ -30,6 +36,10 @@ const getPageElements = (pageBody: Element) => {
   return clonePairs
 }
 
+/**
+ * Arrange clone elements' style.
+ * @param clonePairs The clones
+ */
 const arrangePageElements = (clonePairs: Pair[]) => {
   const container = c('div')
 
@@ -48,6 +58,11 @@ const arrangePageElements = (clonePairs: Pair[]) => {
   addClass(arrangeMap.contents, container)
 }
 
+/**
+ * Create a unique value of the specific element.
+ * @param element The element
+ * @returns An id for the element
+ */
 const getIdOf = (element: Element) => {
   const entries = Array.from(element.attributes).map(attribute => {
     return [attribute.name, attribute.value]
@@ -57,6 +72,11 @@ const getIdOf = (element: Element) => {
   return JSON.stringify(obj)
 }
 
+/**
+ * Convert a clone element into a node item in a position pair.
+ * @param clonePair The clone pair
+ * @returns A node pair
+ */
 const cloneToItem = (clonePair: Pair) => {
   const [position, clone] = clonePair
   const itemsPair: [string, NodeItem] = [
@@ -69,6 +89,7 @@ const cloneToItem = (clonePair: Pair) => {
   return itemsPair
 }
 
+// Entry point
 export default () => {
   replace(selectorMap.pageBody, pageBody => {
     const clonePairs = getPageElements(pageBody)
@@ -80,10 +101,12 @@ export default () => {
 
     const itemPairs = clonePairs.map(cloneToItem)
 
+    // Add the extension's sortable items.
     itemPairs.push(['left', coursesItem])
 
     const itemsMap = fromLayout(itemPairs, store.pageLayout)
 
+    // Not use the default container to keep the layout of the page.
     const container = c('div')
     mount(<PageBody itemsMap={itemsMap} />, container)
     return container
