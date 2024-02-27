@@ -65,9 +65,15 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-error-boundary:
+        specifier: ^4.0.12
+        version: 4.0.12(react@18.2.0)
       react-resizable-panels:
         specifier: ^2.0.9
         version: 2.0.9(react-dom@18.2.0)(react@18.2.0)
+      sonner:
+        specifier: ^1.4.1
+        version: 1.4.1(react-dom@18.2.0)(react@18.2.0)
       tailwind-merge:
         specifier: ^2.2.1
         version: 2.2.1
@@ -122,10 +128,10 @@ importers:
         version: 5.3.3
       vite:
         specifier: ^5.0.0
-        version: 5.1.0(@types/node@20.11.17)
+        version: 5.1.0
       vite-plugin-web-extension:
         specifier: ^4.1.1
-        version: 4.1.1(@types/node@20.11.17)
+        version: 4.1.1
       webextension-polyfill:
         specifier: ^0.10.0
         version: 0.10.0
@@ -1444,7 +1450,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.9)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.1.0(@types/node@20.11.17)
+      vite: 5.1.0
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4121,6 +4127,15 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
+  /react-error-boundary@4.0.12(react@18.2.0):
+    resolution: {integrity: sha512-kJdxdEYlb7CPC1A0SeUY38cHpjuu6UkvzKiAmqmOFL21VRfMhOcWxTCBgLVCO0VEMh9JhFNcVaXlV4/BTpiwOA==}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      '@babel/runtime': 7.23.9
+      react: 18.2.0
+    dev: false
+
   /react-refresh@0.14.0:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
@@ -4423,6 +4438,16 @@ packages:
       ansi-styles: 6.2.1
       is-fullwidth-code-point: 5.0.0
     dev: true
+
+  /sonner@1.4.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-KJcFbMF+z2OMSJ9H+N6mrk/ffnEzuyLFlHoza/HQvNyiACoY958VtFdC7xD9D74ttzA+kcS1YIJOsNwbKWDsHw==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /source-map-js@1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
@@ -4866,7 +4891,7 @@ packages:
     hasBin: true
     dev: true
 
-  /vite-plugin-web-extension@4.1.1(@types/node@20.11.17):
+  /vite-plugin-web-extension@4.1.1:
     resolution: {integrity: sha512-YUObXUXilgYuNGLdn5v+VUCcIQY4Aodo/1tgv6DrNAeZTLnvfa0fKSXjq86FB+XTplbumVZ6UANLrOxZItWOvw==}
     engines: {node: '>=16'}
     dependencies:
@@ -4878,7 +4903,7 @@ packages:
       lodash.uniq: 4.5.0
       lodash.uniqby: 4.7.0
       md5: 2.3.0
-      vite: 5.1.0(@types/node@20.11.17)
+      vite: 5.1.0
       web-ext-run: 0.1.2
       webextension-polyfill: 0.10.0
       yaml: 2.3.4
@@ -4895,7 +4920,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /vite@5.1.0(@types/node@20.11.17):
+  /vite@5.1.0:
     resolution: {integrity: sha512-STmSFzhY4ljuhz14bg9LkMTk3d98IO6DIArnTY6MeBwiD1Za2StcQtz7fzOUnRCqrHSD5+OS2reg4HOz1eoLnw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -4923,7 +4948,6 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.11.17
       esbuild: 0.19.12
       postcss: 8.4.35
       rollup: 4.9.6

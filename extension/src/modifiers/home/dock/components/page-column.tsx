@@ -63,7 +63,7 @@ export const PageColumn = (props: {
   }
 
   return (
-    <div className={cn(disabled || ['min-h-8 outline outline-dashed outline-offset-2', classNames[props.position]])}>
+    <div className={cn(disabled || ['min-h-8 outline-dashed outline-offset-2', classNames[props.position]])}>
       <SortableColumn className="h-full" containerId={props.position} items={props.items}>
         <div className="gap-4 flex flex-col" style={style} ref={div => ref.current.div = div}>
           {props.items.map(item => (

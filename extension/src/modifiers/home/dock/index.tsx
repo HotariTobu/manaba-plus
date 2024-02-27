@@ -1,11 +1,12 @@
 import { addClass, c, f, replace } from "@/utils/element"
 import { mount } from "@/utils/mount"
+import { ErrorReporter } from "@/components/error-reporter"
 import type { NodeItem } from "./types/nodeItem"
 import { fromLayout } from "./layout"
 import { store } from "./store"
 import { arrangeMap, selectorMap } from "../config"
 import { PageBody } from "./components/page-body"
-import { coursesItem } from "./courses"
+import { coursesItem } from "./items/courses"
 
 /** Key-value of positions and elements */
 type Pair = [string, HTMLElement]
@@ -91,7 +92,7 @@ const cloneToItem = (clonePair: Pair) => {
 
 // Entry point
 export default () => {
-  replace(selectorMap.pageBody, pageBody => {
+  replace(selectorMap.pageBody, (pageBody, unhide) => {
     const clonePairs = getPageElements(pageBody)
     if (clonePairs.length === 0) {
       return null
@@ -108,7 +109,11 @@ export default () => {
 
     // Not use the default container to keep the layout of the page.
     const container = c('div')
-    mount(<PageBody itemsMap={itemsMap} />, container)
+    mount((
+      <ErrorReporter onError={unhide}>
+        <PageBody itemsMap={itemsMap} />
+      </ErrorReporter>
+    ), container)
     return container
   })
 }

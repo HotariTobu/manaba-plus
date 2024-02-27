@@ -68,15 +68,42 @@ export const addClass = (item: ArrangeMapItem | ArrangeMap, root: Document | Ele
 }
 
 /**
- * Hide selected elements.
- * @param selector The selector string
+ * Get target elements determined by various types.
+ * @param target The selector string to select target elements, or the target element(s)
+ * @param root Root node which starts the query
+ * @returns An array of target elements
+ */
+const getTargetElements = <T extends Element>(target: string | T | T[], root: Document | Element = document) => {
+  if (typeof target === 'string') {
+    return f<T>(target, root)
+  }
+  else if (!Array.isArray(target)) {
+    return [target]
+  }
+
+  return target
+}
+
+/**
+ * Hide elements.
+ * @param target The selector string to select target elements, or the target element(s)
  * @param root Root node which starts the query
  */
-export const hide = (selector: string, root: Document | Element = document) => {
-  addClass({
-    selector,
-    className: hiddenClass,
-  }, root)
+export const hide = <T extends Element>(target: string | T | T[], root: Document | Element = document) => {
+  getTargetElements(target, root).forEach(element => {
+    element.classList.add(hiddenClass)
+  })
+}
+
+/**
+ * Show hidden elements.
+ * @param target The selector string to select target elements, or the target element(s)
+ * @param root Root node which starts the query
+ */
+export const unhide = <T extends Element>(target: string | T | T[], root: Document | Element = document) => {
+  getTargetElements(target, root).forEach(element => {
+    element.classList.remove(hiddenClass)
+  })
 }
 
 /**
@@ -85,21 +112,14 @@ export const hide = (selector: string, root: Document | Element = document) => {
  * @param replacer A function that receives a selected element and returns a new element, or the the new element
  * @param root Root node which starts the query
  */
-export const replace = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T) => Element | null) | Element, root: Document | Element = document) => {
-  if (typeof target === 'string') {
-    target = f<T>(target, root)
-  }
-  else if (!Array.isArray(target)) {
-    target = [target]
-  }
-
-  target.forEach(pastElement => {
+export const replace = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T, unihde: () => void) => Element | null) | Element, root: Document | Element = document) => {
+  getTargetElements(target, root).forEach(pastElement => {
     let element: Element | null
     if (replacer instanceof Element) {
       element = replacer
     }
     else {
-      element = replacer(pastElement)
+      element = replacer(pastElement, () => unhide(pastElement))
     }
 
     if (element === null) {
@@ -107,7 +127,7 @@ export const replace = <T extends Element>(target: string | T | T[], replacer: (
     }
 
     pastElement.after(element)
-    pastElement.classList.add(hiddenClass)
+    hide(pastElement)
   })
 }
 
@@ -119,7 +139,7 @@ export const replace = <T extends Element>(target: string | T | T[], replacer: (
  * @param where Insert position
  * @param root Root node which starts the query
  */
-export const move = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T) => Element | null) | Element, destination: string | Element, where: InsertPosition = 'afterbegin', root: Document | Element = document) => {
+export const move = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T, unihde: () => void) => Element | null) | Element, destination: string | Element, where: InsertPosition = 'afterbegin', root: Document | Element = document) => {
   if (typeof destination === 'string') {
     const element = ff(destination, root)
     if (element === null) {
@@ -128,22 +148,15 @@ export const move = <T extends Element>(target: string | T | T[], replacer: ((pa
     destination = element
   }
 
-  if (typeof target === 'string') {
-    target = f<T>(target, root)
-  }
-  else if (!Array.isArray(target)) {
-    target = [target]
-  }
-
   const dest = destination
 
-  target.forEach(pastElement => {
+  getTargetElements(target, root).forEach(pastElement => {
     let element: Element | null
     if (replacer instanceof Element) {
       element = replacer
     }
     else {
-      element = replacer(pastElement.cloneNode(true) as T)
+      element = replacer(pastElement.cloneNode(true) as T, () => unhide(pastElement))
     }
 
     if (element === null) {

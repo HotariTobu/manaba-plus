@@ -1,5 +1,6 @@
 import { ReactNode, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Toaster } from "sonner";
 import rootClass from '@/root-class.json'
 
 import { c } from "./element";
@@ -20,6 +21,7 @@ export const mount = (content: ReactNode, container?: HTMLElement) => {
   createRoot(container).render(
     <StrictMode>
       {content}
+      <Toaster richColors />
     </StrictMode>
   );
 

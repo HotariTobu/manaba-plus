@@ -3,7 +3,7 @@ import { defineClassMap, defineSelectorMap } from "@/types/config"
 export const selectorMap = defineSelectorMap({
   // form: 'form:has(.report-form)',
   form: '.form form',
-  addFileButton: '.file-upload-button',
+  uploadButton: '.file-upload-button',
   textarea: 'form textarea',
 })
 

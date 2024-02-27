@@ -1,5 +1,5 @@
 import { mount } from "@/utils/mount"
-import { replace, ff, c } from "@/utils/element"
+import { replace, ff, c, unhide } from "@/utils/element"
 import { selectorMap } from "../config"
 import { AddFileButtonPanel } from "./component"
 import { submitAll } from './submit'
@@ -67,14 +67,14 @@ const addDnDEvents = () => {
 
 // Entry point
 export default () => {
-  const addFileButton = ff(selectorMap.addFileButton)
-  if (addFileButton === null) {
+  const uploadButton = ff(selectorMap.uploadButton)
+  if (uploadButton === null) {
     return
   }
 
   // Replace add-file-button to enable users to select multiple files.
   const container = mount(<AddFileButtonPanel />)
-  replace(addFileButton, container)
+  replace(uploadButton, container)
 
   addDnDEvents()
 }
