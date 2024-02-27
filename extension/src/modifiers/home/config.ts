@@ -111,16 +111,36 @@ export const selectorMap = defineSelectorMap({
     trash: '',
   },
   courses: {
-    timetable: {
-
+    status: ':is(.course-card-status, .coursestatus) img',
+    thumbnail: {
+      source: '.coursecard',
+      url: '.course-card-title a',
+      code: '.coursecode',
+      icon: '.course-card-img img',
+      title: '.course-card-title a',
+      year: '.courseitemdetail:first-of-type',
+      linked: '.courselink-state',
+      remarks: '.courseitemdetail:first-of-type span',
+      teachers: '.courseitemdetail:last-of-type',
     },
     list: {
-
+      source: '.courselist tr:not([class*="title"])',
+      url: '.courselist-title a',
+      icon: 'img.inline',
+      title: '.courselist-title',
+      year: 'td:nth-of-type(2)',
+      linked: 'span[style]',
+      remarks: 'td:nth-of-type(3)',
+      teachers: 'td:nth-of-type(4)',
     },
-    thumbnail: {
-
-    }
-  }
+    timetable: {
+      source: '.course-cell',
+      url: 'a:first-of-type',
+      title: 'a:first-of-type',
+      year: '.my-infolist-mycourses select:nth-child(2)',
+      linked: '.registration-state',
+    },
+  },
 })
 
 /**
@@ -142,10 +162,10 @@ export const getRootUrl = (homeUrl: string) => {
  * @returns The fiscal year
  */
 export const getFiscalYear = (date: Date = new Date()) => {
- if (date.getMonth() < 4) {
-   return date.getFullYear() - 1;
- }
- return date.getFullYear();
+  if (date.getMonth() < 4) {
+    return date.getFullYear() - 1;
+  }
+  return date.getFullYear();
 }
 
 

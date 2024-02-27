@@ -55,5 +55,20 @@
   },
   "home_courses_list": {
     "message": "List"
+  },
+  "home_courses_course_name": {
+    "message": "Course Name"
+  },
+  "home_courses_course_year": {
+    "message": "Year"
+  },
+  "home_courses_course_remarks": {
+    "message": "Remarks"
+  },
+  "home_courses_course_teachers": {
+    "message": "Teachers"
+  },
+  "home_courses_course_linked": {
+    "message": "*Linked"
   }
 }

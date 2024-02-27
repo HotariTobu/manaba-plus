@@ -1,38 +1,38 @@
 export enum DayOfWeek {
-  MONDAY,
-  TUESDAY,
-  WEDNESDAY,
-  THURSDAY,
-  FRIDAY,
-  SATURDAY,
-  SUNDAY,
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+  Sunday,
 }
 
 export enum StatusType {
-  NEWS,
-  ASSIGNMENT,
-  GRADE,
-  TOPIC,
-  COLLECTION,
+  News,
+  Assignment,
+  Grade,
+  Topic,
+  Collection,
 }
 
 export interface Course {
   id: string
 
-  url: string | null
-  code: string | null
-  icon: string | null
+  url?: string
+  code?: string
+  icon?: string
   title: string
 
   year: number
-  day: DayOfWeek | null
-  period: {
+  day?: DayOfWeek
+  period?: {
     start: number
     span: number
-  } | null
+  }
 
   linked: boolean
-  remarks: string | null
-  teachers: string | null
+  remarks?: string
+  teachers?: string
   status: Partial<Record<StatusType, boolean>>
 }
