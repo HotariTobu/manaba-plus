@@ -109,6 +109,17 @@ export const selectorMap = defineSelectorMap({
     ].join(', '),
     bottom: '',
     trash: '',
+  },
+  courses: {
+    timetable: {
+
+    },
+    list: {
+
+    },
+    thumbnail: {
+
+    }
   }
 })
 
@@ -124,3 +135,27 @@ export const getRootUrl = (homeUrl: string) => {
   }
   return match[1]
 }
+
+/**
+ * Convert a date into a Japanese fiscal year.
+ * @param date The date
+ * @returns The fiscal year
+ */
+export const getFiscalYear = (date: Date = new Date()) => {
+ if (date.getMonth() < 4) {
+   return date.getFullYear() - 1;
+ }
+ return date.getFullYear();
+}
+
+
+/**
+ * Suffixes of URLs related to status icons.
+ */
+const statusSuffix = [
+  '_news',
+  '',
+  '_grade',
+  '_topics',
+  '_coursecollection_user',
+]

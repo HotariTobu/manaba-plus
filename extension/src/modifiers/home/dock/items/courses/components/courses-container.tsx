@@ -1,8 +1,10 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { store } from "../store"
 import { t } from "@/utils/i18n"
+import { useCourses } from "../hooks/useCourses"
 
 export const CoursesContainer = () => {
+  useCourses()
   return (
     <Tabs defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
       <TabsList className="bg-primary rounded-b-none">
