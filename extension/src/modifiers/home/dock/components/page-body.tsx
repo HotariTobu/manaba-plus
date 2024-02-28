@@ -45,7 +45,7 @@ export const PageBody = (props: {
   return (
     <PageContext.Provider value={status}>
       <PageSetterContext.Provider value={setStatus}>
-        <div className=" min-h-screen gap-4 flex flex-col" {...longPress}>
+        <div className={cn(disabled || 'mb-96', "min-h-screen gap-4 flex flex-col")} {...longPress}>
           <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay} onDropped={handleDrop}>
             <PageColumn position="top" items={top} />
 

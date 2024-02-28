@@ -79,7 +79,7 @@ export const useLongPress = (callback: () => void, delay = 1000, tolerance = 20)
     }
   }
 
-  const onPointerUp = (event: PointerEvent) => {
+  const onPointerUp = () => {
     clear()
   }
 
