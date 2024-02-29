@@ -7,7 +7,7 @@ import {
 } from "@dnd-kit/sortable";
 import { Item } from "./item";
 
-interface Props<I> extends Omit<SortableContextProps, 'id' | 'items'> {
+interface SortableColumnProps<I> extends Omit<SortableContextProps, 'id' | 'items'> {
   containerId: UniqueIdentifier
   items: I[]
   className?: string
@@ -15,7 +15,7 @@ interface Props<I> extends Omit<SortableContextProps, 'id' | 'items'> {
   droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className'>
 }
 
-export const SortableColumn = <I extends Item>({ containerId, items, className, useDroppableProps, droppableDivProps, children, ...props }: Props<I>) => {
+export const SortableColumn = <I extends Item>({ containerId, items, className, useDroppableProps, droppableDivProps, children, ...props }: SortableColumnProps<I>) => {
   const { setNodeRef } = useDroppable({
     id: containerId,
     ...useDroppableProps,

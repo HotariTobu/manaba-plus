@@ -8,11 +8,11 @@ import { toLayout } from "../layout";
 import { store } from "../store";
 import { PageResizable } from "./page-resizable";
 import { PageColumn } from "./page-column";
-import { ContentBase } from "./page-content";
+import { Content } from "./page-content";
 
 const Overlay = (props: {
   item: NodeItem
-}) => <ContentBase className="shadow-xl" item={props.item} />
+}) => <Content className="shadow-xl" item={props.item} />
 
 export const PageBody = (props: {
   itemsMap: NodeItemsMap

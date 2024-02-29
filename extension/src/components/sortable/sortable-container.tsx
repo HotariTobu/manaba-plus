@@ -20,14 +20,14 @@ import { Item } from "./item";
 
 type ItemsMap<I> = Map<UniqueIdentifier, I[]>
 
-interface Props<I> extends DndContextProps {
+interface SortableContainerProps<I> extends DndContextProps {
   itemsMap: ItemsMap<I>
   setItemsMap: (itemsMap: ItemsMap<I>) => void
   Overlay: (props: { item: I }) => ReactNode
   onDropped?: (itemsMap: ItemsMap<I>) => void
 }
 
-export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overlay, onDropped = () => { }, children, ...props }: Props<I>) => {
+export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overlay, onDropped = () => { }, children, ...props }: SortableContainerProps<I>) => {
   const [activeItem, setActiveItem] = useState<I | null>(null);
 
   const detectCollision: CollisionDetection = args => {

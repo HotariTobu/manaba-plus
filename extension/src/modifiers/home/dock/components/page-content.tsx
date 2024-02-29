@@ -3,19 +3,15 @@ import { SortableItem } from "@/components/sortable/sortable-item";
 import { NodeItem } from "../types/nodeItem";
 import { usePageContext } from "../hooks/pageContext";
 
-export const ContentBase = (props: {
-  item: NodeItem
-  className?: string
-}) => (
-  <div className={cn("bg-white/40 transition-shadow", props.className)}>
-    {props.item.node}
-  </div>
-)
-
 export const Content = (props: {
   item: NodeItem
   disabled?: boolean
-}) => <ContentBase className={cn(props.disabled || 'shadow-lg')} item={props.item} />
+  className?: string
+}) => (
+  <div className={cn("bg-white/40 transition-shadow", props.disabled || 'max-h-64 shadow-lg overflow-hidden', props.className)}>
+    {props.item.node}
+  </div>
+)
 
 export const PageContent = (props: {
   item: NodeItem
