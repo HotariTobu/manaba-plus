@@ -1,9 +1,9 @@
 import { type Course } from "../types/course"
 
-export const CoursesCardsTab = (props: {
+export const CoursesTimetableTab = (props: {
   courses: Course[]
 }) => (
   <div>
-    cards
+    timetable
   </div>
 )
