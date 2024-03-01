@@ -1,5 +1,5 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { store } from "../store"
+import { dynamicStore, store } from "../store"
 import { t } from "@/utils/i18n"
 import { useCourses } from "../hooks/useCourses"
 import { ChatBubbleIcon, Pencil1Icon, PersonIcon, ReaderIcon, SpeakerLoudIcon, StarFilledIcon, StarIcon } from "@radix-ui/react-icons"
@@ -11,12 +11,12 @@ import { cn } from "@/lib/utils"
 const CourseStar = (props: {
   courseId: string
 }) => {
-  const [starred, setStarred] = useState(store.star.get(props.courseId) === true)
+  const [starred, setStarred] = useState(dynamicStore.star.get(props.courseId))
   const Icon = starred ? StarFilledIcon : StarIcon
 
   const handleClick = () => {
     setStarred(!starred)
-    store.star.set(props.courseId, !starred)
+    dynamicStore.star.set(props.courseId, !starred)
   }
 
   return (

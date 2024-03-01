@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import "./Popup.css";
 import { Button } from '@/components/ui/button';
-import { local, managed, session, sync } from '@/utils/createStore';
+import { local, managed, session, sync } from '@/utils/useStorage';
 
 debug: {
   const areas = {
