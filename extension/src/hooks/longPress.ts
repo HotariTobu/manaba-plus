@@ -59,6 +59,15 @@ export const useLongPress = (callback: () => void, delay = 1000, tolerance = 10)
   }
 
   const onPointerDown = (event: PointerEvent) => {
+    // Skip when the pointer on the scrollbar
+    if (event.target instanceof Element) {
+      const { clientWidth, clientHeight } = event.target
+      const { offsetX, offsetY } = event.nativeEvent
+      if (clientWidth < offsetX || clientHeight < offsetY) {
+        return
+      }
+    }
+
     clear()
 
     ref.current.start.screenX = event.screenX
