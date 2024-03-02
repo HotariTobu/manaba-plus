@@ -10,7 +10,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 const openInNewWindowIcon = renderToStaticMarkup(<OpenInNewWindowIcon />)
 const pathDataMatch = /<path.+?d="([^"]+?)".*?>/.exec(openInNewWindowIcon)
 if (pathDataMatch === null) {
-  throw Error('Cannot extract path data of icon')
+  throw new Error('Cannot extract path data of icon')
 }
 const openInNewWindowIconData = pathDataMatch[1]
 

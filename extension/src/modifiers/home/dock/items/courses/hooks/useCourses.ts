@@ -1,3 +1,4 @@
+import { useMemo, useRef, useState } from "react"
 import { f, ff } from "@/utils/element"
 import { Course } from "../types/course"
 import { getFiscalYear, selectorMap } from "../../../../config"
@@ -88,6 +89,7 @@ const getTimetableCourse = (element: HTMLTableCellElement): Course => {
 }
 
 const getCourses = () => {
+  console.log('Get courses!!')
   return [
     ...f(selectorMap.courses.thumbnail.source).map(getThumbnailCourse),
     ...f<HTMLTableRowElement>(selectorMap.courses.list.source).map(getListCourse),
@@ -95,8 +97,8 @@ const getCourses = () => {
   ]
 }
 
+const courses = getCourses()
+
 export const useCourses = () => {
-  const courses = getCourses()
-  console.log(courses)
   return courses
 }

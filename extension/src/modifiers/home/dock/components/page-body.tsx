@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils";
 import { SortableContainer } from "@/components/sortable/sortable-container";
-import { useLongPress } from "@/hooks/longPress";
+import { useLongPress } from "@/hooks/useLongPress";
 import type { NodeItem, NodeItemsMap } from "../types/nodeItem";
-import { PageContext, PageSetterContext, PageStatus } from "../hooks/pageContext";
+import { PageContext, PageSetterContext, PageStatus } from "../hooks/usePageContext";
 import { toLayout } from "../layout";
 import { store } from "../store";
 import { PageResizable } from "./page-resizable";

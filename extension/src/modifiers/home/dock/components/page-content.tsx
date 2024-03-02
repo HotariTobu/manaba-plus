@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { SortableItem } from "@/components/sortable/sortable-item";
 import { NodeItem } from "../types/nodeItem";
-import { usePageContext } from "../hooks/pageContext";
+import { usePageContext } from "../hooks/usePageContext";
 
 export const Content = (props: {
   item: NodeItem

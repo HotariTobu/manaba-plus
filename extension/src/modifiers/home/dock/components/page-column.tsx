@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { SortableColumn } from "@/components/sortable/sortable-column"
 import type { NodeItem } from "../types/nodeItem"
 import type { Position } from "../types/position"
-import { usePageContext } from "../hooks/pageContext"
+import { usePageContext } from "../hooks/usePageContext"
 import { PageContent } from "./page-content"
 
 const classNames: Record<Position, string> = {
