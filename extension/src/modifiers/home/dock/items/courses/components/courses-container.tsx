@@ -6,7 +6,7 @@ import { CoursesCardsTab } from "./courses-cards-tab"
 import { CoursesListTab } from "./courses-list-tab"
 
 export const CoursesContainer = () => {
-  const courses = useCourses()
+  const coursesMap = useCourses()
 
   return (
     <Tabs defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
@@ -14,8 +14,8 @@ export const CoursesContainer = () => {
         <TabsTrigger value="cards">{t('home_courses_cards')}</TabsTrigger>
         <TabsTrigger value="list">{t('home_courses_list')}</TabsTrigger>
       </TabsList>
-      <TabsContent value="cards"><CoursesCardsTab courses={courses} /></TabsContent>
-      <TabsContent value="list"><CoursesListTab courses={courses} /></TabsContent>
+      <TabsContent value="cards"><CoursesCardsTab coursesMap={coursesMap} /></TabsContent>
+      <TabsContent value="list"><CoursesListTab coursesMap={coursesMap} /></TabsContent>
     </Tabs >
   )
 }

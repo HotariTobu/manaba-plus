@@ -1,15 +1,14 @@
+import { Item, ItemsMap } from "@/components/sortable/item"
 import type { Layout } from "./types/layout"
-import type { NodeItem, NodeItemsMap } from "./types/nodeItem"
-import { selectorMap } from "../config"
 
 /**
  * Create an items map with the specific layout.
- * @param itemPairs The list of tuples of node positions and node item
- * @param layout The stored node layout
+ * @param itemPairs The list of tuples of positions and items
+ * @param layout The stored layout
  * @returns An items map sorted with the layout
  */
-export const fromLayout = (itemPairs: [string, NodeItem][], layout: Layout) => {
-  /** The map to get positions and node items by node ids */
+export const fromLayout = <I extends Item>(itemPairs: [string, I][], positions: string[], layout: Layout) => {
+  /** The map to get positions and items by ids */
   const flatItemsMap = new Map(
     itemPairs.map((pair => [
       String(pair[1].id),
@@ -18,8 +17,7 @@ export const fromLayout = (itemPairs: [string, NodeItem][], layout: Layout) => {
   ))
 
   // Initialize the items map with empty items arrays.
-  const positions = Object.keys(selectorMap.pageElements)
-  const itemsMap: NodeItemsMap = new Map(
+  const itemsMap: ItemsMap<I> = new Map(
     positions.map(position => [position, []])
   )
 
@@ -51,7 +49,7 @@ export const fromLayout = (itemPairs: [string, NodeItem][], layout: Layout) => {
  * @param itemsMap The items map
  * @returns A layout to restore the items order
  */
-export const toLayout = (itemsMap: NodeItemsMap) => {
+export const toLayout = <I extends Item>(itemsMap: ItemsMap<I>) => {
   const layout: Layout = new Map()
 
   for (const [position, items] of itemsMap) {

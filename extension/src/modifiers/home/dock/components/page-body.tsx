@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react"
+import { UniqueIdentifier } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
 import { SortableContainer } from "@/components/sortable/sortable-container";
 import { useLongPress } from "@/hooks/useLongPress";
-import type { NodeItem, NodeItemsMap } from "../types/nodeItem";
+import type { NodeItem } from "../types/nodeItem";
 import { PageContext, PageSetterContext, PageStatus } from "../hooks/usePageContext";
 import { toLayout } from "../layout";
 import { store } from "../store";
 import { PageResizable } from "./page-resizable";
 import { PageColumn } from "./page-column";
 import { Content } from "./page-content";
+
+export type NodeItemsMap = Map<UniqueIdentifier, NodeItem[]>
 
 const Overlay = (props: {
   item: NodeItem

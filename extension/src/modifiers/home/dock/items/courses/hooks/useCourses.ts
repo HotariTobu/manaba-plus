@@ -1,7 +1,8 @@
-import { useMemo, useRef, useState } from "react"
 import { f, ff } from "@/utils/element"
-import { Course } from "../types/course"
 import { getFiscalYear, selectorMap } from "../../../../config"
+import { Course, DayOfWeek } from "../types/course"
+import { fromCourseLayout } from "../layout"
+import { store } from "../store"
 
 const createAttributeGetter = (element: Element) => {
   return (selector: string, attributeName = 'textContent') => {
@@ -89,7 +90,6 @@ const getTimetableCourse = (element: HTMLTableCellElement): Course => {
 }
 
 const getCourses = () => {
-  console.log('Get courses!!')
   return [
     ...f(selectorMap.courses.thumbnail.source).map(getThumbnailCourse),
     ...f<HTMLTableRowElement>(selectorMap.courses.list.source).map(getListCourse),
@@ -97,12 +97,45 @@ const getCourses = () => {
   ]
 }
 
-const getCoursesMap = () => {
+const getCourseDefaultPosition = (course: Course) => {
+  if (typeof course.day !== 'undefined') {
+    if (typeof course.period !== 'undefined' && !isNaN(course.period.start)) {
+      return 'main'
+    }
 
+    return `other-${course.day}`
+  }
+
+  if (typeof course.url === 'undefined') {
+    return 'hidden'
+  }
+
+  return 'other'
 }
 
-const courses = getCourses()
+const getCoursesMap = () => {
+  const courses = getCourses()
+
+  const coursePairs = courses.map<[string, Course]>(course => {
+    return [getCourseDefaultPosition(course), course]
+  })
+
+  const positions = [
+    'main',
+    'other',
+    'hidden',
+  ]
+
+  for (let day = 0; day < DayOfWeek.Count; day++) {
+    positions.push(`other-${day}`)
+  }
+
+  return fromCourseLayout(coursePairs, positions, store.courseLayout)
+}
+
+const coursesMap = getCoursesMap()
+console.log(coursesMap)
 
 export const useCourses = () => {
-  return courses
+  return coursesMap
 }

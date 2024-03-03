@@ -53,6 +53,27 @@
   "home_courses_list": {
     "message": "List"
   },
+  "home_courses_Monday": {
+    "message": "Mon"
+  },
+  "home_courses_Tuesday": {
+    "message": "Tue"
+  },
+  "home_courses_Wednesday": {
+    "message": "Wed"
+  },
+  "home_courses_Thursday": {
+    "message": "Thu"
+  },
+  "home_courses_Friday": {
+    "message": "Fri"
+  },
+  "home_courses_Saturday": {
+    "message": "Sat"
+  },
+  "home_courses_Sunday": {
+    "message": "Sun"
+  },
   "home_courses_course_name": {
     "message": "Course Name"
   },

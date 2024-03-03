@@ -6,6 +6,7 @@ export enum DayOfWeek {
   Friday,
   Saturday,
   Sunday,
+  Count,
 }
 
 export enum StatusType {
