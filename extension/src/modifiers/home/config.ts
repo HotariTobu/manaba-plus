@@ -143,6 +143,8 @@ export const selectorMap = defineSelectorMap({
   },
 })
 
+export const statusRegex = /.+on\.\w+$/
+
 /**
  * Convert a home url into a root url.
  * @param rootUrl The home url

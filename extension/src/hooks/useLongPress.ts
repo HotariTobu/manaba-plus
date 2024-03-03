@@ -25,7 +25,7 @@ const distance = (a: Point, b: Point) => {
  * @param tolerance How long the pointer can move
  * @returns Event handlers
  */
-export const useLongPress = (callback: () => void, delay = 1000, tolerance = 10) => {
+export const useLongPress = (callback: () => void, stopPropagation = false, delay = 1000, tolerance = 10) => {
   const ref = useRef<{
     timeout: NodeJS.Timeout | null
     start: Point
@@ -66,6 +66,10 @@ export const useLongPress = (callback: () => void, delay = 1000, tolerance = 10)
       if (clientWidth < offsetX || clientHeight < offsetY) {
         return
       }
+    }
+
+    if (stopPropagation) {
+      event.stopPropagation()
     }
 
     clear()

@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-export type PageStatus = 'normal' | 'editing-dock' | 'editing-timetable'
+export type PageStatus = 'normal' | 'editing-dock' | 'editing-courses' | 'editing-assignments'
 
 export const PageContext = createContext<PageStatus>('normal')
 export const PageSetterContext = createContext<(status: PageStatus) => void>(() => { })

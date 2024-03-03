@@ -7,7 +7,7 @@ import { CourseStatus } from "./course-status"
 export const CourseCell = (props: {
   course: Course
 }) => (
-  <div className="rounded overflow-hidden">
+  <div className="min-w-20 rounded overflow-hidden">
     {isDummyCourse(props.course) || (
       <div className="p-1 gap-1 bg-primary/50 grid grid-cols-1 grid-rows-[minmax(0,_1fr)_auto_auto] h-full" style={{
         gridRowStart: `span ${props.course.period?.span ?? 1}`

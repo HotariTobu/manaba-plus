@@ -78,8 +78,8 @@ export const CourseTimetable = (props: {
   })
 
   return (
-    <div className="gap-1 grid" style={{
-      gridTemplateColumns: `auto repeat(${dayCount}, minmax(0, 1fr))`,
+    <div className="gap-1 grid overflow-x-auto" style={{
+      gridTemplateColumns: `auto repeat(${dayCount}, 1fr)`,
       gridTemplateRows: `auto repeat(${periodSpan}, minmax(0, 1fr))`,
     }}>
       <div className="gap-1 grid grid-cols-subgrid col-start-2 col-end-[-1]">

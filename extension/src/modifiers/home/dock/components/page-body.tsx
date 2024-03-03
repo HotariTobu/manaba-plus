@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { UniqueIdentifier } from "@dnd-kit/core";
 import { cn } from "@/lib/utils";
+import { ItemsMap } from "@/components/sortable/item";
 import { SortableContainer } from "@/components/sortable/sortable-container";
 import { useLongPress } from "@/hooks/useLongPress";
 import type { NodeItem } from "../types/nodeItem";
@@ -11,7 +11,7 @@ import { PageResizable } from "./page-resizable";
 import { PageColumn } from "./page-column";
 import { Content } from "./page-content";
 
-export type NodeItemsMap = Map<UniqueIdentifier, NodeItem[]>
+export type NodeItemsMap = ItemsMap<NodeItem>
 
 const Overlay = (props: {
   item: NodeItem
@@ -23,10 +23,8 @@ export const PageBody = (props: {
   const [itemsMap, setItemsMap] = useState(props.itemsMap)
   const [status, setStatus] = useState<PageStatus>('normal')
 
-  const disabled = status !== 'editing-dock'
-
   const longPress = useLongPress(() => {
-    if (disabled) {
+    if (status === 'normal') {
       setStatus('editing-dock')
     }
     else {
@@ -49,6 +47,8 @@ export const PageBody = (props: {
     const layout = toLayout(itemsMap)
     store.pageLayout = layout
   }
+
+  const disabled = status !== 'editing-dock'
 
   const top = itemsMap.get('top') ?? []
   const left = itemsMap.get('left') ?? []
