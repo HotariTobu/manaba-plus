@@ -20,7 +20,7 @@ export const CourseStatus = (props: {
       {Object.entries(props.course.status).map(([type, value]) => {
         const Icon = Icons[parseInt(type) as StatusType]
         return (
-          <a className={cn(value ? 'text-red-500 animate-pulse' : 'text-slate-400', 'hover:text-red-500 hover:animate-none')} key={type}>
+          <a className={cn(value ? 'text-red-500 animate-bounce' : 'text-slate-400', 'hover:text-red-500 hover:animate-none')} key={type}>
             <Icon className="m-1" />
           </a>
         )
