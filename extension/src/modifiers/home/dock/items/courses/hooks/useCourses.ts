@@ -97,6 +97,10 @@ const getCourses = () => {
   ]
 }
 
+const getCoursesMap = () => {
+
+}
+
 const courses = getCourses()
 
 export const useCourses = () => {

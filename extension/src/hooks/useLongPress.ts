@@ -1,4 +1,4 @@
-import { PointerEvent, useRef } from "react"
+import { PointerEvent as ReactPointerEvent, useRef } from "react"
 
 /** Represents a coordinate of a point */
 interface Point {
@@ -58,11 +58,11 @@ export const useLongPress = (callback: () => void, delay = 1000, tolerance = 10)
     callback()
   }
 
-  const onPointerDown = (event: PointerEvent) => {
+  const onPointerDown = (event: PointerEvent | ReactPointerEvent) => {
     // Skip when the pointer on the scrollbar
     if (event.target instanceof Element) {
       const { clientWidth, clientHeight } = event.target
-      const { offsetX, offsetY } = event.nativeEvent
+      const { offsetX, offsetY } = 'nativeEvent' in event ? event.nativeEvent : event
       if (clientWidth < offsetX || clientHeight < offsetY) {
         return
       }
@@ -78,7 +78,7 @@ export const useLongPress = (callback: () => void, delay = 1000, tolerance = 10)
     ref.current.timeout = setTimeout(onTimeout, delay)
   }
 
-  const onPointerMove = (event: PointerEvent) => {
+  const onPointerMove = (event: PointerEvent | ReactPointerEvent) => {
     if (event.buttons === 0) {
       clear()
     }

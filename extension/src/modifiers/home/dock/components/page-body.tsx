@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils";
 import { SortableContainer } from "@/components/sortable/sortable-container";
 import { useLongPress } from "@/hooks/useLongPress";
@@ -31,6 +31,17 @@ export const PageBody = (props: {
     }
   })
 
+  useEffect(() => {
+    document.addEventListener('pointerdown', longPress.onPointerDown)
+    document.addEventListener('pointermove', longPress.onPointerMove)
+    document.addEventListener('pointerup', longPress.onPointerUp)
+    return () => {
+      document.removeEventListener('pointerdown', longPress.onPointerDown)
+      document.removeEventListener('pointermove', longPress.onPointerMove)
+      document.removeEventListener('pointerup', longPress.onPointerUp)
+    }
+  }, [status])
+
   const handleDrop = (itemsMap: NodeItemsMap) => {
     const layout = toLayout(itemsMap)
     store.pageLayout = layout
@@ -45,7 +56,7 @@ export const PageBody = (props: {
   return (
     <PageContext.Provider value={status}>
       <PageSetterContext.Provider value={setStatus}>
-        <div className="min-h-screen gap-4 flex flex-col" {...longPress}>
+        <div className="min-h-screen gap-4 flex flex-col">
           <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay} onDropped={handleDrop}>
             <PageColumn position="top" items={top} />
 
