@@ -1,5 +1,4 @@
 import { CSSProperties, useEffect, useRef, useState } from "react"
-import { UniqueIdentifier } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
 import { SortableZone } from "@/components/sortable/sortable-zone"
 import type { NodeItem } from "../types/nodeItem"
