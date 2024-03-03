@@ -7,7 +7,7 @@ import { CourseStatus } from "./course-status"
 export const CourseCard = (props: {
   course: Course
 }) => (
-  <div className="rounded border-primary border border-s-4 grid grid-cols-[auto_minmax(0,_1fr)_auto]">
+  <div className="rounded border-primary border border-s-4 grid grid-cols-[auto_minmax(9rem,_1fr)_auto] flex-1">
     <img className="mx-1 my-auto min-w-[60px] row-span-2" src={props.course.icon} />
     <div className="mt-1 flex flex-col">
       <div className="h-4">{props.course.code}</div>

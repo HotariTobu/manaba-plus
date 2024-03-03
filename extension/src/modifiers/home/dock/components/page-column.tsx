@@ -1,7 +1,7 @@
 import { CSSProperties, useEffect, useRef, useState } from "react"
 import { UniqueIdentifier } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
-import { SortableColumn } from "@/components/sortable/sortable-column"
+import { SortableZone } from "@/components/sortable/sortable-zone"
 import type { NodeItem } from "../types/nodeItem"
 import type { Position } from "../types/position"
 import { usePageContext } from "../hooks/usePageContext"
@@ -64,13 +64,13 @@ export const PageColumn = (props: {
 
   return (
     <div className={cn(disabled || ['min-h-8 outline-dashed outline-offset-2', classNames[props.position]])}>
-      <SortableColumn className="h-full" containerId={props.position} items={props.items}>
+      <SortableZone className="h-full" containerId={props.position} items={props.items}>
         <div className="gap-4 flex flex-col" style={style} ref={div => ref.current.div = div}>
           {props.items.map(item => (
             <PageContent item={item} key={item.id} />
           ))}
         </div>
-      </SortableColumn>
+      </SortableZone>
     </div>
   )
 }
