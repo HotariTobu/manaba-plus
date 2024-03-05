@@ -143,6 +143,16 @@ export const selectorMap = defineSelectorMap({
   },
 })
 
+export const classMap = defineClassMap({
+  dropzone: {
+    1: "min-h-8 outline-dashed outline-offset-2 outline-red-300",
+    2: "min-h-8 outline-dashed outline-offset-2 outline-yellow-300",
+    3: "min-h-8 outline-dashed outline-offset-2 outline-green-300",
+    4: "min-h-8 outline-dashed outline-offset-2 outline-blue-300",
+    trash: "min-h-8 outline-dashed outline-offset-2 outline-slate-300",
+  }
+})
+
 export const statusRegex = /.+on\.\w+$/
 
 /**

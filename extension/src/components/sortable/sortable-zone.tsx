@@ -1,4 +1,4 @@
-import { HtmlHTMLAttributes } from "react";
+import { CSSProperties, HtmlHTMLAttributes } from "react";
 import { UniqueIdentifier, UseDroppableArguments, useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -13,11 +13,12 @@ interface SortableColumnProps<I> extends Omit<SortableContextProps, 'id' | 'item
   items: I[]
   strategy?: SortingStrategy
   className?: string
+  style?: CSSProperties
   useDroppableProps?: Omit<UseDroppableArguments, 'id'>
   droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className'>
 }
 
-export const SortableZone = <I extends Item>({ containerId, items, strategy = verticalListSortingStrategy, className, useDroppableProps, droppableDivProps, children, ...props }: SortableColumnProps<I>) => {
+export const SortableZone = <I extends Item>({ containerId, items, strategy = verticalListSortingStrategy, className, style, useDroppableProps, droppableDivProps, children, ...props }: SortableColumnProps<I>) => {
   const { setNodeRef } = useDroppable({
     id: containerId,
     ...useDroppableProps,
@@ -30,7 +31,7 @@ export const SortableZone = <I extends Item>({ containerId, items, strategy = ve
       strategy={strategy}
       {...props}
     >
-      <div className={className} ref={setNodeRef} {...droppableDivProps} >
+      <div className={className} style={style} ref={setNodeRef} {...droppableDivProps} >
         {children}
       </div>
     </SortableContext>

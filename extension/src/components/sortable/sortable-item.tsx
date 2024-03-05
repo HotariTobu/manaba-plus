@@ -1,19 +1,15 @@
-import { ReactNode } from "react";
+import { CSSProperties, PropsWithChildren } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable, UseSortableArguments } from "@dnd-kit/sortable";
 import { Item } from "./item";
 
-interface ContentProps<I> {
+interface SortableItemProps<I> extends PropsWithChildren<Omit<UseSortableArguments, 'id'>> {
   item: I
-  activated: boolean
+  className?: string
+  style?: CSSProperties
 }
 
-interface SortableItemProps<I> extends Omit<UseSortableArguments, 'id'> {
-  item: I
-  Content: (props: ContentProps<I>) => ReactNode
-}
-
-export const SortableItem = <I extends Item>({ item, Content, ...props }: SortableItemProps<I>) => {
+export const SortableItem = <I extends Item>({ item, className, style, children, ...props }: SortableItemProps<I>) => {
   const {
     active,
     attributes,
@@ -25,15 +21,16 @@ export const SortableItem = <I extends Item>({ item, Content, ...props }: Sortab
 
   const activated = item.id === active?.id
 
-  const style = {
+  const mergedStyle = {
     opacity: activated ? 0 : 1,
     transform: CSS.Transform.toString(transform),
-    transition
+    transition,
+    ...style
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Content item={item} activated={activated} {...props} />
+    <div className={className} style={mergedStyle} ref={setNodeRef} {...attributes} {...listeners}>
+      {children}
     </div>
   );
 }

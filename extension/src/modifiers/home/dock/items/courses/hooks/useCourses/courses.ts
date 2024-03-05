@@ -1,8 +1,7 @@
 import { f, ff } from "@/utils/element"
 import { getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
 import { Course, DayOfWeek } from "../../types/course"
-import { TimetableCoordinate } from "../../types/timetableCoordinate"
-import { dynamicStore, store } from "../../store"
+import { dynamicStore } from "../../store"
 
 /**
  * Create a function to get attribute values of descendants of the specific element.
@@ -13,7 +12,7 @@ const createAttributeGetter = (element: Element) => {
   return (selector: string, attributeName = 'textContent') => {
     const source = ff(selector, element)
     if (source === null) {
-      return
+      return null
     }
 
     const attribute = source[attributeName as keyof Element]
@@ -21,7 +20,7 @@ const createAttributeGetter = (element: Element) => {
       return attribute.trim()
     }
 
-    return
+    return null
   }
 }
 
@@ -33,27 +32,18 @@ const createAttributeGetter = (element: Element) => {
  */
 const createCourse = (props: Omit<Course, 'id'>, rect?: {
   day: DayOfWeek
-  periodStart?: number
+  periodStart: number | null
   periodSpan: number
 }) => {
   const id = props.url ?? props.icon ?? props.title
 
   if (typeof rect !== 'undefined') {
-    if (!store.timetableCoordinates.has(id)) {
-      const coordinate: TimetableCoordinate = {
-        column: rect.day
-      }
-
-      if (typeof rect.periodStart !== 'undefined') {
-        coordinate.row = rect.periodStart - 1
-      }
-
-      store.timetableCoordinates.set(id, coordinate)
-    }
-
-    if (!dynamicStore.span.has(id)) {
-      const span = rect.periodSpan
-      dynamicStore.span.set(id, span)
+    if (!dynamicStore.rect.has(id)) {
+      dynamicStore.rect.set(id, {
+        column: rect.day,
+        row: rect.periodStart === null ? null : rect.periodStart - 1,
+        span: rect.periodSpan,
+      })
     }
   }
 
@@ -64,18 +54,18 @@ const createCourse = (props: Omit<Course, 'id'>, rect?: {
 }
 
 /**
- * Convert an optional string into an optional number.
+ * Convert an optional string into an nullable number.
  * @param text The text
- * @returns A number if the text is a valid number string, otherwise undefined
+ * @returns A number if the text is a valid number string, otherwise null
  */
-const toOptionalInt = (text: string | null | undefined) => {
+const toNullableInt = (text: string | null | undefined) => {
   if (text === null || typeof text === 'undefined') {
-    return
+    return null
   }
 
   const number = parseInt(text)
   if (isNaN(number)) {
-    return
+    return null
   }
   else {
     return number
@@ -107,7 +97,7 @@ const getThumbnailCourse = (element: Element): Course => {
     icon: a(selectorMap.courses.thumbnail.icon, 'src'),
     title: a(selectorMap.courses.thumbnail.title) ?? '',
 
-    year: toOptionalInt(ff(selectorMap.courses.thumbnail.year, element)?.firstChild?.textContent),
+    year: toNullableInt(ff(selectorMap.courses.thumbnail.year, element)?.firstChild?.textContent),
 
     linked: typeof a(selectorMap.courses.thumbnail.linked) === 'string',
     remarks: a(selectorMap.courses.thumbnail.remarks),
@@ -125,10 +115,11 @@ const getListCourse = (element: HTMLTableRowElement): Course => {
   const a = createAttributeGetter(element)
   return createCourse({
     url: a(selectorMap.courses.list.url, 'href'),
+    code: null,
     icon: a(selectorMap.courses.list.icon, 'src'),
     title: a(selectorMap.courses.list.title) ?? '',
 
-    year: toOptionalInt(a(selectorMap.courses.list.year)),
+    year: toNullableInt(a(selectorMap.courses.list.year)),
 
     linked: typeof a(selectorMap.courses.list.linked) === 'string',
     remarks: a(selectorMap.courses.list.remarks),
@@ -143,20 +134,24 @@ const getListCourse = (element: HTMLTableRowElement): Course => {
  * @returns A course object
  */
 const getTimetableCourse = (element: HTMLTableCellElement): Course => {
-  const year = toOptionalInt(ff<HTMLSelectElement>(selectorMap.courses.timetable.year)?.value?.match(/\d{4}/)?.[0]) ?? getFiscalYear()
+  const year = toNullableInt(ff<HTMLSelectElement>(selectorMap.courses.timetable.year)?.value?.match(/\d{4}/)?.[0]) ?? getFiscalYear()
 
   const a = createAttributeGetter(element)
   return createCourse({
     url: a(selectorMap.courses.timetable.url, 'href'),
+    code: null,
+    icon: null,
     title: a(selectorMap.courses.timetable.title) ?? '',
 
     year,
 
     linked: typeof a(selectorMap.courses.timetable.linked) === 'string',
+    remarks: null,
+    teachers: null,
     status: getStatus(element),
   }, {
-    day: element.cellIndex,
-    periodStart: toOptionalInt(element.parentElement?.firstElementChild?.textContent),
+    day: element.cellIndex - 1,
+    periodStart: toNullableInt(element.parentElement?.firstElementChild?.textContent),
     periodSpan: element.rowSpan,
   })
 }

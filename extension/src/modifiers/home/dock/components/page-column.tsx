@@ -3,21 +3,24 @@ import { cn } from "@/lib/utils"
 import { SortableZone } from "@/components/sortable/sortable-zone"
 import type { NodeItem } from "../types/nodeItem"
 import type { Position } from "../types/position"
-import { usePageContext } from "../hooks/usePageContext"
 import { PageContent } from "./page-content"
+import { classMap } from "../../config"
 
 const classNames: Record<Position, string> = {
-  top: "outline-red-300",
-  left: "outline-yellow-300",
-  right: "outline-green-300",
-  bottom: "outline-blue-300",
-  trash: "outline-slate-300",
+  top: classMap.dropzone[1],
+  left: classMap.dropzone[2],
+  right: classMap.dropzone[3],
+  bottom: classMap.dropzone[4],
+  trash: classMap.dropzone.trash,
 }
 
 export const PageColumn = (props: {
   position: Position
   items: NodeItem[]
+  sortable: boolean
 }) => {
+  const disabled = !props.sortable
+
   const [minHeight, setMinHeight] = useState(0)
 
   const ref = useRef<{
@@ -31,10 +34,6 @@ export const PageColumn = (props: {
       height: 0,
     },
   })
-
-  const { status } = usePageContext()
-
-  const disabled = status !== 'editing-dock'
 
   useEffect(() => {
     const { div, last } = ref.current
@@ -62,11 +61,11 @@ export const PageColumn = (props: {
   }
 
   return (
-    <div className={cn(disabled || ['min-h-8 outline-dashed outline-offset-2', classNames[props.position]])}>
-      <SortableZone className="h-full" containerId={props.position} items={props.items}>
+    <div className={cn(props.sortable && classNames[props.position])}>
+      <SortableZone className="h-full" containerId={props.position} items={props.items} disabled={disabled}>
         <div className="gap-4 flex flex-col" style={style} ref={div => ref.current.div = div}>
           {props.items.map(item => (
-            <PageContent item={item} key={item.id} />
+            <PageContent item={item} sortable={props.sortable} key={item.id} />
           ))}
         </div>
       </SortableZone>

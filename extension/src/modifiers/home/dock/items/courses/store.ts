@@ -1,6 +1,6 @@
 import { createDynamicStore, createStore } from "@/utils/createStore";
 import { Layout } from "../../types/layout";
-import { TimetableCoordinate } from "./types/timetableCoordinate";
+import { TimetableRect } from "./types/timetableRect";
 
 export const [store] = await createStore(import.meta.dirname, {
   /** The selected tab in the courses panel */
@@ -8,7 +8,6 @@ export const [store] = await createStore(import.meta.dirname, {
 
   /** The key-value pairs of course ids and course positions*/
   courseLayout: new Map() as Layout,
-  timetableCoordinates: new Map<string, TimetableCoordinate>(),
 })
 
 export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
@@ -16,5 +15,5 @@ export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
   star: false as boolean,
 
   /** The course's timetable span */
-  span: 1,
+  rect: null as TimetableRect | null,
 })

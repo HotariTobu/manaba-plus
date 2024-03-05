@@ -18,10 +18,11 @@ import { SortableData, arrayMove } from "@dnd-kit/sortable";
 import { arrayInsert, arrayRemove } from "@/utils/arrayUtils";
 import { Item, ItemsMap } from "./item";
 
-type DragStart = (event: DragStartEvent) => void
-type DragOver = (event: DragOverEvent) => void
-type DragEnd = (event: DragEndEvent) => void
-type DragCancel = (event: DragCancelEvent) => void
+export type CollisionDetectionArgs = Parameters<CollisionDetection>[0]
+export type DragStart = (event: DragStartEvent) => void
+export type DragOver = (event: DragOverEvent) => void
+export type DragEnd = (event: DragEndEvent) => void
+export type DragCancel = (event: DragCancelEvent) => void
 
 interface SortableContainerProps<I extends Item> extends
   Omit<
@@ -34,6 +35,8 @@ interface SortableContainerProps<I extends Item> extends
   > {
   itemsMap: ItemsMap<I>
   setItemsMap: (itemsMap: ItemsMap<I>) => void
+
+  overlayClassName?: string
   Overlay: (props: { item: I }) => ReactNode
 
   createCollisionDetection?: (defaultDetector: CollisionDetection) => CollisionDetection
@@ -48,6 +51,8 @@ interface SortableContainerProps<I extends Item> extends
 export const SortableContainer = <I extends Item>({
   itemsMap,
   setItemsMap,
+
+  overlayClassName,
   Overlay,
 
   createCollisionDetection,
@@ -201,7 +206,7 @@ export const SortableContainer = <I extends Item>({
     onDropped(newItemsMap)
   }
 
-  const handleDragCancel = (event: DragCancelEvent) => {
+  const handleDragCancel = () => {
     onDropped(itemsMap)
   }
 
@@ -215,7 +220,7 @@ export const SortableContainer = <I extends Item>({
       {...props}
     >
       {children}
-      <DragOverlay>
+      <DragOverlay className={overlayClassName}>
         {activeItem && <Overlay item={activeItem} />}
       </DragOverlay>
     </DndContext>

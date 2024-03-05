@@ -1,26 +1,22 @@
 import { cn } from "@/lib/utils";
 import { SortableItem } from "@/components/sortable/sortable-item";
 import { NodeItem } from "../types/nodeItem";
-import { usePageContext } from "../hooks/usePageContext";
 
-export const Content = (props: {
+export const PageContentBase = ({ item, sortable, className, ...props }: {
   item: NodeItem
-  disabled?: boolean
+  sortable: boolean
   className?: string
 }) => (
-  <div className={cn("bg-white/40 transition-shadow", props.disabled || 'max-h-64 shadow-lg overflow-hidden', props.className)}>
-    {props.item.node}
+  <div className={cn("bg-white/40 transition-shadow", sortable && 'max-h-64 shadow-lg overflow-hidden', className)} {...props}>
+    {item.node}
   </div>
 )
 
 export const PageContent = (props: {
   item: NodeItem
-}) => {
-  const { status } = usePageContext()
-
-  const disabled = status !== 'editing-dock'
-
-  return (
-    <SortableItem item={props.item} Content={Content} disabled={disabled} />
-  )
-}
+  sortable: boolean
+}) => (
+  <SortableItem className={cn(props.sortable ? 'cursor-pointer' : 'cursor-auto')} item={props.item} disabled={!props.sortable}>
+    <PageContentBase item={props.item} sortable={props.sortable} />
+  </SortableItem>
+)

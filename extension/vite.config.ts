@@ -27,7 +27,8 @@ export default defineConfig({
     webExtension({
       browser,
       manifest: getManifest,
-      transformManifest: injectTailwindCSS
+      transformManifest: injectTailwindCSS,
+      skipManifestValidation: true,
     }),
 
     // Remove debug code

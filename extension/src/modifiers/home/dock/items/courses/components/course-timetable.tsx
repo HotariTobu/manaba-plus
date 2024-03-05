@@ -1,9 +1,18 @@
+import { useDroppable } from "@dnd-kit/core"
 import { t } from "@/utils/i18n"
+import { cn } from "@/lib/utils"
 import { DayOfWeek, type Course, days } from "../types/course"
 import { CourseCell } from "./course-cell"
-import { ItemsMap } from "@/components/sortable/item"
-import { isDummyCourse } from "../utils/dummy"
-import { dynamicStore, store } from "../store"
+import { dynamicStore } from "../store"
+import { SortableZone } from "@/components/sortable/sortable-zone"
+import { classNames } from "./zone-color"
+
+interface BoundingBox {
+  left: number
+  top: number
+  width: number
+  height: number
+}
 
 const headers: Record<DayOfWeek, string> = {
   [DayOfWeek.Monday]: t('home_courses_Monday'),
@@ -16,42 +25,45 @@ const headers: Record<DayOfWeek, string> = {
   [DayOfWeek.Count]: '',
 }
 
-const getBoundingBox = (coursesList: Course[][]) => {
+export const droppableCellId = 'droppable-cell'
+
+const DroppableCell = (props: {
+  num: number
+}) => {
+  const { setNodeRef } = useDroppable({
+    id: `${droppableCellId}-${props.num}`,
+  });
+
+  return (
+    <div className=" bg-blue-500" ref={setNodeRef} />
+  )
+}
+
+const getBoundingBox = (courses: Course[]): BoundingBox => {
   let left = Infinity
   let top = Infinity
   let right = -Infinity
   let bottom = -Infinity
-  let maxRowCount = 0
 
-  for (const courses of coursesList) {
-    let rowCount = 0
-
-    for (const course of courses) {
-      const coordinate = store.timetableCoordinates.get(course.id)
-      if (typeof coordinate === 'undefined') {
-        rowCount += 1
-        continue
-      }
-
-      const { column, row } = coordinate
-      const span = dynamicStore.span.get(course.id)
-
-      left = Math.min(left, column)
-      right = Math.max(right, column)
-
-      if (typeof row !== 'undefined') {
-        top = Math.min(top, row)
-        bottom = Math.max(bottom, row + span)
-      }
-
-      rowCount += span
+  for (const course of courses) {
+    const rect = dynamicStore.rect.get(course.id)
+    if (rect === null) {
+      continue
     }
 
-    maxRowCount = Math.max(maxRowCount, rowCount)
+    const { column, row, span } = rect
+
+    left = Math.min(left, column)
+    right = Math.max(right, column)
+
+    if (row !== null) {
+      top = Math.min(top, row)
+      bottom = Math.max(bottom, row + span)
+    }
   }
 
   const width = right - left + 1
-  const height = bottom - top + 1
+  const height = bottom - top
 
   if (isFinite(width) && isFinite(height)) {
     return {
@@ -59,36 +71,67 @@ const getBoundingBox = (coursesList: Course[][]) => {
       top,
       width,
       height,
-      maxRowCount,
     }
   }
+  else {
+    return {
+      left: 0,
+      top: 0,
+      width: 0,
+      height: 0,
+    }
+  }
+}
 
-  return null
+const getMaxRowCount = (courses: Course[]) => {
+  const rowCounts = days.map(_ => 0)
+
+  for (const course of courses) {
+    const rect = dynamicStore.rect.get(course.id)
+    if (rect === null) {
+      continue
+    }
+
+    const { column, span } = rect
+
+    rowCounts[column] += span
+  }
+
+  return Math.max(...rowCounts)
 }
 
 export const CourseTimetable = (props: {
-  coursesMap: ItemsMap<Course>
+  main: Course[]
+  other: Course[]
+  sortable: boolean
 }) => {
-  const mainCoursesList = days.map(day => props.coursesMap.get(`main-${day}`) ?? [])
-  const otherCoursesList = days.map(day => props.coursesMap.get(`other-${day}`) ?? [])
+  const boundingBox = getBoundingBox(props.main.concat(props.other))
 
-  // Optimize courses.
-  const boundingBox = getBoundingBox(mainCoursesList.concat(otherCoursesList))
-  const { left: col1, width: col2, top: row1, height:  } = boundingBox ?? {
-    left: 0,
-    top: 0,
-    width: DayOfWeek.Count,
-    height: 1,
+  if (props.sortable) {
+    boundingBox.height += boundingBox.top + 1
+    boundingBox.left = 0
+    boundingBox.top = 0
+    boundingBox.width = DayOfWeek.Count
+  }
+  else if (boundingBox.width === 0) {
+    return
   }
 
+  const { left, top, width, height } = boundingBox
+
+  const otherRowCount = getMaxRowCount(props.other) + (props.sortable ? 1 : 0)
+
+  const mainDroppableCount = width * height + - props.main.length
+  const otherDroppableCount = width * otherRowCount - props.other.length
+
   return (
-    <div className="gap-1 grid overflow-x-auto" style={{
-      gridTemplateColumns: `auto repeat(${DayOfWeek.Count}, 1fr)`,
-      gridTemplateRows: `auto repeat(10, minmax(0, 1fr))`,
+    <div className={cn("gap-1 grid overflow-x-auto", props.sortable && 'pe-2 pb-2')} style={{
+      gridTemplateColumns: `auto repeat(${width}, 1fr)`,
+      gridTemplateRows: `auto ${'1fr '.repeat(height)} minmax(0, auto) ${'1fr '.repeat(otherRowCount)}`,
     }}>
-      <div className="gap-1 grid grid-cols-subgrid col-start-2 col-end-[-1]">
-        {[...Array(dayCount).keys()].map(i => {
-          const day = startDay + i
+      <div className="col-start-2 col-end-[-1] row-start-1 row-end-2 grid grid-cols-subgrid">
+        {[...Array(width).keys()].map(i => {
+          const day = left + i
           return (
             <div className="p-2 text-center font-bold rounded bg-primary text-primary-foreground" key={day}>
               {headers[day as DayOfWeek]}
@@ -97,9 +140,11 @@ export const CourseTimetable = (props: {
         })}
       </div>
 
-      <div className="gap-1 grid grid-rows-subgrid row-start-2 row-end-[-1]">
-        {[...Array(periodSpan).keys()].map(i => {
-          const period = minPeriod + i
+      <div className="col-start-1 col-end-2 row-start-2 grid grid-rows-subgrid" style={{
+        gridRowEnd: `span ${height}`
+      }}>
+        {[...Array(height).keys()].map(i => {
+          const period = top + i + 1
           return (
             <div className="p-2 text-center flex items-center rounded bg-slate-100" key={period}>
               {period}
@@ -107,11 +152,29 @@ export const CourseTimetable = (props: {
           )
         })}
       </div>
-      <div className="gap-1 grid grid-cols-subgrid col-start-2 col-end-[-1] grid-rows-subgrid row-start-2 row-end-[-1]">
-        {filteredCourses.map(course => (
-          <CourseCell course={course} key={course.id} />
+      <SortableZone className={cn("col-start-2 col-end-[-1] row-start-2 grid grid-cols-subgrid grid-rows-subgrid", props.sortable && classNames.main)} containerId='main' items={props.main} disabled={!props.sortable} style={{
+        gridRowEnd: `span ${height}`
+      }}>
+        {props.main.map(course => (
+          <CourseCell startColumn={left} startRow={top} course={course} sortable={props.sortable} key={course.id} />
         ))}
-      </div>
+        {props.sortable && [...new Array(mainDroppableCount).keys()].map(i => (
+          <DroppableCell num={i} key={i} />
+        ))}
+      </SortableZone>
+      <div className={cn(props.sortable && 'h-2', " bg-red-500 col-span-full row-end-auto")} style={{
+        gridRowStart: height + 2
+      }} />
+      <SortableZone className={cn("col-start-2 col-end-[-1] row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid", props.sortable && classNames.other)} containerId='other' items={props.other} disabled={!props.sortable} style={{
+        gridRowStart: height + 3
+      }}>
+        {props.other.map(course => (
+          <CourseCell startColumn={left} startRow={top} course={course} sortable={props.sortable} key={course.id} />
+        ))}
+        {props.sortable && [...new Array(otherDroppableCount).keys()].map(i => (
+          <DroppableCell num={i} key={i} />
+        ))}
+      </SortableZone>
     </div>
   )
 }

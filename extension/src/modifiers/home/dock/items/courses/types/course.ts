@@ -24,23 +24,23 @@ export interface Course {
   id: string
 
   /** The url to the course page */
-  url?: string
+  url: string | null
   /** The course's code */
-  code?: string
+  code: string | null
   /** A source url to the course's icon image */
-  icon?: string
+  icon: string | null
   /** The course's title */
   title: string
 
   /** The course's year */
-  year?: number
+  year: number | null
 
   /** True if the course is linked to the other course, otherwise false */
   linked: boolean
   /** The course's remarks */
-  remarks?: string
+  remarks: string | null
   /** The course's teachers */
-  teachers?: string
+  teachers: string | null
   /** True if the courses's status is on, otherwise false */
   status: Partial<Record<StatusType, boolean>>
 }
