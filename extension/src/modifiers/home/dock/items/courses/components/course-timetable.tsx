@@ -1,7 +1,9 @@
 import { t } from "@/utils/i18n"
-import { DayOfWeek, type Course } from "../types/course"
-import { isDummyCourse } from "../layout"
+import { DayOfWeek, type Course, days } from "../types/course"
 import { CourseCell } from "./course-cell"
+import { ItemsMap } from "@/components/sortable/item"
+import { isDummyCourse } from "../utils/dummy"
+import { dynamicStore, store } from "../store"
 
 const headers: Record<DayOfWeek, string> = {
   [DayOfWeek.Monday]: t('home_courses_Monday'),
@@ -14,73 +16,75 @@ const headers: Record<DayOfWeek, string> = {
   [DayOfWeek.Count]: '',
 }
 
-const getMinMaxPeriod = (courses: Course[]) => {
-  const firstCourse = courses.find(course => !isDummyCourse(course))
-  const lastCourse = courses.findLast(course => !isDummyCourse(course))
-  const minPeriod = firstCourse?.period?.start ?? 1
-  const maxPeriod = (lastCourse?.period?.start ?? 1) + (lastCourse?.period?.span ?? 1) - 1
-  return {
-    minPeriod,
-    maxPeriod,
-  }
-}
+const getBoundingBox = (coursesList: Course[][]) => {
+  let left = Infinity
+  let top = Infinity
+  let right = -Infinity
+  let bottom = -Infinity
+  let maxRowCount = 0
 
-const getNotEmptyDays = (courses: Course[], minPeriod: number) => {
-  const startRow = minPeriod - 1
+  for (const courses of coursesList) {
+    let rowCount = 0
 
-  const notEmptyDays = [...Array(DayOfWeek.Count).keys()].filter(
-    day => {
-      const column = day
-
-      for (let index = startRow * DayOfWeek.Count + column; index < courses.length; index += DayOfWeek.Count) {
-        const course = courses[index]
-        if (!isDummyCourse(course)) {
-          return true
-        }
+    for (const course of courses) {
+      const coordinate = store.timetableCoordinates.get(course.id)
+      if (typeof coordinate === 'undefined') {
+        rowCount += 1
+        continue
       }
 
-      return false
-    }
-  )
+      const { column, row } = coordinate
+      const span = dynamicStore.span.get(course.id)
 
-  return notEmptyDays
+      left = Math.min(left, column)
+      right = Math.max(right, column)
+
+      if (typeof row !== 'undefined') {
+        top = Math.min(top, row)
+        bottom = Math.max(bottom, row + span)
+      }
+
+      rowCount += span
+    }
+
+    maxRowCount = Math.max(maxRowCount, rowCount)
+  }
+
+  const width = right - left + 1
+  const height = bottom - top + 1
+
+  if (isFinite(width) && isFinite(height)) {
+    return {
+      left,
+      top,
+      width,
+      height,
+      maxRowCount,
+    }
+  }
+
+  return null
 }
 
 export const CourseTimetable = (props: {
-  courses: Course[]
+  coursesMap: ItemsMap<Course>
 }) => {
+  const mainCoursesList = days.map(day => props.coursesMap.get(`main-${day}`) ?? [])
+  const otherCoursesList = days.map(day => props.coursesMap.get(`other-${day}`) ?? [])
+
   // Optimize courses.
-  const { minPeriod, maxPeriod } = getMinMaxPeriod(props.courses)
-  const notEmptyDays = getNotEmptyDays(props.courses, minPeriod)
-
-  if (notEmptyDays.length === 0) {
-    return
+  const boundingBox = getBoundingBox(mainCoursesList.concat(otherCoursesList))
+  const { left: col1, width: col2, top: row1, height:  } = boundingBox ?? {
+    left: 0,
+    top: 0,
+    width: DayOfWeek.Count,
+    height: 1,
   }
-
-  const startDay = notEmptyDays[0]
-  const endDay = notEmptyDays[notEmptyDays.length - 1]
-
-  const dayCount = endDay - startDay + 1
-  const periodSpan = maxPeriod - minPeriod + 1
-
-  const filteredCourses = props.courses.filter((_, index) => {
-    const period = Math.floor(index / DayOfWeek.Count) + 1
-    if (period < minPeriod) {
-      return false
-    }
-
-    const day = index % DayOfWeek.Count
-    if (day < startDay || endDay < day) {
-      return false
-    }
-
-    return true
-  })
 
   return (
     <div className="gap-1 grid overflow-x-auto" style={{
-      gridTemplateColumns: `auto repeat(${dayCount}, 1fr)`,
-      gridTemplateRows: `auto repeat(${periodSpan}, minmax(0, 1fr))`,
+      gridTemplateColumns: `auto repeat(${DayOfWeek.Count}, 1fr)`,
+      gridTemplateRows: `auto repeat(10, minmax(0, 1fr))`,
     }}>
       <div className="gap-1 grid grid-cols-subgrid col-start-2 col-end-[-1]">
         {[...Array(dayCount).keys()].map(i => {
@@ -92,6 +96,7 @@ export const CourseTimetable = (props: {
           )
         })}
       </div>
+
       <div className="gap-1 grid grid-rows-subgrid row-start-2 row-end-[-1]">
         {[...Array(periodSpan).keys()].map(i => {
           const period = minPeriod + i

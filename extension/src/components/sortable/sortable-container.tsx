@@ -16,18 +16,51 @@ import {
 } from "@dnd-kit/core";
 import { SortableData, arrayMove } from "@dnd-kit/sortable";
 import { arrayInsert, arrayRemove } from "@/utils/arrayUtils";
-import { Item } from "./item";
+import { Item, ItemsMap } from "./item";
 
-type ItemsMap<I> = Map<UniqueIdentifier, I[]>
+type DragStart = (event: DragStartEvent) => void
+type DragOver = (event: DragOverEvent) => void
+type DragEnd = (event: DragEndEvent) => void
+type DragCancel = (event: DragCancelEvent) => void
 
-interface SortableContainerProps<I> extends DndContextProps {
+interface SortableContainerProps<I extends Item> extends
+  Omit<
+    DndContextProps,
+    'collisionDetection'
+    | 'onDragStart'
+    | 'onDragOver'
+    | 'onDragEnd'
+    | 'onDragCancel'
+  > {
   itemsMap: ItemsMap<I>
   setItemsMap: (itemsMap: ItemsMap<I>) => void
   Overlay: (props: { item: I }) => ReactNode
+
+  createCollisionDetection?: (defaultDetector: CollisionDetection) => CollisionDetection
+  createDragStartHandler?: (defaultHandler: DragStart) => DragStart
+  createDragOverHandler?: (defaultHandler: DragOver) => DragOver
+  createDragEndHandler?: (defaultHandler: DragEnd) => DragEnd
+  createDragCancelHandler?: (defaultHandler: DragCancel) => DragCancel
+
   onDropped?: (itemsMap: ItemsMap<I>) => void
 }
 
-export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overlay, onDropped = () => { }, children, ...props }: SortableContainerProps<I>) => {
+export const SortableContainer = <I extends Item>({
+  itemsMap,
+  setItemsMap,
+  Overlay,
+
+  createCollisionDetection,
+  createDragStartHandler,
+  createDragOverHandler,
+  createDragEndHandler,
+  createDragCancelHandler,
+
+  onDropped = () => { },
+
+  children,
+  ...props
+}: SortableContainerProps<I>) => {
   const [activeItem, setActiveItem] = useState<I | null>(null);
 
   const detectCollision: CollisionDetection = args => {
@@ -174,11 +207,11 @@ export const SortableContainer = <I extends Item>({ itemsMap, setItemsMap, Overl
 
   return (
     <DndContext
-      collisionDetection={detectCollision}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
+      collisionDetection={typeof createCollisionDetection === 'undefined' ? detectCollision : createCollisionDetection(detectCollision)}
+      onDragStart={typeof createDragStartHandler === 'undefined' ? handleDragStart : createDragStartHandler(handleDragStart)}
+      onDragOver={typeof createDragOverHandler === 'undefined' ? handleDragOver : createDragOverHandler(handleDragOver)}
+      onDragEnd={typeof createDragEndHandler === 'undefined' ? handleDragEnd : createDragEndHandler(handleDragEnd)}
+      onDragCancel={typeof createDragCancelHandler === 'undefined' ? handleDragCancel : createDragCancelHandler(handleDragCancel)}
       {...props}
     >
       {children}

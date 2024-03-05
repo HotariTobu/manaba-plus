@@ -42,6 +42,13 @@ export const useStorage = async (area: StorageArea = sync) => {
   }
 
   /**
+   * Determine a value specified by a key exists.
+   * @param key The key
+   * @returns True if the value exists, otherwise false
+   */
+  const has = (key: string) => key in values
+
+  /**
    * Get a value from the storage with a specific key.
    * @param key The key to identifying the value
    * @param value The default value returned when the value is not stored
@@ -95,6 +102,7 @@ export const useStorage = async (area: StorageArea = sync) => {
   }
 
   return {
+    has,
     get,
     set,
     remove,

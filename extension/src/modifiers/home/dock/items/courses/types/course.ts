@@ -9,6 +9,8 @@ export enum DayOfWeek {
   Count,
 }
 
+export const days: readonly number[] = [...new Array(DayOfWeek.Count).keys()]
+
 export enum StatusType {
   News,
   Assignment,
@@ -31,14 +33,7 @@ export interface Course {
   title: string
 
   /** The course's year */
-  year: number
-  /** The course's day of a week */
-  day?: DayOfWeek
-  /** The course's school period */
-  period?: {
-    start: number
-    span: number
-  }
+  year?: number
 
   /** True if the course is linked to the other course, otherwise false */
   linked: boolean

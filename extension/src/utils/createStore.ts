@@ -5,6 +5,7 @@ export type StoreItem = StorageItem | Map<StorageItem, StorageItem>
 export type Store = Record<string, StoreItem>
 
 export interface DynamicStoreItem<V extends StoreItem> {
+  has(key: string): boolean
   get(key: string): V
   set(key: string, value: V): void
 }
@@ -77,7 +78,7 @@ export const createStore = async <T extends Store>(prefix: string, defaultValues
  * @param area Where the store I/O values
  */
 export const createDynamicStore = async <T extends Store>(prefix: string, defaultValues: T, area: StorageArea = sync): Promise<[DynamicStore<T>, ClearStore]> => {
-  const { get, set, remove, getAllKeys } = await useStorage(area)
+  const { has, get, set, remove, getAllKeys } = await useStorage(area)
 
   const keys = Object.keys(defaultValues)
   const prefixedKeys = keys.map(key => prefix + key)
@@ -91,6 +92,9 @@ export const createDynamicStore = async <T extends Store>(prefix: string, defaul
 
     if (defaultValue instanceof Map) {
       storeBase[key] = {
+        has(subKey) {
+          return has(prefixedKey + subKey)
+        },
         get(subKey) {
           const entries = get(prefixedKey + subKey, defaultValue as never)
           return new Map(entries)
@@ -103,6 +107,9 @@ export const createDynamicStore = async <T extends Store>(prefix: string, defaul
     }
     else {
       storeBase[key] = {
+        has(subKey) {
+          return has(prefixedKey + subKey)
+        },
         get(subKey) {
           return get(prefixedKey + subKey, defaultValue)
         },

@@ -8,8 +8,8 @@ export const CoursesCardsTab = (props: {
 }) => {
   return (
     <div className="gap-2 flex flex-col">
-      <CourseTimetable courses={props.coursesMap.get('main') ?? []} />
-      <CourseCards courses={props.coursesMap.get('other') ?? []} />
+      {/* <CourseTimetable courses={props.coursesMap.get('main') ?? []} /> */}
+      <CourseCards courses={props.coursesMap.get('rest') ?? []} />
     </div>
   )
 }

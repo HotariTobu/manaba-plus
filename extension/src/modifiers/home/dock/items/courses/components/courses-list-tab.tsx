@@ -7,7 +7,7 @@ export const CoursesListTab = (props: {
   coursesMap: ItemsMap<Course>
 }) => (
   <div className="gap-2 flex flex-col">
-    <CourseTimetable courses={props.coursesMap.get('main') ?? []} />
-    <CourseList courses={props.coursesMap.get('other') ?? []} />
+    {/* <CourseTimetable courses={props.coursesMap.get('main') ?? []} /> */}
+    <CourseList courses={props.coursesMap.get('rest') ?? []} />
   </div>
 )

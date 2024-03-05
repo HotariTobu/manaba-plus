@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { t } from "@/utils/i18n"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { ItemsMap } from "@/components/sortable/item"
@@ -6,15 +5,14 @@ import { useLongPress } from "@/hooks/useLongPress"
 import { usePageContext } from "../../../hooks/usePageContext"
 import { Course } from "../types/course"
 import { store } from "../store"
+import { useCourses } from "../hooks/useCourses"
 import { CoursesCardsTab } from "./courses-cards-tab"
 import { CoursesListTab } from "./courses-list-tab"
 
 export type CoursesMap = ItemsMap<Course>
 
-export const CoursesContainer = (props: {
-  coursesMap: CoursesMap
-}) => {
-  const [coursesMap, setCoursesMap] = useState(props.coursesMap)
+export const CoursesContainer = () => {
+  const { coursesMap, setCoursesMap } = useCourses()
   const { status, setStatus } = usePageContext()
 
   const longPress = useLongPress(() => {
