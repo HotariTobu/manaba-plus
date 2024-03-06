@@ -2,6 +2,7 @@ import { useDroppable } from "@dnd-kit/core"
 import { t } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
 import { DayOfWeek, type Course, days } from "../types/course"
+import { TimetableRect } from "../types/timetableRect"
 import { CourseCell } from "./course-cell"
 import { dynamicStore } from "../store"
 import { SortableZone } from "@/components/sortable/sortable-zone"
@@ -39,11 +40,8 @@ const DroppableCell = (props: {
   )
 }
 
-const getBoundingBox = (courses: Course[]): BoundingBox => {
-  let left = Infinity
-  let top = Infinity
-  let right = -Infinity
-  let bottom = -Infinity
+const getTimetableRects = (courses: Course[]) => {
+  const rects: TimetableRect[] = []
 
   for (const course of courses) {
     const rect = dynamicStore.rect.get(course.id)
@@ -51,6 +49,19 @@ const getBoundingBox = (courses: Course[]): BoundingBox => {
       continue
     }
 
+    rects.push(rect)
+  }
+
+  return rects
+}
+
+const getBoundingBox = (rects: TimetableRect[]): BoundingBox => {
+  let left = Infinity
+  let top = Infinity
+  let right = -Infinity
+  let bottom = -Infinity
+
+  for (const rect of rects) {
     const { column, row, span } = rect
 
     left = Math.min(left, column)
@@ -105,7 +116,8 @@ export const CourseTimetable = (props: {
   other: Course[]
   sortable: boolean
 }) => {
-  const boundingBox = getBoundingBox(props.main.concat(props.other))
+  const rects = getTimetableRects(props.main.concat(props.other))
+  const boundingBox = getBoundingBox(rects)
 
   if (props.sortable) {
     boundingBox.height += boundingBox.top + 1
