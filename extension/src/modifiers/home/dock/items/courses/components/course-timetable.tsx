@@ -67,10 +67,12 @@ const getBoundingBox = (rects: TimetableRect[]): BoundingBox => {
     left = Math.min(left, column)
     right = Math.max(right, column)
 
-    if (row !== null) {
-      top = Math.min(top, row)
-      bottom = Math.max(bottom, row + span)
+    if (row === null) {
+      continue
     }
+
+    top = Math.min(top, row)
+    bottom = Math.max(bottom, row + span)
   }
 
   const width = right - left + 1
@@ -94,21 +96,22 @@ const getBoundingBox = (rects: TimetableRect[]): BoundingBox => {
   }
 }
 
-const getMaxRowCount = (courses: Course[]) => {
+const getOtherRowCount = (rects: TimetableRect[]) => {
   const rowCounts = days.map(_ => 0)
 
-  for (const course of courses) {
-    const rect = dynamicStore.rect.get(course.id)
-    if (rect === null) {
-      continue
+  for (const rect of rects) {
+    const { column, row, span } = rect
+    if (row === null) {
+      rowCounts[column] += span
     }
-
-    const { column, span } = rect
-
-    rowCounts[column] += span
   }
 
-  return Math.max(...rowCounts)
+  const maxRowCount = Math.max(...rowCounts)
+  return maxRowCount
+}
+
+const getDroppableCellData = (rects: TimetableRect[]) =>{
+  
 }
 
 export const CourseTimetable = (props: {
@@ -131,7 +134,7 @@ export const CourseTimetable = (props: {
 
   const { left, top, width, height } = boundingBox
 
-  const otherRowCount = getMaxRowCount(props.other) + (props.sortable ? 1 : 0)
+  const otherRowCount = getOtherRowCount(rects) + (props.sortable ? 1 : 0)
 
   const mainDroppableCount = width * height + - props.main.length
   const otherDroppableCount = width * otherRowCount - props.other.length
