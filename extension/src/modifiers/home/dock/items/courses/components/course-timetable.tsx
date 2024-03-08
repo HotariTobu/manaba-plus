@@ -8,6 +8,9 @@ import { dynamicStore } from "../store"
 import { SortableZone } from "@/components/sortable/sortable-zone"
 import { classNames } from "./zone-color"
 
+// TODO: Refactoring
+
+/** Bounding box of courses */
 interface BoundingBox {
   left: number
   top: number
@@ -15,6 +18,7 @@ interface BoundingBox {
   height: number
 }
 
+/** Header labels of the timetable */
 const headers: Record<DayOfWeek, string> = {
   [DayOfWeek.Monday]: t('home_courses_Monday'),
   [DayOfWeek.Tuesday]: t('home_courses_Tuesday'),
@@ -28,18 +32,26 @@ const headers: Record<DayOfWeek, string> = {
 
 export const droppableCellId = 'droppable-cell'
 
+/** Droppable node for determining where a course is inserted into */
 const DroppableCell = (props: {
-  num: number
+  gridIndex: number
 }) => {
   const { setNodeRef } = useDroppable({
-    id: `${droppableCellId}-${props.num}`,
+    id: `${droppableCellId}-${props.gridIndex}`,
   });
 
   return (
-    <div className=" bg-blue-500" ref={setNodeRef} />
+    <div ref={setNodeRef} className=" bg-blue-200 text-xl flex justify-center items-center" >
+      {props.gridIndex}
+    </div>
   )
 }
 
+/**
+ * Get timetable rects of specific courses.
+ * @param courses The courses
+ * @returns An array of course rects
+ */
 const getTimetableRects = (courses: Course[]) => {
   const rects: TimetableRect[] = []
 
@@ -55,6 +67,11 @@ const getTimetableRects = (courses: Course[]) => {
   return rects
 }
 
+/**
+ * Get bounding box of course rects.
+ * @param rects The course rects
+ * @returns A bounding box that contains all course rects
+ */
 const getBoundingBox = (rects: TimetableRect[]): BoundingBox => {
   let left = Infinity
   let top = Infinity
@@ -96,6 +113,11 @@ const getBoundingBox = (rects: TimetableRect[]): BoundingBox => {
   }
 }
 
+/**
+ * Get the row count of other courses.
+ * @param rects The other course rects
+ * @returns The max row count for each column
+ */
 const getOtherRowCount = (rects: TimetableRect[]) => {
   const rowCounts = days.map(_ => 0)
 
@@ -110,8 +132,48 @@ const getOtherRowCount = (rects: TimetableRect[]) => {
   return maxRowCount
 }
 
-const getDroppableCellData = (rects: TimetableRect[]) =>{
-  
+/**
+ * Get grid indices indicating empty cells in the timetable for droppable data.
+ * @param rects The course rects
+ * @param rowCount The row count to be filled
+ * @returns An array of grid indices of the timetable
+ */
+const getDroppableCellData = (rects: TimetableRect[], rowCount: number) => {
+  const skipIndexSet = new Set<number>()
+  const rowCounts = days.map(_ => 0)
+
+  const preprocessRect = (rect: TimetableRect) => {
+    const { column, row, span } = rect
+    if (row === null) {
+      const rowStart = rowCounts[column]
+      rowCounts[column] += span
+      return {
+        column,
+        row: rowStart,
+        span,
+      }
+    }
+    else {
+      return {
+        column,
+        row,
+        span,
+      }
+    }
+  }
+
+  for (const rect of rects) {
+    const { column, row, span } = preprocessRect(rect)
+
+    for (let offset = 0; offset < span; offset++) {
+      const index = column + (row + offset) * DayOfWeek.Count
+      skipIndexSet.add(index)
+    }
+  }
+
+  const indices = [...new Array(rowCount * DayOfWeek.Count).keys()]
+  const droppableCellData = indices.filter(index => !skipIndexSet.has(index))
+  return droppableCellData
 }
 
 export const CourseTimetable = (props: {
@@ -119,9 +181,11 @@ export const CourseTimetable = (props: {
   other: Course[]
   sortable: boolean
 }) => {
-  const rects = getTimetableRects(props.main.concat(props.other))
-  const boundingBox = getBoundingBox(rects)
+  const mainRects = getTimetableRects(props.main)
+  const otherRects = getTimetableRects(props.other)
+  const boundingBox = getBoundingBox(mainRects.concat(otherRects))
 
+  // Show all columns and rows in sorting, otherwise omit empty ones.
   if (props.sortable) {
     boundingBox.height += boundingBox.top + 1
     boundingBox.left = 0
@@ -134,10 +198,10 @@ export const CourseTimetable = (props: {
 
   const { left, top, width, height } = boundingBox
 
-  const otherRowCount = getOtherRowCount(rects) + (props.sortable ? 1 : 0)
+  const otherRowCount = getOtherRowCount(otherRects) + (props.sortable ? 1 : 0)
 
-  const mainDroppableCount = width * height + - props.main.length
-  const otherDroppableCount = width * otherRowCount - props.other.length
+  const mainDroppableData = getDroppableCellData(mainRects, height)
+  const otherDroppableData = getDroppableCellData(otherRects, otherRowCount)
 
   return (
     <div className={cn("gap-1 grid overflow-x-auto", props.sortable && 'pe-2 pb-2')} style={{
@@ -173,8 +237,8 @@ export const CourseTimetable = (props: {
         {props.main.map(course => (
           <CourseCell startColumn={left} startRow={top} course={course} sortable={props.sortable} key={course.id} />
         ))}
-        {props.sortable && [...new Array(mainDroppableCount).keys()].map(i => (
-          <DroppableCell num={i} key={i} />
+        {props.sortable && mainDroppableData.map(gridIndex => (
+          <DroppableCell gridIndex={gridIndex} key={gridIndex} />
         ))}
       </SortableZone>
       <div className={cn(props.sortable && 'h-2', " bg-red-500 col-span-full row-end-auto")} style={{
@@ -186,8 +250,8 @@ export const CourseTimetable = (props: {
         {props.other.map(course => (
           <CourseCell startColumn={left} startRow={top} course={course} sortable={props.sortable} key={course.id} />
         ))}
-        {props.sortable && [...new Array(otherDroppableCount).keys()].map(i => (
-          <DroppableCell num={i} key={i} />
+        {props.sortable && otherDroppableData.map(gridIndex => (
+          <DroppableCell gridIndex={gridIndex} key={gridIndex} />
         ))}
       </SortableZone>
     </div>
