@@ -40,7 +40,10 @@ export const CourseCell = (props: {
       gridColumnStart: rect.column - props.startColumn + 1,
       gridRowStart: rect.row === null ? '' : rect.row - props.startRow + 1,
       gridRowEnd: `span ${rect.span}`,
-    }} item={props.course} disabled={!props.sortable}>
+    }} item={props.course} disabled={{
+      draggable: !props.sortable,
+      droppable: true,
+    }}>
       <CourseCellBase course={props.course} sortable={props.sortable} />
     </SortableItem>
   )

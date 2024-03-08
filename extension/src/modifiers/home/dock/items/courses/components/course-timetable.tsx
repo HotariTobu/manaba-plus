@@ -30,6 +30,7 @@ const headers: Record<DayOfWeek, string> = {
   [DayOfWeek.Count]: '',
 }
 
+/** A prefix of droppable cell id */
 export const droppableCellId = 'droppable-cell'
 
 /** Droppable node for determining where a course is inserted into */
@@ -38,6 +39,9 @@ const DroppableCell = (props: {
 }) => {
   const { setNodeRef } = useDroppable({
     id: `${droppableCellId}-${props.gridIndex}`,
+    data: {
+      [droppableCellId]: props.gridIndex
+    }
   });
 
   return (
@@ -200,8 +204,8 @@ export const CourseTimetable = (props: {
 
   const otherRowCount = getOtherRowCount(otherRects) + (props.sortable ? 1 : 0)
 
-  const mainDroppableData = getDroppableCellData(mainRects, height)
-  const otherDroppableData = getDroppableCellData(otherRects, otherRowCount)
+  const mainDroppableData = props.sortable ? getDroppableCellData(mainRects, height) : []
+  const otherDroppableData = props.sortable ? getDroppableCellData(otherRects, otherRowCount) : []
 
   return (
     <div className={cn("gap-1 grid overflow-x-auto", props.sortable && 'pe-2 pb-2')} style={{
@@ -237,7 +241,7 @@ export const CourseTimetable = (props: {
         {props.main.map(course => (
           <CourseCell startColumn={left} startRow={top} course={course} sortable={props.sortable} key={course.id} />
         ))}
-        {props.sortable && mainDroppableData.map(gridIndex => (
+        {mainDroppableData.map(gridIndex => (
           <DroppableCell gridIndex={gridIndex} key={gridIndex} />
         ))}
       </SortableZone>
@@ -250,7 +254,7 @@ export const CourseTimetable = (props: {
         {props.other.map(course => (
           <CourseCell startColumn={left} startRow={top} course={course} sortable={props.sortable} key={course.id} />
         ))}
-        {props.sortable && otherDroppableData.map(gridIndex => (
+        {otherDroppableData.map(gridIndex => (
           <DroppableCell gridIndex={gridIndex} key={gridIndex} />
         ))}
       </SortableZone>

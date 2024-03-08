@@ -19,55 +19,12 @@ export const PageColumn = (props: {
   items: NodeItem[]
   sortable: boolean
 }) => {
-  const disabled = !props.sortable
-
-  const [minHeight, setMinHeight] = useState(0)
-
-  const ref = useRef<{
-    div: HTMLDivElement | null
-    last: {
-      height: number
-    }
-  }>({
-    div: null,
-    last: {
-      height: 0,
-    },
-  })
-
-  useEffect(() => {
-    const { div, last } = ref.current
-    if (disabled) {
-      last.height = 0
-      setMinHeight(0)
-      return
-    }
-
-    if (div === null) {
-      return
-    }
-
-    const height = div.getBoundingClientRect().height
-    if (last.height < height) {
-      last.height = height
-    }
-    else {
-      setMinHeight(last.height)
-    }
-  }, [props.items.length, disabled])
-
-  const style: CSSProperties = {
-    minHeight,
-  }
-
   return (
     <div className={cn(props.sortable && classNames[props.position])}>
-      <SortableZone className="h-full" containerId={props.position} items={props.items} disabled={disabled}>
-        <div className="gap-4 flex flex-col" style={style} ref={div => ref.current.div = div}>
-          {props.items.map(item => (
-            <PageContent item={item} sortable={props.sortable} key={item.id} />
-          ))}
-        </div>
+      <SortableZone className="gap-4 flex flex-col h-full" containerId={props.position} items={props.items} disabled={!props.sortable} growOnly={props.sortable}>
+        {props.items.map(item => (
+          <PageContent item={item} sortable={props.sortable} key={item.id} />
+        ))}
       </SortableZone>
     </div>
   )

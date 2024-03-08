@@ -13,8 +13,9 @@ import {
   DndContextProps,
   pointerWithin,
   DragCancelEvent,
+  DroppableContainer,
 } from "@dnd-kit/core";
-import { SortableData, arrayMove } from "@dnd-kit/sortable";
+import { arrayMove, hasSortableData } from "@dnd-kit/sortable";
 import { arrayInsert, arrayRemove } from "@/utils/arrayUtils";
 import { Item, ItemsMap } from "./item";
 
@@ -83,18 +84,14 @@ export const SortableContainer = <I extends Item>({
     }
 
     const collisions = cornerCollisions.filter(({ data }) => {
-      if (typeof data === 'undefined') {
+      const container = data?.droppableContainer as DroppableContainer
+      if (hasSortableData(container)) {
+        const { containerId } = container.data.current.sortable
+        return closestContainer.id === containerId
+      }
+      else {
         return false
       }
-
-      const droppableData = data.droppableContainer?.data?.current as SortableData | undefined
-      if (typeof droppableData === 'undefined') {
-        return false
-      }
-
-      const { containerId } = droppableData.sortable
-
-      return closestContainer.id === containerId
     })
 
     if (collisions.length === 0) {
@@ -110,25 +107,33 @@ export const SortableContainer = <I extends Item>({
     index: number
   }
 
-  const getFromData = (active: Active): Data => {
-    const activeData = active.data.current as SortableData
-    const { containerId, index } = activeData.sortable
-    return {
-      containerId,
-      items: itemsMap.get(containerId) ?? [],
-      index
-    }
-  }
-
-  const getToData = (over: Over): Data => {
-    const items = itemsMap.get(over.id)
-    if (typeof items === 'undefined') {
-      const overData = over.data.current as SortableData
-      const { containerId, index } = overData.sortable
+  const getFromData = (active: Active): Data | null => {
+    if (hasSortableData(active)) {
+      const { containerId, index } = active.data.current.sortable
       return {
         containerId,
         items: itemsMap.get(containerId) ?? [],
         index
+      }
+    }
+    else {
+      return null
+    }
+  }
+
+  const getToData = (over: Over): Data | null => {
+    const items = itemsMap.get(over.id)
+    if (typeof items === 'undefined') {
+      if (hasSortableData(over)) {
+        const { containerId, index } = over.data.current.sortable
+        return {
+          containerId,
+          items: itemsMap.get(containerId) ?? [],
+          index
+        }
+      }
+      else {
+        return null
       }
     }
     else {
@@ -150,14 +155,25 @@ export const SortableContainer = <I extends Item>({
       return null
     }
 
+    const from = getFromData(active)
+    const to = getToData(over)
+
+    if (from === null || to === null) {
+      return null
+    }
+
     return {
-      from: getFromData(active),
-      to: getToData(over),
+      from,
+      to,
     }
   }
 
   const handleDragStart = (event: DragStartEvent) => {
     const from = getFromData(event.active)
+    if (from === null) {
+      return
+    }
+
     const item = from.items[from.index]
     setActiveItem(item)
   }

@@ -20,8 +20,11 @@ const Overlay = (props: {
 
 const createCollisionDetection = (defaultHandler: CollisionDetection) => {
   return (event: CollisionDetectionArgs) => {
-    console.log(event)
+    // console.log(event)
     return defaultHandler(event)
+    const collisions = defaultHandler(event)
+    console.log(collisions)
+    return collisions
   }
 }
 

@@ -11,9 +11,11 @@ export const CourseCards = (props: {
   courses: Course[]
   sortable: boolean
 }) => (
-  <SortableZone className={cn("gap-2 flex flex-wrap", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy}>
-    {props.courses.map(course => (
-      <CourseCard course={course} sortable={props.sortable} key={course.id} />
-    ))}
-  </SortableZone>
+  <div className={cn(props.sortable && classNames[props.position])}>
+    <SortableZone className="gap-2 flex flex-wrap content-start h-full" containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy} growOnly={props.sortable}>
+      {props.courses.map(course => (
+        <CourseCard course={course} sortable={props.sortable} key={course.id} />
+      ))}
+    </SortableZone>
+  </div>
 )

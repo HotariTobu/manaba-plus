@@ -1,28 +1,98 @@
-import { CSSProperties, HtmlHTMLAttributes } from "react";
+import { CSSProperties, DependencyList, HtmlHTMLAttributes, useEffect, useRef, useState } from "react";
 import { UniqueIdentifier, UseDroppableArguments, useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
   SortableContextProps,
-  SortingStrategy,
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
-import { Item } from "./item";
 
-interface SortableColumnProps<I> extends Omit<SortableContextProps, 'id' | 'items'> {
+interface SortableColumnProps extends Omit<SortableContextProps, 'id'> {
   containerId: UniqueIdentifier
-  items: I[]
-  strategy?: SortingStrategy
+  growOnly?: boolean
   className?: string
   style?: CSSProperties
   useDroppableProps?: Omit<UseDroppableArguments, 'id'>
-  droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className'>
+  droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className' | 'style'>
 }
 
-export const SortableZone = <I extends Item>({ containerId, items, strategy = verticalListSortingStrategy, className, style, useDroppableProps, droppableDivProps, children, ...props }: SortableColumnProps<I>) => {
-  const { setNodeRef } = useDroppable({
+const useMinSize = (disabled?: boolean, deps?: DependencyList) => {
+  const [minWidth, setMinWidth] = useState(0)
+  const [minHeight, setMinHeight] = useState(0)
+
+  const ref = useRef<{
+    element: HTMLElement | null
+    last: {
+      width: number
+      height: number
+    }
+  }>({
+    element: null,
+    last: {
+      width: 0,
+      height: 0,
+    },
+  })
+
+  const setNodeRef = (element: HTMLElement | null) => {
+    ref.current.element = element
+  }
+
+  useEffect(() => {
+    const { element, last } = ref.current
+    if (disabled === true) {
+      last.width = 0
+      last.height = 0
+      setMinWidth(0)
+      setMinHeight(0)
+      return
+    }
+
+    if (element === null) {
+      return
+    }
+
+    const { width, height } = element.getBoundingClientRect()
+
+    if (last.width < width) {
+      last.width = width
+    }
+    else {
+      setMinWidth(last.width)
+    }
+
+    if (last.height < height) {
+      last.height = height
+    }
+    else {
+      setMinHeight(last.height)
+    }
+  }, [disabled, ...(deps ?? [])])
+
+  return {
+    setNodeRef,
+    minSizeStyle: {
+      minWidth,
+      minHeight,
+    }
+  }
+}
+
+export const SortableZone = ({ containerId, items, strategy = verticalListSortingStrategy, growOnly = false, className, style, useDroppableProps, droppableDivProps, children, ...props }: SortableColumnProps) => {
+  const { setNodeRef: setRef1, minSizeStyle } = useMinSize(!growOnly, [items.length])
+  const { setNodeRef: setRef2 } = useDroppable({
     id: containerId,
     ...useDroppableProps,
   });
+
+  const mergedStyle: CSSProperties = {
+    ...minSizeStyle,
+    ...style,
+  }
+
+  const setRef = (element: HTMLElement | null) => {
+    setRef1(element)
+    setRef2(element)
+  }
 
   return (
     <SortableContext
@@ -31,7 +101,7 @@ export const SortableZone = <I extends Item>({ containerId, items, strategy = ve
       strategy={strategy}
       {...props}
     >
-      <div className={className} style={style} ref={setNodeRef} {...droppableDivProps} >
+      <div className={className} style={mergedStyle} ref={setRef} {...droppableDivProps} >
         {children}
       </div>
     </SortableContext>
