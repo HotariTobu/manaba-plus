@@ -47,6 +47,9 @@
     "message": "To the self-registration page"
   },
 
+  "home_courses_default_term": {
+    "message": "Unnamed-term"
+  },
   "home_courses_cards": {
     "message": "Cards"
   },

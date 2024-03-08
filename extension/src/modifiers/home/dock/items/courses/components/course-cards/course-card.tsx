@@ -2,11 +2,11 @@ import { cn } from "@/lib/utils"
 import { SortableItem } from "@/components/sortable/sortable-item"
 import { Anchor } from "@/components/anchor"
 import { Truncated } from "@/components/truncated"
-import { Course } from "../types/course"
-import { CourseIcon } from "./course-icon"
-import { CourseLink } from "./course-link"
-import { CourseStar } from "./course-star"
-import { CourseStatus } from "./course-status"
+import { Course } from "../../types/course"
+import { CourseIcon } from "../course-icon"
+import { CourseLink } from "../course-link"
+import { CourseStar } from "../course-star"
+import { CourseStatus } from "../course-status"
 
 export const CourseCardBase = (props: {
   course: Course

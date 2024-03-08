@@ -1,10 +1,6 @@
-enum Positions {
-  main,
-  other,
-  rest,
-  trash,
+export const positions = ['main', 'other', 'trash'] as const
+export type Position = (typeof positions)[number]
+
+export const getDynamicPosition = (base: Position, year: string | number | null, term: string) => {
+  return `${base}-${year ?? 'none'}-${term}`
 }
-
-export type Position = keyof typeof Positions
-
-export const positions = Object.keys(Positions).filter(p => isNaN(parseInt(p)))

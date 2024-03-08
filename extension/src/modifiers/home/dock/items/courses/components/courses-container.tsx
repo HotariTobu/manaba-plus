@@ -1,36 +1,46 @@
-import { CollisionDetection, DragOverEvent } from "@dnd-kit/core"
+import { DragOverEvent } from "@dnd-kit/core"
 import { t } from "@/utils/i18n"
+import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { CollisionDetectionArgs, DragOver, SortableContainer } from "@/components/sortable/sortable-container"
+import { DragOver, SortableContainer } from "@/components/sortable/sortable-container"
 import { ItemsMap } from "@/components/sortable/item"
 import { useLongPress } from "@/hooks/useLongPress"
 import { usePageContext } from "../../../hooks/usePageContext"
-import { Course } from "../types/course"
-import { store } from "../store"
+import { Trash } from "../../../components/trash"
+import { Course, DayOfWeek } from "../types/course"
 import { useCourses } from "../hooks/useCourses"
-import { CoursesCardsTab } from "./courses-cards-tab"
-import { CoursesListTab } from "./courses-list-tab"
-import { CourseCardBase } from "./course-card"
-
-export type CoursesMap = ItemsMap<Course>
+import { dynamicStore, store } from "../store"
+import { CourseCardBase } from "./course-cards/course-card"
+import { CourseTimetable, hasDroppableCellData } from "./course-timetable"
+import { CourseCards } from "./course-cards"
+import { CourseList } from "./course-list"
 
 const Overlay = (props: {
   item: Course
-}) => <CourseCardBase className="shadow-xl" course={props.item} sortable />
-
-const createCollisionDetection = (defaultHandler: CollisionDetection) => {
-  return (event: CollisionDetectionArgs) => {
-    // console.log(event)
-    return defaultHandler(event)
-    const collisions = defaultHandler(event)
-    console.log(collisions)
-    return collisions
-  }
-}
+}) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2" course={props.item} sortable />
 
 const createDragOverHandler = (defaultHandler: DragOver) => {
   return (event: DragOverEvent) => {
-    // console.log(event)
+    if (hasDroppableCellData(event.over)) {
+      const { id: courseId } = event.active
+      if (typeof courseId === 'number') {
+        return
+      }
+
+      const { gridIndex, noRow } = event.over.data.current["timetable-droppable-cell"]
+      const column = gridIndex % DayOfWeek.Count
+      const row = noRow ? null : Math.floor(gridIndex / DayOfWeek.Count)
+
+      const rect = dynamicStore.rect.get(courseId)
+      const span = rect === null ? 1 : rect.span
+
+      dynamicStore.rect.set(courseId, {
+        column,
+        row,
+        span,
+      })
+    }
+
     defaultHandler(event)
   }
 }
@@ -52,16 +62,33 @@ export const CoursesContainer = () => {
 
   const sortable = status === 'editing-courses'
 
+  const main = coursesMap.get('main') ?? []
+  const other = coursesMap.get('other') ?? []
+  const trash = coursesMap.get('trash') ?? []
+
   return (
     <div {...longPress}>
-      <SortableContainer overlayClassName="w-80 h-fit" itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} createCollisionDetection={createCollisionDetection} createDragOverHandler={createDragOverHandler}>
+      <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} createDragOverHandler={createDragOverHandler}>
+        <CourseTimetable main={main} other={other} sortable={sortable} />
         <Tabs defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
           <TabsList className="bg-primary">
             <TabsTrigger value="cards">{t('home_courses_cards')}</TabsTrigger>
             <TabsTrigger value="list">{t('home_courses_list')}</TabsTrigger>
           </TabsList>
-          <TabsContent value="cards"><CoursesCardsTab coursesMap={coursesMap} sortable={sortable} /></TabsContent>
-          <TabsContent value="list"><CoursesListTab coursesMap={coursesMap} sortable={sortable} /></TabsContent>
+          <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")}>
+            <TabsContent value="cards">
+              <CourseCards position="other" courses={other} sortable={sortable} />
+              <Trash hidden={!sortable}>
+                <CourseCards position="trash" courses={trash} sortable={sortable} />
+              </Trash>
+            </TabsContent>
+            <TabsContent value="list">
+              <CourseList position="other" courses={other} sortable={sortable} />
+              <Trash hidden={!sortable}>
+                <CourseList position="trash" courses={trash} sortable={sortable} />
+              </Trash>
+            </TabsContent>
+          </div>
         </Tabs >
       </SortableContainer>
     </div>

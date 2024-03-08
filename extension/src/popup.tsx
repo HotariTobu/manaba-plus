@@ -27,7 +27,7 @@ function Popup() {
 
   return (
     <div className='w-80'>
-      <Button>BUTTON</Button>
+      <Button onClick={() => sync.clear()}>BUTTON</Button>
       <Button className='bg-secondary'>BUTTON</Button>
       <img src="/icon-with-shadow.svg" />
       <h1>vite-plugin-web-extension</h1>

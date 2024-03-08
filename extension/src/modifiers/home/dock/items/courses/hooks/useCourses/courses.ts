@@ -2,6 +2,7 @@ import { f, ff } from "@/utils/element"
 import { getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
 import { Course, DayOfWeek } from "../../types/course"
 import { dynamicStore } from "../../store"
+import { getPeriod } from "../../period"
 
 /**
  * Create a function to get attribute values of descendants of the specific element.
@@ -27,26 +28,10 @@ const createAttributeGetter = (element: Element) => {
 /**
  * Complete a course object by determining the course's id.
  * @param props Course properties excluded id
- * @param rect The course's timetable coordinate and span
  * @returns A course object with id properties
  */
-const createCourse = (props: Omit<Course, 'id'>, rect?: {
-  day: DayOfWeek
-  periodStart: number | null
-  periodSpan: number
-}) => {
+const createCourse = (props: Omit<Course, 'id'>) => {
   const id = props.url ?? props.icon ?? props.title
-
-  if (typeof rect !== 'undefined') {
-    if (!dynamicStore.rect.has(id)) {
-      dynamicStore.rect.set(id, {
-        column: rect.day,
-        row: rect.periodStart === null ? null : rect.periodStart - 1,
-        span: rect.periodSpan,
-      })
-    }
-  }
-
   return {
     id,
     ...props
@@ -111,7 +96,7 @@ const getThumbnailCourse = (element: Element): Course => {
  * @param element The container element
  * @returns A course object
  */
-const getListCourse = (element: HTMLTableRowElement): Course => {
+const getListCourse = (element: Element): Course => {
   const a = createAttributeGetter(element)
   return createCourse({
     url: a(selectorMap.courses.list.url, 'href'),
@@ -133,7 +118,7 @@ const getListCourse = (element: HTMLTableRowElement): Course => {
  * @param element The container element
  * @returns A course object
  */
-const getTimetableCourse = (element: HTMLTableCellElement): Course => {
+const getTimetableCourse = (element: Element): Course => {
   const year = toNullableInt(ff<HTMLSelectElement>(selectorMap.courses.timetable.year)?.value?.match(/\d{4}/)?.[0]) ?? getFiscalYear()
 
   const a = createAttributeGetter(element)
@@ -149,11 +134,25 @@ const getTimetableCourse = (element: HTMLTableCellElement): Course => {
     remarks: null,
     teachers: null,
     status: getStatus(element),
-  }, {
-    day: element.cellIndex - 1,
-    periodStart: toNullableInt(element.parentElement?.firstElementChild?.textContent),
-    periodSpan: element.rowSpan,
   })
+}
+
+/**
+ * Set course period store only for the first time.
+ * @param course The course
+ */
+const initializePeriod = (course: Course) => {
+  if (dynamicStore.period.has(course.id)) {
+    return
+  }
+
+  const { remarks } = course
+  if (remarks === null) {
+    return
+  }
+
+  const period = getPeriod(remarks)
+  dynamicStore.period.set(course.id, period)
 }
 
 /**
@@ -161,9 +160,11 @@ const getTimetableCourse = (element: HTMLTableCellElement): Course => {
  * @returns An array of course objects
  */
 export const getCourses = () => {
-  return [
+  const courses = [
     ...f(selectorMap.courses.thumbnail.source).map(getThumbnailCourse),
-    ...f<HTMLTableRowElement>(selectorMap.courses.list.source).map(getListCourse),
-    ...f<HTMLTableCellElement>(selectorMap.courses.timetable.source).map(getTimetableCourse),
+    ...f(selectorMap.courses.list.source).map(getListCourse),
+    ...f(selectorMap.courses.timetable.source).map(getTimetableCourse),
   ]
+  courses.forEach(initializePeriod)
+  return courses
 }

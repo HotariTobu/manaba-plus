@@ -113,7 +113,7 @@ export const selectorMap = defineSelectorMap({
   courses: {
     status: ':is(.course-card-status, .coursestatus) img',
     thumbnail: {
-      source: '.coursecard',
+      source: '.coursecard-c, .coursecard-r',
       url: '.course-card-title a',
       code: '.coursecode',
       icon: '.course-card-img img',
@@ -124,7 +124,7 @@ export const selectorMap = defineSelectorMap({
       teachers: '.courseitemdetail:last-of-type',
     },
     list: {
-      source: '.courselist tr:not([class*="title"])',
+      source: '.courselist-c, .courselist-r, .my-infolist-deactivecourse tr:not(.title)',
       url: '.courselist-title a',
       icon: 'img.inline',
       title: '.courselist-title',
@@ -134,7 +134,7 @@ export const selectorMap = defineSelectorMap({
       teachers: 'td:nth-of-type(4)',
     },
     timetable: {
-      source: '.course-cell',
+      source: '.courselistweekly-c, .courselistweekly-r',
       url: 'a:first-of-type',
       title: 'a:first-of-type',
       year: '.my-infolist-mycourses select:nth-child(2)',

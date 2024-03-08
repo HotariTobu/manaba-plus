@@ -2,7 +2,7 @@ import { ItemsMap } from "@/components/sortable/item"
 import { fromLayout, toLayout } from "../../../../layout"
 import { dynamicStore, store } from "../../store"
 import { Course } from "../../types/course"
-import { Position, positions } from "../../types/position"
+import { Position, getDynamicPosition, positions } from "../../types/position"
 import { getCourses } from "./courses"
 
 /**
@@ -10,21 +10,18 @@ import { getCourses } from "./courses"
  * @param course The course
  * @returns The default position
  */
-export const getCourseDefaultPosition = (course: Course): Position => {
-  const rect = dynamicStore.rect.get(course.id)
-  if (rect === null) {
+export const getCourseDefaultPosition = (course: Course) => {
+  const period = dynamicStore.period.get(course.id)
+  if (period === null) {
     if (course.url === null) {
       return 'trash'
     }
 
-    return 'rest'
+    return 'other'
   }
   else {
-    if (rect.row === null) {
-      return 'other'
-    }
-
-    return 'main'
+    const term = period.terms[period.terms.length - 1]
+    return getDynamicPosition('main', course.year, term)
   }
 }
 
@@ -49,7 +46,7 @@ const getCoursePairs = () => {
  */
 export const getCoursesMap = () => {
   const coursePairs = getCoursePairs()
-  const coursesMap = fromLayout(coursePairs, positions, store.courseLayout)
+  const coursesMap = fromLayout(coursePairs, store.courseLayout)
   return coursesMap
 }
 

@@ -1,9 +1,9 @@
 import { cn } from "@/lib/utils"
 import { SortableZone } from "@/components/sortable/sortable-zone"
-import { type Course } from "../types/course"
-import { Position } from "../types/position"
+import { type Course } from "../../types/course"
+import { Position } from "../../types/position"
 import { CourseHeader, CourseRow } from "./course-row"
-import { classNames } from "./zone-color"
+import { classNames } from "../zone-color"
 
 export const CourseList = (props: {
   position: Position

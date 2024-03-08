@@ -105,8 +105,7 @@ export default () => {
     // Add the extension's sortable items.
     itemPairs.push(['left', coursesItem])
 
-    const positions = Object.keys(selectorMap.pageElements)
-    const itemsMap = fromLayout(itemPairs, positions, store.pageLayout)
+    const itemsMap = fromLayout(itemPairs, store.pageLayout)
 
     // Not use the default container to keep the layout of the page.
     const container = c('div')

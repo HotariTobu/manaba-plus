@@ -1,10 +1,10 @@
 import { rectSortingStrategy } from "@dnd-kit/sortable"
 import { cn } from "@/lib/utils"
 import { SortableZone } from "@/components/sortable/sortable-zone"
-import { type Course } from "../types/course"
-import { Position } from "../types/position"
+import { type Course } from "../../types/course"
+import { Position } from "../../types/position"
 import { CourseCard } from "./course-card"
-import { classNames } from "./zone-color"
+import { classNames } from "../zone-color"
 
 export const CourseCards = (props: {
   position: Position

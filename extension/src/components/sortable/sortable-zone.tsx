@@ -81,6 +81,7 @@ export const SortableZone = ({ containerId, items, strategy = verticalListSortin
   const { setNodeRef: setRef1, minSizeStyle } = useMinSize(!growOnly, [items.length])
   const { setNodeRef: setRef2 } = useDroppable({
     id: containerId,
+    disabled: typeof props.disabled === 'boolean' ? props.disabled : props.disabled?.droppable,
     ...useDroppableProps,
   });
 

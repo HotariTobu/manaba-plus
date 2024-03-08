@@ -72,18 +72,17 @@ export const SortableContainer = <I extends Item>({
   const detectCollision: CollisionDetection = args => {
     const pointerCollisions = pointerWithin(args)
     const cornerCollisions = closestCorners(args)
+    const collisions = pointerCollisions.concat(cornerCollisions)
 
-    const closestContainer = pointerCollisions
-      .concat(cornerCollisions)
-      .find(c => {
-        return itemsMap.has(c.id)
-      })
+    const closestContainer = collisions.find(c => {
+      return itemsMap.has(c.id)
+    })
 
     if (typeof closestContainer === 'undefined') {
-      return cornerCollisions
+      return collisions
     }
 
-    const collisions = cornerCollisions.filter(({ data }) => {
+    const sortableCollisions = collisions.filter(({ data }) => {
       const container = data?.droppableContainer as DroppableContainer
       if (hasSortableData(container)) {
         const { containerId } = container.data.current.sortable
@@ -94,11 +93,11 @@ export const SortableContainer = <I extends Item>({
       }
     })
 
-    if (collisions.length === 0) {
-      return [closestContainer]
+    if (sortableCollisions.length === 0) {
+      return [closestContainer].concat(collisions)
     }
 
-    return collisions
+    return sortableCollisions
   }
 
   interface Data {

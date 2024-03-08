@@ -7,19 +7,31 @@ import type { Layout } from "./types/layout"
  * @param layout The stored layout
  * @returns An items map sorted with the layout
  */
-export const fromLayout = <I extends Item>(itemPairs: [string, I][], positions: string[], layout: Layout) => {
+export const fromLayout = <I extends Item>(itemPairs: readonly [string, I][], layout: Layout) => {
   /** The map to get positions and items by ids */
   const flatItemsMap = new Map(
-    itemPairs.map((pair => [
+    itemPairs.map(pair => [
       String(pair[1].id),
       pair
     ])
-  ))
-
-  // Initialize the items map with empty items arrays.
-  const itemsMap: ItemsMap<I> = new Map(
-    positions.map(position => [position, []])
   )
+
+  const itemsMap: ItemsMap<I> = new Map()
+
+  /**
+   * Add an item into items map.
+   * @param position The position of the item
+   * @param item The item to be added
+   */
+  const addItem = (position: string, item: I) => {
+    const items = itemsMap.get(position)
+    if (typeof items === 'undefined') {
+      itemsMap.set(position, [item])
+    }
+    else {
+      items.push(item)
+    }
+  }
 
   // Add items in the layout to the items map.
   for (const [id, position] of layout) {
@@ -31,14 +43,12 @@ export const fromLayout = <I extends Item>(itemPairs: [string, I][], positions: 
     flatItemsMap.delete(id)
     const [, item] = pair
 
-    const items = itemsMap.get(position)
-    items?.push(item)
+    addItem(position, item)
   }
 
   // Add other items.
   for (const [position, item] of flatItemsMap.values()) {
-    const items = itemsMap.get(position)
-    items?.push(item)
+    addItem(position, item)
   }
 
   return itemsMap
