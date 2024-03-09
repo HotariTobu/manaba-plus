@@ -72,6 +72,11 @@ export const SortableContainer = <I extends Item>({
 }: SortableContainerProps<I>) => {
   const [activeItem, setActiveItem] = useState<I | null>(null);
 
+  const endDrag = (itemsMap: ItemsMap<I>) => {
+    onDropped(itemsMap)
+    setIsDragging(false)
+  }
+
   const detectCollision: CollisionDetection = args => {
     const pointerCollisions = pointerWithin(args)
     const cornerCollisions = closestCorners(args)
@@ -211,7 +216,7 @@ export const SortableContainer = <I extends Item>({
   const handleDragEnd = (event: DragEndEvent) => {
     const data = getData(event)
     if (data == null) {
-      onDropped(itemsMap)
+      endDrag(itemsMap)
       return
     }
 
@@ -224,14 +229,11 @@ export const SortableContainer = <I extends Item>({
       [from.containerId, newFromItems],
     ])
     setItemsMap(newItemsMap)
-
-    onDropped(newItemsMap)
-    setIsDragging(false)
+    endDrag(newItemsMap)
   }
 
   const handleDragCancel = () => {
-    onDropped(itemsMap)
-    setIsDragging(false)
+    endDrag(itemsMap)
   }
 
   return (

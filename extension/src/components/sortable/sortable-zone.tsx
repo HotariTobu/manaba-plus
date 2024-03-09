@@ -30,14 +30,15 @@ export const hasSortableZoneData = (over: Over) => {
 
 interface SortableColumnProps extends Omit<SortableContextProps, 'id'> {
   containerId: UniqueIdentifier
-  growOnly?: boolean
+  growOnlyWidth?: boolean
+  growOnlyHeight?: boolean
   className?: string
   style?: CSSProperties
   useDroppableProps?: Omit<UseDroppableArguments, 'id'>
   droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className' | 'style'>
 }
 
-const useMinSize = (disabled?: boolean, deps?: DependencyList) => {
+const useMinSize = (widthEnabled: boolean, heightEnabled: boolean, deps?: DependencyList) => {
   const [minWidth, setMinWidth] = useState(0)
   const [minHeight, setMinHeight] = useState(0)
 
@@ -61,34 +62,38 @@ const useMinSize = (disabled?: boolean, deps?: DependencyList) => {
 
   useEffect(() => {
     const { element, last } = ref.current
-    if (disabled === true) {
-      last.width = 0
-      last.height = 0
-      setMinWidth(0)
-      setMinHeight(0)
-      return
-    }
-
     if (element === null) {
       return
     }
 
     const { width, height } = element.getBoundingClientRect()
 
-    if (last.width < width) {
-      last.width = width
+    if (widthEnabled) {
+      if (last.width < width) {
+        last.width = width
+      }
+      else {
+        setMinWidth(last.width)
+      }
     }
     else {
-      setMinWidth(last.width)
+      last.width = 0
+      setMinWidth(0)
     }
 
-    if (last.height < height) {
-      last.height = height
+    if (heightEnabled) {
+      if (last.height < height) {
+        last.height = height
+      }
+      else {
+        setMinHeight(last.height)
+      }
     }
     else {
-      setMinHeight(last.height)
+      last.height = 0
+      setMinHeight(0)
     }
-  }, [disabled, ...(deps ?? [])])
+  }, [widthEnabled, heightEnabled, ...(deps ?? [])])
 
   return {
     setNodeRef,
@@ -99,10 +104,10 @@ const useMinSize = (disabled?: boolean, deps?: DependencyList) => {
   }
 }
 
-export const SortableZone = ({ containerId, items, strategy = verticalListSortingStrategy, growOnly = false, className, style, useDroppableProps = {}, droppableDivProps, children, ...props }: SortableColumnProps) => {
+export const SortableZone = ({ containerId, items, strategy = verticalListSortingStrategy, growOnlyWidth = false, growOnlyHeight = false, className, style, useDroppableProps = {}, droppableDivProps, children, ...props }: SortableColumnProps) => {
   const { data: useDroppableData, ...useDroppableRestProps } = useDroppableProps
 
-  const { setNodeRef: setRef1, minSizeStyle } = useMinSize(!growOnly, [items.length])
+  const { setNodeRef: setRef1, minSizeStyle } = useMinSize(growOnlyWidth, growOnlyHeight, [items.length])
   const { setNodeRef: setRef2 } = useDroppable({
     id: containerId,
     disabled: typeof props.disabled === 'boolean' ? props.disabled : props.disabled?.droppable,

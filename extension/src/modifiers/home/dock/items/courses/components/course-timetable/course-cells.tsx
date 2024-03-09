@@ -8,7 +8,8 @@ export const CourseCells = (props: {
   startRow: number
   sortable: boolean
 }) => {
-  console.log(props.coordinateMap)
+  // TODO: impl
+  // console.log(props.coordinateMap)
   return (
     <>
       {Array.from(props.coordinateMap).map(([coordinate, course]) => {

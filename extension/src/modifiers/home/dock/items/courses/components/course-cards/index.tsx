@@ -22,7 +22,7 @@ export const CourseCards = (props: {
   }
 
   return (
-    <SortableZone className={cn(props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy} growOnly={props.sortable}>
+    <SortableZone className={cn(props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy} growOnlyHeight={props.sortable}>
       <div className={cn(md ? 'grid-cols-3' : sm ? 'grid-cols-2' : 'grid-cols-1', 'gap-2 grid', props.sortable && 'min-h-8')} ref={setRef}>
         {props.courses.map(course => (
           <CourseCard course={course} sortable={props.sortable} key={course.id} />

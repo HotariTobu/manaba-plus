@@ -16,7 +16,7 @@ export const CourseList = (props: {
 
   return (
     <div className={cn("rounded-lg border-primary border overflow-hidden", props.sortable && classNames[props.position])}>
-      <SortableZone className="overflow-x-auto" containerId={props.position} items={props.courses} disabled={!props.sortable} growOnly={props.sortable}>
+      <SortableZone className="overflow-x-auto" containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable}>
         <div className={cn("grid-cols-[4fr_auto_minmax(4rem,_1fr)_minmax(4rem,_1fr)] grid", props.sortable && 'gap-y-2')}>
           <CourseHeader />
           {props.courses.map(course => (

@@ -9,14 +9,16 @@ import { usePageContext } from "../../../hooks/usePageContext"
 import { Trash } from "../../../components/trash"
 import { Course, DayOfWeek } from "../types/course"
 import { useCourses } from "../hooks/useCourses"
-import { store } from "../store"
+import { dynamicStore, store } from "../store"
 import { CourseCardBase } from "./course-cards/course-card"
-import { CourseTimetable, hasDroppableCellData } from "./course-timetable"
+import { CourseTimetable } from "./course-timetable"
 import { CourseCards } from "./course-cards"
 import { CourseList } from "./course-list"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { getFiscalYear } from "../../../../config"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getDroppableCellData } from "./course-timetable/droppable-cell"
+import { getCourseCellData } from "./course-timetable/course-cell"
 
 const Overlay = (props: {
   item: Course
@@ -24,27 +26,35 @@ const Overlay = (props: {
 
 const createDragOverHandler = (defaultHandler: DragOver) => {
   return (event: DragOverEvent) => {
-    // console.log(event)
+    const droppableCellData = getDroppableCellData(event.over)
+    if (droppableCellData !== null) {
+      const { term, coordinate: newCoordinate, disabledAt } = droppableCellData
+      if (disabledAt(newCoordinate)) {
+        return
+      }
 
-    //   if (hasDroppableCellData(event.over)) {
-    //     const { id: courseId } = event.active
-    //     if (typeof courseId === 'number') {
-    //       return
-    //     }
+      const { id: courseId } = event.active
+      if (typeof courseId === 'number') {
+        return
+      }
 
-    //     const { gridIndex, noRow } = event.over.data.current["timetable-droppable-cell"]
-    //     const column = gridIndex % DayOfWeek.Count
-    //     const row = noRow ? null : Math.floor(gridIndex / DayOfWeek.Count)
+      const courseCellData = getCourseCellData(event.active)
+      const period = dynamicStore.period.get(courseId)
 
-    //     const rect = dynamicStore.rect.get(courseId)
-    //     const span = rect === null ? 1 : rect.span
+      const coordinates = period.get(term)
+      if (typeof coordinates === 'undefined') {
+        period.set(term, [newCoordinate])
+      }
+      else {
+        const newCoordinates = coordinates.filter(c => c !== courseCellData?.coordinate)
+        newCoordinates.push(newCoordinate)
+        period.set(term, newCoordinates)
+      }
 
-    //     dynamicStore.rect.set(courseId, {
-    //       column,
-    //       row,
-    //       span,
-    //     })
-    //   }
+      dynamicStore.period.set(courseId, period)
+
+      console.log(term, newCoordinate, period, coordinates, courseCellData?.coordinate)
+    }
 
     defaultHandler(event)
   }
@@ -52,9 +62,15 @@ const createDragOverHandler = (defaultHandler: DragOver) => {
 
 export const CoursesContainer = () => {
   const { coursesMap, setCoursesMap, storeCoursesMap, year, setYear, term, setTerm } = useCourses()
+
   const { status, setStatus } = usePageContext()
+  const dragging = useRef(false)
 
   const longPress = useLongPress(() => {
+    if (dragging.current) {
+      return
+    }
+
     if (status === 'normal') {
       setStatus('editing-courses')
     }
@@ -62,7 +78,7 @@ export const CoursesContainer = () => {
       setStatus('normal')
     }
   }, {
-    stopPropagation: status === 'normal',
+    stopPropagation: status === 'normal' || status === 'editing-courses',
   })
 
   const sortable = status === 'editing-courses'
@@ -93,7 +109,7 @@ export const CoursesContainer = () => {
         </div>
       )}
       <div {...longPress}>
-        <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} createDragOverHandler={createDragOverHandler}>
+        <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d} createDragOverHandler={createDragOverHandler}>
           <CourseTimetable term={term} position="timetable" courses={timetable} sortable={sortable} />
 
           <Tabs className="mt-2" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
