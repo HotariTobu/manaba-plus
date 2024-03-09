@@ -92,6 +92,9 @@ const cloneToItem = (clonePair: Pair) => {
 
 // Entry point
 export default () => {
+  // Unset styles of the top html element.
+  addClass(arrangeMap.html)
+
   replace(selectorMap.pageBody, (pageBody, unhide) => {
     const clonePairs = getPageElements(pageBody)
     if (clonePairs.length === 0) {

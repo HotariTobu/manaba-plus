@@ -5,22 +5,30 @@ import { type Course } from "../../types/course"
 import { Position } from "../../types/position"
 import { CourseCard } from "./course-card"
 import { classNames } from "../zone-color"
+import { useBreakpoints } from "@/hooks/useBreakpoints"
 
 export const CourseCards = (props: {
   position: Position
   courses: Course[]
   sortable: boolean
 }) => {
+  const [{ sm, md }, setRef] = useBreakpoints({
+    sm: 500,
+    md: 750,
+  })
+
   if (props.courses.length === 0 && !props.sortable) {
     return
   }
 
   return (
     <div className={cn(props.sortable && classNames[props.position])}>
-      <SortableZone className="gap-2 flex flex-wrap content-start h-full" containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy} growOnly={props.sortable}>
-        {props.courses.map(course => (
-          <CourseCard course={course} sortable={props.sortable} key={course.id} />
-        ))}
+      <SortableZone className="h-full" containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy} growOnly={props.sortable}>
+        <div className={cn(md ? 'grid-cols-3' : sm ? 'grid-cols-2' : 'grid-cols-1', 'gap-2 grid')} ref={setRef}>
+          {props.courses.map(course => (
+            <CourseCard course={course} sortable={props.sortable} key={course.id} />
+          ))}
+        </div>
       </SortableZone>
     </div>
   )

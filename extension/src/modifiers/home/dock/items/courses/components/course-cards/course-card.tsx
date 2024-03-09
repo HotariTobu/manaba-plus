@@ -24,7 +24,7 @@ export const CourseCardBase = (props: {
     <div>
       <CourseStar courseId={props.course.id} />
     </div>
-    <div className="col-span-2 flex justify-between items-center">
+    <div className="h-6 col-span-2 flex justify-between items-center">
       <CourseLink linked={props.course.linked} />
       <div className="flex">
         <CourseStatus course={props.course} />

@@ -1,6 +1,10 @@
-import { defineArrangeMap, defineClassMap, defineIdMap, defineSelectorMap } from "@/types/config"
+import { defineArrangeMap, defineClassMap, defineSelectorMap } from "@/types/config"
 
 export const arrangeMap = defineArrangeMap({
+  html: {
+    selector: 'html',
+    className: 'overflow-visible',
+  },
   contents: {
     notes: {
       selector: '.coursememo',
