@@ -1,10 +1,32 @@
 import { CSSProperties, DependencyList, HtmlHTMLAttributes, useEffect, useRef, useState } from "react";
-import { UniqueIdentifier, UseDroppableArguments, useDroppable } from "@dnd-kit/core";
+import { Collision, Over, UniqueIdentifier, UseDroppableArguments, useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
   SortableContextProps,
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
+
+const sortableZoneDataId = 'sortable-zone'
+
+export const isSortableZoneCollision = (collision: Collision) => {
+  const data = collision.data?.droppableContainer?.data?.current
+  if (typeof data === 'undefined') {
+    return false
+  }
+  else {
+    return sortableZoneDataId in data
+  }
+}
+
+export const hasSortableZoneData = (over: Over) => {
+  const data = over.data.current
+  if (typeof data === 'undefined') {
+    return false
+  }
+  else {
+    return sortableZoneDataId in data
+  }
+}
 
 interface SortableColumnProps extends Omit<SortableContextProps, 'id'> {
   containerId: UniqueIdentifier
@@ -77,12 +99,18 @@ const useMinSize = (disabled?: boolean, deps?: DependencyList) => {
   }
 }
 
-export const SortableZone = ({ containerId, items, strategy = verticalListSortingStrategy, growOnly = false, className, style, useDroppableProps, droppableDivProps, children, ...props }: SortableColumnProps) => {
+export const SortableZone = ({ containerId, items, strategy = verticalListSortingStrategy, growOnly = false, className, style, useDroppableProps = {}, droppableDivProps, children, ...props }: SortableColumnProps) => {
+  const { data: useDroppableData, ...useDroppableRestProps } = useDroppableProps
+
   const { setNodeRef: setRef1, minSizeStyle } = useMinSize(!growOnly, [items.length])
   const { setNodeRef: setRef2 } = useDroppable({
     id: containerId,
     disabled: typeof props.disabled === 'boolean' ? props.disabled : props.disabled?.droppable,
-    ...useDroppableProps,
+    data: {
+      [sortableZoneDataId]: null,
+      ...useDroppableData
+    },
+    ...useDroppableRestProps,
   });
 
   const mergedStyle: CSSProperties = {

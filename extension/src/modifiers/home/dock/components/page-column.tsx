@@ -20,12 +20,12 @@ export const PageColumn = (props: {
   sortable: boolean
 }) => {
   return (
-    <div className={cn(props.sortable && classNames[props.position])}>
-      <SortableZone className="gap-4 flex flex-col h-full" containerId={props.position} items={props.items} disabled={!props.sortable} growOnly={props.sortable}>
+    <SortableZone className={cn(props.sortable && classNames[props.position])} containerId={props.position} items={props.items} disabled={!props.sortable} growOnly={props.sortable}>
+      <div className={cn("gap-4 flex flex-col", props.sortable && 'min-h-8')}>
         {props.items.map(item => (
           <PageContent item={item} sortable={props.sortable} key={item.id} />
         ))}
-      </SortableZone>
-    </div>
+      </div>
+    </SortableZone>
   )
 }

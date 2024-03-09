@@ -18,6 +18,7 @@ import {
 import { arrayMove, hasSortableData } from "@dnd-kit/sortable";
 import { arrayInsert, arrayRemove } from "@/utils/arrayUtils";
 import { Item, ItemsMap } from "./item";
+import { hasSortableZoneData, isSortableZoneCollision } from "./sortable-zone";
 
 export type CollisionDetectionArgs = Parameters<CollisionDetection>[0]
 export type DragStart = (event: DragStartEvent) => void
@@ -74,8 +75,8 @@ export const SortableContainer = <I extends Item>({
     const cornerCollisions = closestCorners(args)
     const collisions = pointerCollisions.concat(cornerCollisions)
 
-    const closestContainer = collisions.find(c => {
-      return itemsMap.has(c.id)
+    const closestContainer = collisions.find(collision => {
+      return isSortableZoneCollision(collision)
     })
 
     if (typeof closestContainer === 'undefined') {
@@ -121,8 +122,14 @@ export const SortableContainer = <I extends Item>({
   }
 
   const getToData = (over: Over): Data | null => {
-    const items = itemsMap.get(over.id)
-    if (typeof items === 'undefined') {
+    if (hasSortableZoneData(over)) {
+      return {
+        containerId: over.id,
+        items: itemsMap.get(over.id) ?? [],
+        index: NaN,
+      }
+    }
+    else {
       if (hasSortableData(over)) {
         const { containerId, index } = over.data.current.sortable
         return {
@@ -133,13 +140,6 @@ export const SortableContainer = <I extends Item>({
       }
       else {
         return null
-      }
-    }
-    else {
-      return {
-        containerId: over.id,
-        items,
-        index: NaN,
       }
     }
   }

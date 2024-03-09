@@ -22,14 +22,12 @@ export const CourseCards = (props: {
   }
 
   return (
-    <div className={cn(props.sortable && classNames[props.position])}>
-      <SortableZone className="h-full" containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy} growOnly={props.sortable}>
-        <div className={cn(md ? 'grid-cols-3' : sm ? 'grid-cols-2' : 'grid-cols-1', 'gap-2 grid')} ref={setRef}>
-          {props.courses.map(course => (
-            <CourseCard course={course} sortable={props.sortable} key={course.id} />
-          ))}
-        </div>
-      </SortableZone>
-    </div>
+    <SortableZone className={cn(props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSortingStrategy} growOnly={props.sortable}>
+      <div className={cn(md ? 'grid-cols-3' : sm ? 'grid-cols-2' : 'grid-cols-1', 'gap-2 grid', props.sortable && 'min-h-8')} ref={setRef}>
+        {props.courses.map(course => (
+          <CourseCard course={course} sortable={props.sortable} key={course.id} />
+        ))}
+      </div>
+    </SortableZone>
   )
 }
