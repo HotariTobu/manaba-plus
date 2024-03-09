@@ -1,8 +1,8 @@
 export const CourseTimetableIndex = (props: {
-  rowCount: number
   startRow: number
+  rowCount: number
 }) => (
-  <div className="col-start-1 col-end-2 row-start-2 row-end-[1] grid grid-rows-subgrid">
+  <div className="col-start-1 col-end-2 row-start-2 row-end-[-1] grid grid-rows-subgrid">
     {[...Array(props.rowCount).keys()].map(i => {
       const period = props.startRow + i + 1
       return (

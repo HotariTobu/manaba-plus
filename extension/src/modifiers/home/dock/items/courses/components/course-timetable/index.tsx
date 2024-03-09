@@ -237,10 +237,10 @@ export const CourseTimetable = (props: {
       gridTemplateColumns: `auto repeat(${width}, 1fr)`,
       gridTemplateRows: `auto repeat(${height}, 1fr`,
     }}>
-      <CourseTimetableHeader columnCount={width} startColumn={left} />
-      <CourseTimetableIndex rowCount={height} startRow={top} />
+      <CourseTimetableHeader startColumn={left} columnCount={width} />
+      <CourseTimetableIndex startRow={top} rowCount={height} />
 
-      <SortableZone className={cn("col-start-2 col-end-[-1] row-start-2 grid grid-cols-subgrid grid-rows-subgrid", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable}>
+      <SortableZone className={cn("col-start-2 col-end-[-1] row-start-2 row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable}>
         {Array.from(coordinateMap).map(([key, course]) => {
           const { column, row } = fromNumber(key)
           return (

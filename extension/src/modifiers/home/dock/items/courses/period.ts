@@ -35,7 +35,7 @@ const periodGetters: Record<string, (() => PeriodGetter) | undefined> = {
     const dayGroup = `(${Object.keys(days).join('|')})`
 
     const termRegex = new RegExp(joinWords(terms), 'i')
-    const periodRegex = new RegExp(`${dayGroup}.*?(\\d+)時限`, 'ig')
+    const periodRegex = new RegExp(`${dayGroup}.*?(\\d+)`, 'ig')
 
     return (remarks: string) => {
       const termMatch = termRegex.exec(remarks)

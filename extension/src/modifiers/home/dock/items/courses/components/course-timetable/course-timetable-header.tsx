@@ -14,8 +14,8 @@ const headers: Record<DayOfWeek, string> = {
 }
 
 export const CourseTimetableHeader = (props: {
-  columnCount: number
   startColumn: number
+  columnCount: number
 }) => (
   <div className="col-start-2 col-end-[-1] row-start-1 row-end-2 grid grid-cols-subgrid">
     {[...Array(props.columnCount).keys()].map(i => {
