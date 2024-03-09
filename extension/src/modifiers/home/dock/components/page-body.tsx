@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ItemsMap } from "@/components/sortable/item";
 import { SortableContainer } from "@/components/sortable/sortable-container";
 import { useLongPress } from "@/hooks/useLongPress";
@@ -10,6 +10,7 @@ import { PageResizable } from "./page-resizable";
 import { PageColumn } from "./page-column";
 import { PageContentBase } from "./page-content";
 import { Trash } from "./trash";
+import { cn } from "@/lib/utils";
 
 export type NodeItemsMap = ItemsMap<NodeItem>
 
@@ -21,9 +22,15 @@ export const PageBody = (props: {
   itemsMap: NodeItemsMap
 }) => {
   const [itemsMap, setItemsMap] = useState(props.itemsMap)
+
   const [status, setStatus] = useState<PageStatus>('normal')
+  const dragging = useRef(false)
 
   const longPress = useLongPress(() => {
+    if (dragging.current) {
+      return
+    }
+
     if (status === 'normal') {
       setStatus('editing-dock')
     }
@@ -60,8 +67,8 @@ export const PageBody = (props: {
   return (
     <PageContext.Provider value={status}>
       <PageSetterContext.Provider value={setStatus}>
-        <div className="min-h-screen gap-4 flex flex-col">
-          <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay} onDropped={handleDrop}>
+        <div className={cn("min-h-screen gap-4 flex flex-col", sortable && 'mb-[100vh]')}>
+          <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay} onDropped={handleDrop} setIsDragging={d => dragging.current = d}>
             <PageColumn position="top" items={top} sortable={sortable} />
 
             <PageResizable

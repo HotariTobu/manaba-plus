@@ -48,6 +48,7 @@ interface SortableContainerProps<I extends Item> extends
   createDragCancelHandler?: (defaultHandler: DragCancel) => DragCancel
 
   onDropped?: (itemsMap: ItemsMap<I>) => void
+  setIsDragging?: (dragging: boolean) => void
 }
 
 export const SortableContainer = <I extends Item>({
@@ -64,6 +65,7 @@ export const SortableContainer = <I extends Item>({
   createDragCancelHandler,
 
   onDropped = () => { },
+  setIsDragging = () => { },
 
   children,
   ...props
@@ -175,6 +177,7 @@ export const SortableContainer = <I extends Item>({
 
     const item = from.items[from.index]
     setActiveItem(item)
+    setIsDragging(true)
   }
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -221,11 +224,14 @@ export const SortableContainer = <I extends Item>({
       [from.containerId, newFromItems],
     ])
     setItemsMap(newItemsMap)
+
     onDropped(newItemsMap)
+    setIsDragging(false)
   }
 
   const handleDragCancel = () => {
     onDropped(itemsMap)
+    setIsDragging(false)
   }
 
   return (

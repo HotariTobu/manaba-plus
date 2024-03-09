@@ -28,7 +28,7 @@ export const DroppableCells = (props: {
       {coordinates.map(coordinate => {
         const key = toNumber(coordinate)
         return (
-          <DroppableCell column={coordinate.column} row={coordinate.row} coordinate={key} key={key} {...props} />
+          <DroppableCell {...coordinate} coordinate={key} key={key} {...props} />
         )
       })}
     </>
