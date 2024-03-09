@@ -57,10 +57,14 @@ const periodGetters: Record<string, (() => PeriodGetter) | undefined> = {
         }
       })
 
-      return {
-        terms: term === 'ful' ? ['fir', 'sec'] : [term],
-        coordinates,
+      const termList = term === 'ful' ? ['fir', 'sec'] : [term]
+      const period: Period = new Map()
+
+      for (const term of termList) {
+        period.set(term, coordinates)
       }
+
+      return period
     }
   }
 }
@@ -68,3 +72,7 @@ const periodGetters: Record<string, (() => PeriodGetter) | undefined> = {
 const { hostname } = location
 
 export const getPeriod = (periodGetters[hostname] ?? (() => () => null))()
+
+export const getPeriodKey = (year: string | number, term: string) => {
+  return `${year}-${term}`
+}

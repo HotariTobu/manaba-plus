@@ -34,8 +34,8 @@ export const CourseRowBase = (props: {
       </div>
     </div>
     <div className="p-1 border-primary border-s grid items-center justify-center">{props.course.year}</div>
-    <div className="p-1 border-primary border-s flex items-center"><Truncated text={props.course.remarks} /></div>
-    <div className="p-1 border-primary border-s flex items-center"><Truncated text={props.course.teachers} /></div>
+    <div className="p-1 border-primary border-s flex items-center"><Truncated text={props.course.remarks ?? ''} /></div>
+    <div className="p-1 border-primary border-s flex items-center"><Truncated text={props.course.teachers ?? ''} /></div>
   </div>
 )
 

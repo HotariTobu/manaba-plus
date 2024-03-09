@@ -24,11 +24,11 @@ export const CourseCellBase = (props: {
 )
 
 export const CourseCell = (props: {
-  course: Course
-  sortable: boolean
   column: number
   row: number
   span: number
+  course: Course
+  sortable: boolean
 }) => (
   <SortableItem className={cn(props.sortable ? 'cursor-pointer' : 'cursor-auto')} style={{
     gridColumnStart: props.column,

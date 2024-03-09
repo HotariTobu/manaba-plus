@@ -1,7 +1,7 @@
 import type { StorageItem } from "@/types/storageItem";
 import { StorageArea, sync, useStorage } from "./useStorage";
 
-export type StoreItem = StorageItem | Map<StorageItem, StorageItem>
+export type StoreItem = StorageItem | Map<StorageItem, StorageItem> | Set<string | number>
 export type Store = Record<string, StoreItem>
 
 export interface DynamicStoreItem<V extends StoreItem> {
@@ -43,8 +43,20 @@ export const createStore = async <T extends Store>(prefix: string, defaultValues
           return new Map(entries)
         },
         set(value: typeof defaultValue) {
-          const entries = Array.from(value.entries())
+          const entries = Array.from(value)
           set(prefixedKey, entries)
+        },
+      })
+    }
+    else if (defaultValue instanceof Set) {
+      Object.defineProperty(storeBase, key, {
+        get() {
+          const items = get(prefixedKey, defaultValue as never)
+          return new Set(items)
+        },
+        set(value: typeof defaultValue) {
+          const items = Array.from(value)
+          set(prefixedKey, items)
         },
       })
     }
@@ -100,8 +112,23 @@ export const createDynamicStore = async <T extends Store>(prefix: string, defaul
           return new Map(entries)
         },
         set(subKey, value: typeof defaultValue) {
-          const entries = Array.from(value.entries())
+          const entries = Array.from(value)
           set(prefixedKey + subKey, entries)
+        },
+      }
+    }
+    else if (defaultValue instanceof Set) {
+      storeBase[key] = {
+        has(subKey) {
+          return has(prefixedKey + subKey)
+        },
+        get(subKey) {
+          const items = get(prefixedKey + subKey, defaultValue as never)
+          return new Set(items)
+        },
+        set(subKey, value: typeof defaultValue) {
+          const items = Array.from(value)
+          set(prefixedKey + subKey, items)
         },
       }
     }

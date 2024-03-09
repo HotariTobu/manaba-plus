@@ -180,6 +180,10 @@ export const getFiscalYear = (date: Date = new Date()) => {
   return date.getFullYear();
 }
 
+export const getDefaultYear = () => {
+  return getFiscalYear().toString()
+}
+
 
 /**
  * Suffixes of URLs related to status icons.

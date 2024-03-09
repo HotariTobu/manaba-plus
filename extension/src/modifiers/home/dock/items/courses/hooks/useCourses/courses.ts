@@ -1,8 +1,9 @@
 import { f, ff } from "@/utils/element"
-import { getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
-import { Course, DayOfWeek } from "../../types/course"
-import { dynamicStore } from "../../store"
+import { getDefaultYear, getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
+import { Course } from "../../types/course"
+import { dynamicStore, store } from "../../store"
 import { getPeriod } from "../../period"
+import { t } from "@/utils/i18n"
 
 /**
  * Create a function to get attribute values of descendants of the specific element.
@@ -82,7 +83,7 @@ const getThumbnailCourse = (element: Element): Course => {
     icon: a(selectorMap.courses.thumbnail.icon, 'src'),
     title: a(selectorMap.courses.thumbnail.title) ?? '',
 
-    year: toNullableInt(ff(selectorMap.courses.thumbnail.year, element)?.firstChild?.textContent),
+    year: toNullableInt(ff(selectorMap.courses.thumbnail.year, element)?.firstChild?.textContent) ?? getFiscalYear(),
 
     linked: typeof a(selectorMap.courses.thumbnail.linked) === 'string',
     remarks: a(selectorMap.courses.thumbnail.remarks),
@@ -104,7 +105,7 @@ const getListCourse = (element: Element): Course => {
     icon: a(selectorMap.courses.list.icon, 'src'),
     title: a(selectorMap.courses.list.title) ?? '',
 
-    year: toNullableInt(a(selectorMap.courses.list.year)),
+    year: toNullableInt(a(selectorMap.courses.list.year)) ?? getFiscalYear(),
 
     linked: typeof a(selectorMap.courses.list.linked) === 'string',
     remarks: a(selectorMap.courses.list.remarks),
@@ -152,7 +153,60 @@ const initializePeriod = (course: Course) => {
   }
 
   const period = getPeriod(remarks)
+  if (period === null) {
+    return
+  }
+
   dynamicStore.period.set(course.id, period)
+}
+
+const initializeYears = (courses: Course[]) => {
+  const years = new Set<string>()
+
+  for (const course of courses) {
+    if (course.year === null) {
+      continue
+    }
+
+    years.add(course.year.toString())
+  }
+
+  const sorted = Array.from(years).sort()
+
+  if (years.size === 0) {
+    sorted.push(getDefaultYear())
+  }
+
+  store.years = new Set(sorted)
+}
+
+
+const initializeTerms = (courses: Course[]) => {
+  if (store.terms.size > 0) {
+    return
+  }
+
+  const terms = new Set<string>()
+
+  for (const course of courses) {
+    const period = dynamicStore.period.get(course.id)
+    if (period === null) {
+      continue
+    }
+
+    for (const term of period.keys()) {
+      terms.add(term)
+    }
+  }
+
+  const sorted = Array.from(terms).sort()
+
+  if (terms.size === 0) {
+    sorted.push(t('home_courses_default_term'))
+  }
+
+  store.term = sorted[0]
+  store.terms = new Set(sorted)
 }
 
 /**
@@ -165,6 +219,10 @@ export const getCourses = () => {
     ...f(selectorMap.courses.list.source).map(getListCourse),
     ...f(selectorMap.courses.timetable.source).map(getTimetableCourse),
   ]
+
   courses.forEach(initializePeriod)
+  initializeYears(courses)
+  initializeTerms(courses)
+
   return courses
 }

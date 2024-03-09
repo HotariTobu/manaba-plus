@@ -16,10 +16,10 @@ export const CourseCardBase = (props: {
   <div className={cn("rounded border-primary border border-s-4 grid grid-cols-[auto_minmax(9rem,_1fr)_auto] bg-white/40 transition-shadow", props.sortable && 'shadow-lg', props.className)}>
     <CourseIcon className="mx-1 my-auto min-w-[60px] row-span-2" src={props.course.icon} />
     <div className="mt-1 flex flex-col">
-      <div className="h-4">{props.course.code}</div>
+      <div className="h-4">{props.course.code ?? ''}</div>
       <Anchor className="h-4" href={props.course.url}><Truncated text={props.course.title} /></Anchor>
-      <Truncated className="h-4" text={`${props.course.year} ${props.course.remarks}`} />
-      <Truncated className="h-4" text={props.course.teachers} />
+      <Truncated className="h-4" text={`${props.course.year} ${props.course.remarks ?? ''}`} />
+      <Truncated className="h-4" text={props.course.teachers ?? ''} />
     </div>
     <div>
       <CourseStar courseId={props.course.id} />

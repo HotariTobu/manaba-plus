@@ -33,7 +33,7 @@ export interface Course {
   title: string
 
   /** The course's year */
-  year: number | null
+  year: number
 
   /** True if the course is linked to the other course, otherwise false */
   linked: boolean

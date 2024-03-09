@@ -2,14 +2,14 @@ import { Over } from "@dnd-kit/core"
 import { cn } from "@/lib/utils"
 import { DayOfWeek, type Course, days } from "../../types/course"
 import { CourseCell } from "./course-cell"
-import { dynamicStore, sessionStore, store } from "../../store"
+import { dynamicStore } from "../../store"
 import { SortableZone } from "@/components/sortable/sortable-zone"
 import { classNames } from "../zone-color"
 import { SortableItem } from "@/components/sortable/sortable-item"
 import { CourseTimetableHeader } from "./course-timetable-header"
 import { CourseTimetableIndex } from "./course-timetable-index"
 import { Period } from "../../types/period"
-import { Position, getDynamicPosition, positions } from "../../types/position"
+import { Position } from "../../types/position"
 import { Coordinate, fromNumber, toNumber } from "../../types/coordinate"
 import { useState } from "react"
 import { getFiscalYear } from "@/modifiers/home/config"
@@ -78,31 +78,50 @@ const DroppableCell = (props: {
 type CoordinateMap = Map<number, Course>
 type TermMap = Map<string, CoordinateMap>
 
-const getTermMap = (courses: Course[]) => {
-  const termMap: TermMap = new Map()
+// const getTermMap = (courses: Course[]) => {
+//   const termMap: TermMap = new Map()
+
+//   for (const course of courses) {
+//     const period = dynamicStore.period.get(course.id)
+//     if (period === null) {
+//       continue
+//     }
+
+//     const { terms, coordinates } = period
+
+//     for (const term of terms) {
+//       const coordinateMap = termMap.get(term) ?? new Map<number, Course>()
+//       if (!termMap.has(term)) {
+//         termMap.set(term, coordinateMap)
+//       }
+
+//       for (const coordinate of coordinates) {
+//         const key = toNumber(coordinate)
+//         coordinateMap.set(key, course)
+//       }
+//     }
+//   }
+
+//   return termMap
+// }
+
+const getCoordinateMap = (term: string, courses: Course[]) => {
+  const coordinateMap: CoordinateMap = new Map()
 
   for (const course of courses) {
     const period = dynamicStore.period.get(course.id)
-    if (period === null) {
+    const coordinates = period.get(term)
+    if (typeof coordinates === 'undefined') {
       continue
     }
 
-    const { terms, coordinates } = period
-
-    for (const term of terms) {
-      const coordinateMap = termMap.get(term) ?? new Map<number, Course>()
-      if (!termMap.has(term)) {
-        termMap.set(term, coordinateMap)
-      }
-
-      for (const coordinate of coordinates) {
-        const key = toNumber(coordinate)
-        coordinateMap.set(key, course)
-      }
+    for (const coordinate of coordinates) {
+      const key = toNumber(coordinate)
+      coordinateMap.set(key, course)
     }
   }
 
-  return termMap
+  return coordinateMap
 }
 
 /**
@@ -153,56 +172,52 @@ const getBoundingBox = (coordinateMap: CoordinateMap): BoundingBox => {
  * @param rowCount The row count to be filled
  * @returns An array of grid indices of the timetable
  */
-const getEmptyGridIndices = (rects: TimetableRect[], rowCount: number) => {
-  const skipIndexSet = new Set<number>()
-  const rowCounts = days.map(_ => 0)
+// const getEmptyGridIndices = (rects: TimetableRect[], rowCount: number) => {
+//   const skipIndexSet = new Set<number>()
+//   const rowCounts = days.map(_ => 0)
 
-  const preprocessRect = (rect: TimetableRect) => {
-    const { column, row, span } = rect
-    if (row === null) {
-      const rowStart = rowCounts[column]
-      rowCounts[column] += span
-      return {
-        column,
-        row: rowStart,
-        span,
-      }
-    }
-    else {
-      return {
-        column,
-        row,
-        span,
-      }
-    }
-  }
+//   const preprocessRect = (rect: TimetableRect) => {
+//     const { column, row, span } = rect
+//     if (row === null) {
+//       const rowStart = rowCounts[column]
+//       rowCounts[column] += span
+//       return {
+//         column,
+//         row: rowStart,
+//         span,
+//       }
+//     }
+//     else {
+//       return {
+//         column,
+//         row,
+//         span,
+//       }
+//     }
+//   }
 
-  for (const rect of rects) {
-    const { column, row, span } = preprocessRect(rect)
+//   for (const rect of rects) {
+//     const { column, row, span } = preprocessRect(rect)
 
-    for (let offset = 0; offset < span; offset++) {
-      const index = column + (row + offset) * DayOfWeek.Count
-      skipIndexSet.add(index)
-    }
-  }
+//     for (let offset = 0; offset < span; offset++) {
+//       const index = column + (row + offset) * DayOfWeek.Count
+//       skipIndexSet.add(index)
+//     }
+//   }
 
-  const indices = [...new Array(rowCount * DayOfWeek.Count).keys()]
-  const emptyIndices = indices.filter(index => !skipIndexSet.has(index))
-  return emptyIndices
-}
+//   const indices = [...new Array(rowCount * DayOfWeek.Count).keys()]
+//   const emptyIndices = indices.filter(index => !skipIndexSet.has(index))
+//   return emptyIndices
+// }
 
 export const CourseTimetable = (props: {
-  coursesMap: ItemsMap<Course>
+  term: string
+  position: Position
+  courses: Course[]
   sortable: boolean
 }) => {
-  const [year, setYear] = useState(getFiscalYear().toString())
-  const [term, setTerm] = useState(store.term)
-
-  const position = getDynamicPosition('main', year, term)
-  const courses = props.coursesMap.get(position)
-
-  const termMap = getTermMap(props.courses)
-  const boundingBox = getBoundingBox()
+  const coordinateMap = getCoordinateMap(props.term, props.courses)
+  const boundingBox = getBoundingBox(coordinateMap)
 
   // Show all columns and rows in sorting, otherwise omit empty ones.
   if (props.sortable) {
@@ -211,44 +226,31 @@ export const CourseTimetable = (props: {
     boundingBox.top = 0
     boundingBox.width = DayOfWeek.Count
   }
-  else if (boundingBox.width === 0) {
+  else if (boundingBox.width === 0 || boundingBox.height === 0) {
     return
   }
 
   const { left, top, width, height } = boundingBox
 
   return (
-    <div>
-      <div>
-        <Select value={year} onValueChange={setYear}>
-          <SelectTrigger>
-            <SelectValue placeholder={t('home_courses_course_year')} />
-          </SelectTrigger>
-          <SelectContent>
-            {sessionStore.years.map(year => (
-              <SelectItem value={year}>{year}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className={cn("gap-1 grid overflow-x-auto", props.sortable && 'pe-2 pb-2')} style={{
-        gridTemplateColumns: `auto repeat(${width}, 1fr)`,
-        gridTemplateRows: `auto ${'1fr '.repeat(height)} minmax(0, auto) ${'1fr '.repeat(otherRowCount)}`,
-      }}>
-        <CourseTimetableHeader columnCount={width} startColumn={left} />
-        <CourseTimetableIndex rowCount={height} startRow={top} />
+    <div className={cn("gap-1 grid overflow-x-auto", props.sortable && 'pe-2 pb-2')} style={{
+      gridTemplateColumns: `auto repeat(${width}, 1fr)`,
+      gridTemplateRows: `auto repeat(${height}, 1fr`,
+    }}>
+      <CourseTimetableHeader columnCount={width} startColumn={left} />
+      <CourseTimetableIndex rowCount={height} startRow={top} />
 
-        <SortableZone className={cn("col-start-2 col-end-[-1] row-start-2 grid grid-cols-subgrid grid-rows-subgrid", props.sortable && classNames.main)} containerId='main' items={props.main} disabled={!props.sortable} style={{
-          gridRowEnd: `span ${height}`
-        }}>
-          {props.main.map(course => (
-            <CourseCell column={left} startRow={top} course={course} sortable={props.sortable} key={course.id} />
-          ))}
-          {mainDroppableData.map(gridIndex => (
-            <DroppableCell data={{ [droppableCellId]: { gridIndex, noRow: false } }} key={gridIndex} />
-          ))}
-        </SortableZone>
-      </div>
+      <SortableZone className={cn("col-start-2 col-end-[-1] row-start-2 grid grid-cols-subgrid grid-rows-subgrid", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable}>
+        {Array.from(coordinateMap).map(([key, course]) => {
+          const { column, row } = fromNumber(key)
+          return (
+            <CourseCell column={column - left + 1} row={row - top + 1} span={1} course={course} sortable={props.sortable} key={key} />
+          )
+        })}
+        {/* {mainDroppableData.map(gridIndex => (
+          <DroppableCell data={{ [droppableCellId]: { gridIndex, noRow: false } }} key={gridIndex} />
+        ))} */}
+      </SortableZone>
     </div>
   )
 }
