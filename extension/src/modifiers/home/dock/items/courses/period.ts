@@ -1,3 +1,4 @@
+import { toNumber } from "./types/coordinate"
 import { Period } from "./types/period"
 
 type PeriodGetter = (remarks: string) => Period | null
@@ -61,7 +62,7 @@ const periodGetters: Record<string, (() => PeriodGetter) | undefined> = {
       const period: Period = new Map()
 
       for (const term of termList) {
-        period.set(term, coordinates)
+        period.set(term, coordinates.map(toNumber))
       }
 
       return period

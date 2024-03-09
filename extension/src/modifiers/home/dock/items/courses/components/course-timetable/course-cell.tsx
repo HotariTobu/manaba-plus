@@ -5,6 +5,13 @@ import { Course } from "../../types/course"
 import { CourseLink } from "../course-link"
 import { CourseStar } from "../course-star"
 import { CourseStatus } from "../course-status"
+import { defineCustomSortableData } from "@/utils/defineCustomSortableData"
+
+interface CourseCellData {
+  coordinate: Number
+}
+
+export const [, createCourseCellData, getCourseCellData] = defineCustomSortableData<CourseCellData>()
 
 export const CourseCellBase = (props: {
   course: Course
@@ -23,7 +30,7 @@ export const CourseCellBase = (props: {
   </div>
 )
 
-export const CourseCell = (props: {
+export const CourseCell = (props: CourseCellData & {
   column: number
   row: number
   span: number
@@ -31,13 +38,19 @@ export const CourseCell = (props: {
   sortable: boolean
 }) => (
   <SortableItem className={cn(props.sortable ? 'cursor-pointer' : 'cursor-auto')} style={{
-    gridColumnStart: props.column,
-    gridRowStart: props.row,
+    gridColumnStart: props.column + 1,
+    gridRowStart: props.row + 1,
     gridRowEnd: `span ${props.span}`,
+
+
+    opacity: 1
+
+
+
   }} item={props.course} disabled={{
     draggable: !props.sortable,
     droppable: true,
-  }}>
+  }} data={createCourseCellData(props)}>
     <CourseCellBase course={props.course} sortable={props.sortable} />
   </SortableItem>
 )

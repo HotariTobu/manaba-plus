@@ -190,6 +190,9 @@ export const SortableContainer = <I extends Item>({
     }
 
     const item = from.items[from.index]
+    if (typeof item === 'undefined') {
+      return
+    }
 
     const newFromItems = arrayRemove(from.items, from.index)
     const newToItems = arrayInsert(to.items, to.index, item)
