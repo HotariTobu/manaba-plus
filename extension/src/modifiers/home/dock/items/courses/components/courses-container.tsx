@@ -24,7 +24,7 @@ const Overlay = (props: {
   item: Course
 }) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2" course={props.item} sortable />
 
-const createDragOverHandler = (defaultHandler: DragOver) => {
+const createDragEndHandler = (defaultHandler: DragOver) => {
   return (event: DragOverEvent) => {
     const droppableCellData = getDroppableCellData(event.over)
     if (droppableCellData !== null) {
@@ -52,8 +52,6 @@ const createDragOverHandler = (defaultHandler: DragOver) => {
       }
 
       dynamicStore.period.set(courseId, period)
-
-      console.log(term, newCoordinate, period, coordinates, courseCellData?.coordinate)
     }
 
     defaultHandler(event)
@@ -109,7 +107,7 @@ export const CoursesContainer = () => {
         </div>
       )}
       <div {...longPress}>
-        <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d} createDragOverHandler={createDragOverHandler}>
+        <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d} createDragEndHandler={createDragEndHandler}>
           <CourseTimetable term={term} position="timetable" courses={timetable} sortable={sortable} />
 
           <Tabs className="mt-2" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>

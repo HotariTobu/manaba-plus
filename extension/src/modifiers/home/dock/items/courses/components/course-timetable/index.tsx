@@ -21,11 +21,13 @@ interface BoundingBox {
 
 const getCoordinateMap = (term: string, courses: Course[]) => {
   const coordinateMap: Map<number, Course> = new Map()
+  const noCoordinateCourses: Course[] = []
 
   for (const course of courses) {
     const period = dynamicStore.period.get(course.id)
     const coordinates = period.get(term)
     if (typeof coordinates === 'undefined') {
+      noCoordinateCourses.push(course)
       continue
     }
 
@@ -34,7 +36,10 @@ const getCoordinateMap = (term: string, courses: Course[]) => {
     }
   }
 
-  return coordinateMap
+  return {
+    coordinateMap,
+    noCoordinateCourses,
+  }
 }
 
 /**
@@ -85,7 +90,10 @@ export const CourseTimetable = (props: {
   courses: Course[]
   sortable: boolean
 }) => {
-  const coordinateMap = getCoordinateMap(props.term, props.courses)
+  const { coordinateMap, noCoordinateCourses } = getCoordinateMap(props.term, props.courses)
+
+  console.log(noCoordinateCourses)
+
   const boundingBox = getBoundingBox(coordinateMap)
 
   // Show all columns and rows in sorting, otherwise omit empty ones.
@@ -102,16 +110,16 @@ export const CourseTimetable = (props: {
   const { left, top, width, height } = boundingBox
 
   return (
-    <div className={cn("gap-1 grid overflow-x-auto", props.sortable && 'pe-2 pb-2')} style={{
+    <SortableZone className={cn("gap-1 grid overflow-x-auto", props.sortable && classNames[props.position])} style={{
       gridTemplateColumns: `auto repeat(${width}, 1fr)`,
       gridTemplateRows: `auto repeat(${height}, 1fr`,
-    }}>
+    }} containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSwappingStrategy}>
       <CourseTimetableHeader startColumn={left} columnCount={width} />
       <CourseTimetableIndex startRow={top} rowCount={height} />
-      <SortableZone className={cn("col-start-2 col-end-[-1] row-start-2 row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSwappingStrategy}>
+      <div className={cn("col-start-2 col-end-[-1] row-start-2 row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid")}>
         <DroppableCells term={props.term} rowCount={height} sortable={props.sortable} disabledAt={coordinate => coordinateMap.has(coordinate)} />
         <CourseCells coordinateMap={coordinateMap} startColumn={left} startRow={top} sortable={props.sortable} />
-      </SortableZone>
-    </div>
+      </div>
+    </SortableZone>
   )
 }
