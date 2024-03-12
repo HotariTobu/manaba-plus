@@ -8,7 +8,7 @@ export const arrangeMap = defineArrangeMap({
   contents: {
     notes: {
       selector: '.coursememo',
-      className: 'min-h-4 p-2 m-0 rounded overflow-hidden'
+      className: 'min-h-4 p-2 m-0 rounded-md overflow-hidden'
     },
     alertList: {
       selector: '.alertlist div',
@@ -17,7 +17,7 @@ export const arrangeMap = defineArrangeMap({
     myInfoList: {
       container: {
         selector: '.my-infolist',
-        className: 'border border-primary border-solid rounded-lg overflow-hidden'
+        className: 'border border-primary border-solid rounded-md overflow-hidden'
       },
       children: {
         selector: '.my-infolist *',

@@ -50,6 +50,12 @@
   "home_courses_default_term": {
     "message": "Default"
   },
+  "home_courses_term_fir": {
+    "message": "1st sem"
+  },
+  "home_courses_term_sec": {
+    "message": "2nd sem"
+  },
   "home_courses_cards": {
     "message": "Cards"
   },

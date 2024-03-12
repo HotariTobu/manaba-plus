@@ -15,13 +15,14 @@ import { CourseList } from "./course-list"
 import { useRef } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useDndContext } from "@dnd-kit/core"
+import { YearTermSelect } from "./year-term-select"
 
 const Overlay = (props: {
   item: Course
 }) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2" course={props.item} sortable />
 
 export const CoursesContainer = () => {
-  const { coursesMap, setCoursesMap, storeCoursesMap, year, setYear, term, setTerm } = useCourses()
+  const { coursesMap, setCoursesMap, storeCoursesMap, ...selectProps } = useCourses()
 
   const { status, setStatus } = usePageContext()
   const dragging = useRef(false)
@@ -57,34 +58,19 @@ export const CoursesContainer = () => {
   // console.warn('')
 
   return (
-    <>
-      {sortable && (
-        <div>
-          <Select value={year} onValueChange={setYear}>
-            <SelectTrigger>
-              <SelectValue placeholder={t('home_courses_course_year')} />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from(store.years).map(year => (
-                <SelectItem value={year} key={year}>{year}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {Array.from(store.terms).map(term => (
-            <div key={term}>{term}</div>
-          ))}
-        </div>
-      )}
-      <div {...longPress}>
+    <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")}>
+      <YearTermSelect {...selectProps} />
+      {/* {sortable && <YearTermSelect {...selectProps} />} */}
+      <div className="contents" {...longPress}>
         <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>
-          <CourseTimetable term={term} position="timetable" courses={timetable} sortable={sortable} />
+          <CourseTimetable term={selectProps.term} position="timetable" courses={timetable} sortable={sortable} />
 
-          <Tabs className="mt-2" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
-            <TabsList className="bg-primary">
+          <Tabs className="contents" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
+            <TabsList className="bg-primary me-auto">
               <TabsTrigger value="cards">{t('home_courses_cards')}</TabsTrigger>
               <TabsTrigger value="list">{t('home_courses_list')}</TabsTrigger>
             </TabsList>
-            <TabsContent className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")} value="cards">
+            <TabsContent className="contents" value="cards">
               <CourseCards position="current" courses={current} sortable={sortable} />
               <CourseCards position="other" courses={other} sortable={sortable} />
               <CourseCards position="rest" courses={rest} sortable={sortable} />
@@ -92,7 +78,7 @@ export const CoursesContainer = () => {
                 <CourseCards position="trash" courses={trash} sortable={sortable} />
               </Trash>
             </TabsContent>
-            <TabsContent className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")} value="list">
+            <TabsContent className="contents" value="list">
               <CourseList position="current" courses={current} sortable={sortable} />
               <CourseList position="other" courses={other} sortable={sortable} />
               <CourseList position="rest" courses={rest} sortable={sortable} />
@@ -103,6 +89,6 @@ export const CoursesContainer = () => {
           </Tabs >
         </SortableContainer>
       </div>
-    </>
+    </div>
   )
 }

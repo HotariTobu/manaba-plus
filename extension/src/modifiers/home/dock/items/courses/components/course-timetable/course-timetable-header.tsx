@@ -21,7 +21,7 @@ export const CourseTimetableHeader = (props: {
     {[...Array(props.columnCount).keys()].map(i => {
       const day = props.startColumn + i
       return (
-        <div className="p-2 text-center font-bold rounded bg-primary text-primary-foreground" key={day}>
+        <div className="p-2 text-center font-bold rounded-md bg-primary text-primary-foreground" key={day}>
           {headers[day as DayOfWeek]}
         </div>
       )

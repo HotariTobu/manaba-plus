@@ -95,7 +95,7 @@ export const ActiveCell = (props: {
   }
 
   return (
-    <div className=" bg-cyan-400/50" style={{
+    <div className="bg-primary/30" style={{
       gridColumnStart: activeCoordinate.column + 1,
       gridRowStart: activeCoordinate.row + 1,
     }} />

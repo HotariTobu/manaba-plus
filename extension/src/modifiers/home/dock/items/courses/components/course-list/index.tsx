@@ -4,6 +4,7 @@ import { type Course } from "../../types/course"
 import { Position } from "../../types/position"
 import { CourseHeader, CourseRow } from "./course-row"
 import { classNames } from "../zone-color"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 export const CourseList = (props: {
   position: Position
@@ -15,8 +16,8 @@ export const CourseList = (props: {
   }
 
   return (
-    <div className={cn("rounded-lg border-primary border overflow-hidden", props.sortable && classNames[props.position])}>
-      <SortableZone className="overflow-x-auto" containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable}>
+    <ScrollArea className={cn("rounded-md border-primary border", props.sortable && classNames[props.position])}>
+      <SortableZone containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable}>
         <div className={cn("grid-cols-[4fr_auto_minmax(4rem,_1fr)_minmax(4rem,_1fr)] grid", props.sortable && 'gap-y-2')}>
           <CourseHeader />
           {props.courses.map(course => (
@@ -24,6 +25,7 @@ export const CourseList = (props: {
           ))}
         </div>
       </SortableZone>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   )
 }

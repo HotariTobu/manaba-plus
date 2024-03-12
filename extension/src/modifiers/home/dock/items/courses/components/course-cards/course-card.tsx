@@ -13,7 +13,7 @@ export const CourseCardBase = (props: {
   sortable: boolean
   className?: string
 }) => (
-  <div className={cn("rounded border-primary border border-s-4 grid grid-cols-[auto_minmax(9rem,_1fr)_auto] bg-white/40 transition-shadow", props.sortable && 'shadow-lg', props.className)}>
+  <div className={cn("rounded-md border-primary border border-s-4 grid grid-cols-[auto_minmax(9rem,_1fr)_auto] bg-white/40 transition-shadow", props.sortable && 'shadow-lg', props.className)}>
     <CourseIcon className="mx-1 my-auto min-w-[60px] row-span-2" src={props.course.icon} />
     <div className="mt-1 flex flex-col">
       <div className="h-4">{props.course.code ?? ''}</div>

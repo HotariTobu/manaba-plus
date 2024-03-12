@@ -182,11 +182,7 @@ const initializeYears = (courses: Course[]) => {
 
 
 const initializeTerms = (courses: Course[]) => {
-  if (store.terms.size > 0) {
-    return
-  }
-
-  const terms = new Set<string>()
+  const terms = new Set<string>(store.terms)
 
   for (const course of courses) {
     const period = dynamicStore.period.get(course.id)
