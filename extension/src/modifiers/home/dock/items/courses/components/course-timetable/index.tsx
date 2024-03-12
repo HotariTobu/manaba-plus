@@ -10,6 +10,7 @@ import { fromNumber } from "../../types/coordinate"
 import { CourseCells } from "./course-cells"
 import { DroppableCells } from "./droppable-cells"
 import { rectSwappingStrategy } from "@dnd-kit/sortable"
+import { ActiveCell } from "./active-cell"
 
 /** Bounding box of courses */
 interface BoundingBox {
@@ -117,8 +118,9 @@ export const CourseTimetable = (props: {
       <CourseTimetableHeader startColumn={left} columnCount={width} />
       <CourseTimetableIndex startRow={top} rowCount={height} />
       <div className={cn("col-start-2 col-end-[-1] row-start-2 row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid")}>
-        <DroppableCells term={props.term} rowCount={height} sortable={props.sortable} disabledAt={coordinate => coordinateMap.has(coordinate)} />
+        <DroppableCells rowCount={height} sortable={props.sortable} />
         <CourseCells coordinateMap={coordinateMap} startColumn={left} startRow={top} sortable={props.sortable} />
+        <ActiveCell term={props.term} disabledAt={coordinate => coordinateMap.has(coordinate)} />
       </div>
     </SortableZone>
   )

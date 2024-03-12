@@ -1,62 +1,23 @@
-import { DragOverEvent } from "@dnd-kit/core"
 import { t } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { DragOver, SortableContainer } from "@/components/sortable/sortable-container"
-import { ItemsMap } from "@/components/sortable/item"
+import { SortableContainer } from "@/components/sortable/sortable-container"
 import { useLongPress } from "@/hooks/useLongPress"
 import { usePageContext } from "../../../hooks/usePageContext"
 import { Trash } from "../../../components/trash"
-import { Course, DayOfWeek } from "../types/course"
+import { Course } from "../types/course"
 import { useCourses } from "../hooks/useCourses"
-import { dynamicStore, store } from "../store"
+import { store } from "../store"
 import { CourseCardBase } from "./course-cards/course-card"
 import { CourseTimetable } from "./course-timetable"
 import { CourseCards } from "./course-cards"
 import { CourseList } from "./course-list"
-import { memo, useEffect, useRef, useState } from "react"
-import { getFiscalYear } from "../../../../config"
+import { useRef } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getDroppableCellData } from "./course-timetable/droppable-cell"
-import { getCourseCellData } from "./course-timetable/course-cell"
 
 const Overlay = (props: {
   item: Course
 }) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2" course={props.item} sortable />
-
-const createDragEndHandler = (defaultHandler: DragOver) => {
-  return (event: DragOverEvent) => {
-    const droppableCellData = getDroppableCellData(event.over)
-    if (droppableCellData !== null) {
-      const { term, coordinate: newCoordinate, disabledAt } = droppableCellData
-      if (disabledAt(newCoordinate)) {
-        return
-      }
-
-      const { id: courseId } = event.active
-      if (typeof courseId === 'number') {
-        return
-      }
-
-      const courseCellData = getCourseCellData(event.active)
-      const period = dynamicStore.period.get(courseId)
-
-      const coordinates = period.get(term)
-      if (typeof coordinates === 'undefined') {
-        period.set(term, [newCoordinate])
-      }
-      else {
-        const newCoordinates = coordinates.filter(c => c !== courseCellData?.coordinate)
-        newCoordinates.push(newCoordinate)
-        period.set(term, newCoordinates)
-      }
-
-      dynamicStore.period.set(courseId, period)
-    }
-
-    defaultHandler(event)
-  }
-}
 
 export const CoursesContainer = () => {
   const { coursesMap, setCoursesMap, storeCoursesMap, year, setYear, term, setTerm } = useCourses()
@@ -107,7 +68,7 @@ export const CoursesContainer = () => {
         </div>
       )}
       <div {...longPress}>
-        <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d} createDragEndHandler={createDragEndHandler}>
+        <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>
           <CourseTimetable term={term} position="timetable" courses={timetable} sortable={sortable} />
 
           <Tabs className="mt-2" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>

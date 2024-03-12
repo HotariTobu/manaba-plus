@@ -1,4 +1,4 @@
-import { CSSProperties, DependencyList, HtmlHTMLAttributes, useEffect, useRef, useState } from "react";
+import { CSSProperties, DependencyList, HtmlHTMLAttributes, useLayoutEffect, useRef, useState } from "react";
 import { Collision, Over, UniqueIdentifier, UseDroppableArguments, useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -60,7 +60,7 @@ const useMinSize = (widthEnabled: boolean, heightEnabled: boolean, deps?: Depend
     ref.current.element = element
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const { element, last } = ref.current
     if (element === null) {
       return

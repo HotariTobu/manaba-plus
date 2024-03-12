@@ -41,12 +41,6 @@ export const CourseCell = (props: CourseCellData & {
     gridColumnStart: props.column + 1,
     gridRowStart: props.row + 1,
     gridRowEnd: `span ${props.span}`,
-
-
-    opacity: 1
-
-
-
   }} item={props.course} disabled={{
     draggable: !props.sortable,
     droppable: true,

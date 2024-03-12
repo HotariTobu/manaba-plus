@@ -1,12 +1,10 @@
 import { Coordinate, toNumber } from "../../types/coordinate"
 import { days } from "../../types/course"
-import { DisabledAt, DroppableCell } from "./droppable-cell"
+import { DroppableCell } from "./droppable-cell"
 
 export const DroppableCells = (props: {
-  term: string
   rowCount: number
   sortable: boolean
-  disabledAt: DisabledAt
 }) => {
   if (!props.sortable) {
     return

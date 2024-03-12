@@ -1,13 +1,10 @@
 import { SortableItem } from "@/components/sortable/sortable-item"
-import { cn } from "@/lib/utils"
 import { defineCustomSortableData } from "@/utils/defineCustomSortableData"
 
 export type DisabledAt = (coordinate: number) => boolean
 
 interface DroppableCellData {
-  term: string
   coordinate: number
-  disabledAt: DisabledAt
 }
 
 export const [droppableCellDataId, createDroppableCellData, getDroppableCellData] = defineCustomSortableData<DroppableCellData>()
@@ -16,25 +13,13 @@ export const [droppableCellDataId, createDroppableCellData, getDroppableCellData
 export const DroppableCell = (props: DroppableCellData & {
   column: number
   row: number
-}) => {
-  const item = {
+}) => (
+  <SortableItem className='cursor-auto' data={createDroppableCellData(props)} item={{
     id: `${droppableCellDataId}-${JSON.stringify(props.coordinate)}`,
-  }
-
-  const className = () => {
-    debug: {
-      return "bg-blue-200 text-xl flex justify-center items-center"
-    }
-  }
-
-  return (
-    <SortableItem className={cn('cursor-auto', className())} item={item} data={createDroppableCellData(props)} disabled={{
-      draggable: true,
-    }} style={{
-      gridColumnStart: props.column + 1,
-      gridRowStart: props.row + 1,
-    }}>
-      {props.coordinate}
-    </SortableItem>
-  )
-}
+  }} disabled={{
+    draggable: true,
+  }} style={{
+    gridColumnStart: props.column + 1,
+    gridRowStart: props.row + 1,
+  }} />
+)
