@@ -14,6 +14,7 @@ import { CourseCards } from "./course-cards"
 import { CourseList } from "./course-list"
 import { useRef } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useDndContext } from "@dnd-kit/core"
 
 const Overlay = (props: {
   item: Course
@@ -47,6 +48,13 @@ export const CoursesContainer = () => {
   const other = coursesMap.get('other') ?? []
   const rest = coursesMap.get('rest') ?? []
   const trash = coursesMap.get('trash') ?? []
+
+  // console.log('timetable', timetable)
+  // console.log('current', current)
+  // console.log('other', other)
+  // console.log('rest', rest)
+  // console.log('trash', trash)
+  // console.warn('')
 
   return (
     <>

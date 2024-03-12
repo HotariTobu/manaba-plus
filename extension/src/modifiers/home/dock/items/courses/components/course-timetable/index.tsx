@@ -108,6 +108,10 @@ export const CourseTimetable = (props: {
 
   const { left, top, width, height } = boundingBox
 
+  // console.log(props.courses)
+  // console.log([...coordinateMap.entries()])
+  // console.log(noCoordinateCourses)
+
   return (
     <SortableZone className={cn("gap-2 flex flex-col overflow-x-auto", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy}>
       <div className="gap-1 grid" style={{

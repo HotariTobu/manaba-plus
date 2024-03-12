@@ -26,6 +26,11 @@ export const ActiveCell = (props: {
   }
 
   const onDragOver = (event: DragOverEvent) => {
+    // console.log(event.active.data.current)
+    // console.log(event.over?.data.current)
+    // console.error('')
+    // console.log(event.collisions)
+
     const droppableCellData = getDroppableCellData(event.over)
     if (droppableCellData === null) {
       setActiveCoordinate(null)
@@ -42,8 +47,6 @@ export const ActiveCell = (props: {
   }
 
   const onDragEnd = (event: DragEndEvent) => {
-    // console.log(event.active.data.current)
-    // console.log(event.over?.data.current)
     onDeactivate()
 
     const { id: courseId } = event.active
