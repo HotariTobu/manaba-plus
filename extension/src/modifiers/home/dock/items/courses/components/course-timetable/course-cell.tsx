@@ -48,3 +48,15 @@ export const CourseCell = (props: CourseCellData & {
     <CourseCellBase course={props.course} sortable={props.sortable} />
   </SortableItem>
 )
+
+export const LostCourseCell = (props: {
+  course: Course
+  sortable: boolean
+}) => (
+  <SortableItem className={cn(props.sortable ? 'cursor-pointer' : 'cursor-auto')} item={props.course} disabled={{
+    draggable: !props.sortable,
+    droppable: true,
+  }}>
+    <CourseCellBase course={props.course} sortable={props.sortable} />
+  </SortableItem>
+)

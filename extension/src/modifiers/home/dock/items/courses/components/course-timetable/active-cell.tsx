@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Coordinate, fromNumber, toNumber } from "../../types/coordinate"
-import { DragEndEvent, DragOverEvent, useDndMonitor } from "@dnd-kit/core"
+import { Active, DragEndEvent, DragOverEvent, useDndMonitor } from "@dnd-kit/core"
 import { DisabledAt, getDroppableCellData } from "./droppable-cell"
 import { getCourseCellData } from "./course-cell"
 import { dynamicStore } from "../../store"
@@ -11,56 +11,71 @@ export const ActiveCell = (props: {
 }) => {
   const [activeCoordinate, setActiveCoordinate] = useState<Coordinate | null>(null)
 
-  const onDragOver = (event: DragOverEvent) => {
-    const droppableCellData = getDroppableCellData(event.over)
-    if (droppableCellData === null) {
-      return
+  const getCoordinate = (active: Active) => {
+    const courseCellData = getCourseCellData(active)
+    if (courseCellData === null) {
+      return null
     }
-
-    const { coordinate } = droppableCellData
-    if (props.disabledAt(coordinate)) {
-      return
+    else {
+      return courseCellData.coordinate
     }
-
-    setActiveCoordinate(fromNumber(coordinate))
   }
 
   const onDeactivate = () => {
     setActiveCoordinate(null)
   }
 
-  const onDragEnd = (event: DragEndEvent) => {
-    onDeactivate()
-
-    if (activeCoordinate === null) {
+  const onDragOver = (event: DragOverEvent) => {
+    const droppableCellData = getDroppableCellData(event.over)
+    if (droppableCellData === null) {
+      setActiveCoordinate(null)
       return
     }
 
-    const newCoordinate = toNumber(activeCoordinate)
+    const currentCoordinate = getCoordinate(event.active)
+    const { coordinate } = droppableCellData
+    if (currentCoordinate !== coordinate && props.disabledAt(coordinate)) {
+      return
+    }
+
+    setActiveCoordinate(fromNumber(coordinate))
+  }
+
+  const onDragEnd = (event: DragEndEvent) => {
+    // console.log(event.active.data.current)
+    // console.log(event.over?.data.current)
+    onDeactivate()
 
     const { id: courseId } = event.active
     if (typeof courseId === 'number') {
       return
     }
 
-    const courseCellData = getCourseCellData(event.active)
-    const currentCoordinate = courseCellData?.coordinate ?? NaN
-
     // Update the course period.
     const period = dynamicStore.period.get(courseId)
 
-    // Add a new coordinate.
-    const coordinates = period.get(props.term)
-    if (typeof coordinates === 'undefined') {
-      period.set(props.term, [newCoordinate])
+    if (activeCoordinate === null) {
+      // Dropped out of timetable.
+      // Remove all coordinates in the same term.
+      period.delete(props.term)
     }
     else {
-      // Remove the current coordinate.
-      const newCoordinates = coordinates.filter(
-        coordinate => coordinate !== currentCoordinate
-      )
-      newCoordinates.push(newCoordinate)
-      period.set(props.term, newCoordinates)
+      // Add a new coordinate.
+      const currentCoordinate = getCoordinate(event.active)
+      const newCoordinate = toNumber(activeCoordinate)
+
+      const coordinates = period.get(props.term)
+      if (typeof coordinates === 'undefined') {
+        period.set(props.term, [newCoordinate])
+      }
+      else {
+        // Remove the current coordinate.
+        const newCoordinates = coordinates.filter(
+          coordinate => coordinate !== currentCoordinate
+        )
+        newCoordinates.push(newCoordinate)
+        period.set(props.term, newCoordinates)
+      }
     }
 
     dynamicStore.period.set(courseId, period)

@@ -11,6 +11,7 @@ import { CourseCells } from "./course-cells"
 import { DroppableCells } from "./droppable-cells"
 import { rectSwappingStrategy } from "@dnd-kit/sortable"
 import { ActiveCell } from "./active-cell"
+import { LostCourseCell } from "./course-cell"
 
 /** Bounding box of courses */
 interface BoundingBox {
@@ -92,9 +93,6 @@ export const CourseTimetable = (props: {
   sortable: boolean
 }) => {
   const { coordinateMap, noCoordinateCourses } = getCoordinateMap(props.term, props.courses)
-
-  console.log(noCoordinateCourses)
-
   const boundingBox = getBoundingBox(coordinateMap)
 
   // Show all columns and rows in sorting, otherwise omit empty ones.
@@ -111,17 +109,26 @@ export const CourseTimetable = (props: {
   const { left, top, width, height } = boundingBox
 
   return (
-    <SortableZone className={cn("gap-1 grid overflow-x-auto", props.sortable && classNames[props.position])} style={{
-      gridTemplateColumns: `auto repeat(${width}, 1fr)`,
-      gridTemplateRows: `auto repeat(${height}, 1fr`,
-    }} containerId={props.position} items={props.courses} disabled={!props.sortable} strategy={rectSwappingStrategy}>
-      <CourseTimetableHeader startColumn={left} columnCount={width} />
-      <CourseTimetableIndex startRow={top} rowCount={height} />
-      <div className={cn("col-start-2 col-end-[-1] row-start-2 row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid")}>
-        <DroppableCells rowCount={height} sortable={props.sortable} />
-        <CourseCells coordinateMap={coordinateMap} startColumn={left} startRow={top} sortable={props.sortable} />
-        <ActiveCell term={props.term} disabledAt={coordinate => coordinateMap.has(coordinate)} />
+    <SortableZone className={cn("gap-2 flex flex-col overflow-x-auto", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy}>
+      <div className="gap-1 grid" style={{
+        gridTemplateColumns: `auto repeat(${width}, 1fr)`,
+        gridTemplateRows: `auto repeat(${height}, 1fr`,
+      }}>
+        <CourseTimetableHeader startColumn={left} columnCount={width} />
+        <CourseTimetableIndex startRow={top} rowCount={height} />
+        <div className={cn("col-start-2 col-end-[-1] row-start-2 row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid")}>
+          <DroppableCells rowCount={height} sortable={props.sortable} />
+          <CourseCells coordinateMap={coordinateMap} startColumn={left} startRow={top} sortable={props.sortable} />
+          <ActiveCell term={props.term} disabledAt={coordinate => coordinateMap.has(coordinate)} />
+        </div>
       </div>
+      {props.sortable && (
+        <div className="mt-auto flex">
+          {noCoordinateCourses.map(course => (
+            <LostCourseCell course={course} sortable={props.sortable} key={course.id} />
+          ))}
+        </div>
+      )}
     </SortableZone>
   )
 }

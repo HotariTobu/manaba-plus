@@ -1,4 +1,4 @@
-import { CSSProperties, DependencyList, HtmlHTMLAttributes, useLayoutEffect, useRef, useState } from "react";
+import { CSSProperties, HtmlHTMLAttributes, useEffect, useRef, useState } from "react";
 import { Collision, Over, UniqueIdentifier, UseDroppableArguments, useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -38,7 +38,7 @@ interface SortableColumnProps extends Omit<SortableContextProps, 'id'> {
   droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className' | 'style'>
 }
 
-const useMinSize = (widthEnabled: boolean, heightEnabled: boolean, deps?: DependencyList) => {
+const useMinSize = (widthEnabled: boolean, heightEnabled: boolean) => {
   const [minWidth, setMinWidth] = useState(0)
   const [minHeight, setMinHeight] = useState(0)
 
@@ -60,7 +60,7 @@ const useMinSize = (widthEnabled: boolean, heightEnabled: boolean, deps?: Depend
     ref.current.element = element
   }
 
-  useLayoutEffect(() => {
+  const updateMinSize = () => {
     const { element, last } = ref.current
     if (element === null) {
       return
@@ -93,7 +93,18 @@ const useMinSize = (widthEnabled: boolean, heightEnabled: boolean, deps?: Depend
       last.height = 0
       setMinHeight(0)
     }
-  }, [widthEnabled, heightEnabled, ...(deps ?? [])])
+  }
+
+  useEffect(() => {
+    const { element } = ref.current
+    if (element === null) {
+      return
+    }
+
+    const observer = new ResizeObserver(updateMinSize)
+    observer.observe(element)
+    return () => observer.unobserve(element)
+  }, [widthEnabled, heightEnabled])
 
   return {
     setNodeRef,
@@ -107,7 +118,7 @@ const useMinSize = (widthEnabled: boolean, heightEnabled: boolean, deps?: Depend
 export const SortableZone = ({ containerId, items, strategy = verticalListSortingStrategy, growOnlyWidth = false, growOnlyHeight = false, className, style, useDroppableProps = {}, droppableDivProps, children, ...props }: SortableColumnProps) => {
   const { data: useDroppableData, ...useDroppableRestProps } = useDroppableProps
 
-  const { setNodeRef: setRef1, minSizeStyle } = useMinSize(growOnlyWidth, growOnlyHeight, [items.length])
+  const { setNodeRef: setRef1, minSizeStyle } = useMinSize(growOnlyWidth, growOnlyHeight)
   const { setNodeRef: setRef2 } = useDroppable({
     id: containerId,
     disabled: typeof props.disabled === 'boolean' ? props.disabled : props.disabled?.droppable,
