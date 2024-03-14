@@ -1,6 +1,7 @@
 import { createDynamicStore, createStore } from "@/utils/createStore";
 import { Layout } from "../../types/layout";
 import { Period } from "./types/period";
+import { t } from "@/utils/i18n";
 
 export const [store] = await createStore(import.meta.dirname, {
   years: new Set<string>(),
@@ -23,4 +24,6 @@ export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
 
   /** The key-value pairs of course ids and course positions. By period keys*/
   courseLayout: new Map() as Layout,
+
+  termLabel: t('home_courses_term_default')
 })

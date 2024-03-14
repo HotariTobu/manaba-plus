@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import { useResize } from "./useResize"
 
 type Breakpoints<T> = {
   [B in keyof T]: boolean
@@ -56,23 +57,24 @@ export const useBreakpoints = <T extends Record<string, number>>(breakpointsDefi
   }
 
   useEffect(() => {
+    if (options.dynamic) {
+      return
+    }
+
     const { element } = ref.current
     if (element === null) {
       return
     }
 
     updateBreakpoints()
-
-    if (options.dynamic) {
-      const observer = new ResizeObserver(updateBreakpoints)
-      observer.observe(element)
-      return () => observer.unobserve(element)
-    }
   }, [options])
+
+  const { setRef: resizeSetRef } = useResize(updateBreakpoints, !options.dynamic)
 
   /** Should be passed to the ref props of the target element */
   const setRef: SetRef = element => {
     ref.current.element = element
+    resizeSetRef(element)
   }
 
   return [

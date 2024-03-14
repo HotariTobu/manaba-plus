@@ -198,7 +198,7 @@ const initializeTerms = (courses: Course[]) => {
   const sorted = Array.from(terms).sort()
 
   if (terms.size === 0) {
-    sorted.push(t('home_courses_default_term'))
+    sorted.push(t('home_courses_term_default'))
   }
 
   store.term = sorted[0]

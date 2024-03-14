@@ -6,9 +6,40 @@ import { cn } from "@/lib/utils";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Cross1Icon, Cross2Icon, DragHandleDots2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { HTMLAttributes, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+
+const FlexibleTextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({style, ...props}, ref) => {
+  const [width, setWidth] = useState()
+
+  const updateWidth = () => {
+    const element = internalRef.current
+    if (element === null) {
+      return
+    }
+
+    setWidth(element.clientWidth)
+  }
+
+  useEffect(() => {
+    const element = internalRef.current
+    if (element === null) {
+      return
+    }
+
+    const observer = new ResizeObserver(updateWidth)
+    observer.observe(element)
+    return () => observer.unobserve(element)
+  }, [])
+
+  return (
+    <div>
+      <div ref={internalRef}>{props.value}</div>
+      <input width={} type="text" {...props} ref={ref} />
+    </div>
+  )
+})
 
 const getTermLabel = (term: string) => {
   const label = t(`home_courses_term_${term}`)

@@ -47,8 +47,8 @@
     "message": "To the self-registration page"
   },
 
-  "home_courses_default_term": {
-    "message": "Default"
+  "home_courses_term_default": {
+    "message": "Term name"
   },
   "home_courses_term_fir": {
     "message": "1st sem"
