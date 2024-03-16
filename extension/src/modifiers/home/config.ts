@@ -145,6 +145,10 @@ export const selectorMap = defineSelectorMap({
       year: '.my-infolist-mycourses select:nth-child(2)',
       linked: '.registration-state',
     },
+    assignments: {
+      menus: '.course-menu-query, .course-menu-report, .course-menu-survey',
+      counter: '.my-unreadcount',
+    }
   },
 })
 

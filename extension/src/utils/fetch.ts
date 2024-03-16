@@ -1,3 +1,5 @@
+// TODO: Use type guards
+
 interface FetchContext {
   /**
    * The request url.
