@@ -56,37 +56,36 @@ export const CoursesContainer = () => {
   // console.warn('')
 
   return (
-    <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")}>
+    <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")} {...longPress}>
       <YearTermSelect sortable={sortable} {...selectProps} />
-      {/* {sortable && <YearTermSelect {...selectProps} />} */}
-      <div className="contents" {...longPress}>
-        <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>
-          <CourseTimetable term={selectProps.term} position="timetable" courses={timetable} sortable={sortable} />
+      <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>
+        <CourseTimetable term={selectProps.term} position="timetable" courses={timetable} sortable={sortable} />
 
-          <Tabs className="contents" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
-            <TabsList className="bg-primary me-auto">
-              <TabsTrigger value="cards">{t('home_courses_cards')}</TabsTrigger>
-              <TabsTrigger value="list">{t('home_courses_list')}</TabsTrigger>
-            </TabsList>
-            <TabsContent className="contents" value="cards">
-              <CourseCards position="current" courses={current} sortable={sortable} />
-              <CourseCards position="other" courses={other} sortable={sortable} />
-              <CourseCards position="rest" courses={rest} sortable={sortable} />
-              <Trash hidden={!sortable}>
-                <CourseCards position="trash" courses={trash} sortable={sortable} />
-              </Trash>
-            </TabsContent>
-            <TabsContent className="contents" value="list">
-              <CourseList position="current" courses={current} sortable={sortable} />
-              <CourseList position="other" courses={other} sortable={sortable} />
-              <CourseList position="rest" courses={rest} sortable={sortable} />
-              <Trash hidden={!sortable}>
-                <CourseList position="trash" courses={trash} sortable={sortable} />
-              </Trash>
-            </TabsContent>
-          </Tabs >
-        </SortableContainer>
-      </div>
+        <Tabs className="contents" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
+          <TabsList className="bg-primary me-auto">
+            <TabsTrigger value="cards">{t('home_courses_cards')}</TabsTrigger>
+            <TabsTrigger value="list">{t('home_courses_list')}</TabsTrigger>
+          </TabsList>
+
+          <TabsContent className="contents" value="cards">
+            <CourseCards position="current" courses={current} sortable={sortable} />
+            <CourseCards position="other" courses={other} sortable={sortable} />
+            <CourseCards position="rest" courses={rest} sortable={sortable} />
+            <Trash hidden={!sortable}>
+              <CourseCards position="trash" courses={trash} sortable={sortable} />
+            </Trash>
+          </TabsContent>
+
+          <TabsContent className="contents" value="list">
+            <CourseList position="current" courses={current} sortable={sortable} />
+            <CourseList position="other" courses={other} sortable={sortable} />
+            <CourseList position="rest" courses={rest} sortable={sortable} />
+            <Trash hidden={!sortable}>
+              <CourseList position="trash" courses={trash} sortable={sortable} />
+            </Trash>
+          </TabsContent>
+        </Tabs >
+      </SortableContainer>
     </div>
   )
 }

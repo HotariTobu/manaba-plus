@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckIcon, Cross2Icon, DragHandleDots2Icon, Pencil2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { InputHTMLAttributes, KeyboardEvent, PointerEvent, forwardRef, useState } from "react";
+import { InputHTMLAttributes, KeyboardEvent, forwardRef, useState } from "react";
 import { horizontalListSortingStrategy, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useResize } from "@/hooks/useResize";
@@ -80,9 +80,14 @@ const TermChip = (props: {
 
   const commonClass = cn("px-2 h-8 text-sm font-medium border rounded-md flex items-center", props.selected ? "bg-primary/50 border-primary" : "bg-background/50")
 
+  const buttonProps = {
+    role: "button",
+    tabIndex: 0,
+  }
+
   if (props.disabled) {
     return (
-      <div className={cn("justify-center", commonClass, props.className)}>
+      <div className={cn("justify-center", commonClass, props.className)} onClick={props.onSelect} {...buttonProps}>
         {props.label}
       </div>
     )
@@ -94,10 +99,6 @@ const TermChip = (props: {
     opacity: isActive ? 0 : 1,
     transform: CSS.Transform.toString(transform),
     transition,
-  }
-
-  const handlePointerDown = (event: PointerEvent) => {
-    event.stopPropagation()
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -113,13 +114,8 @@ const TermChip = (props: {
     setEditing(!editing)
   }
 
-  const buttonProps = {
-    role: "button",
-    tabIndex: 0,
-  }
-
   return (
-    <div className={cn("gap-1 text-transparent hover:text-foreground transition-colors", commonClass, props.className)} style={style} ref={setNodeRef} onPointerDown={handlePointerDown}>
+    <div className={cn("gap-1 text-transparent hover:text-foreground transition-colors", commonClass, props.className)} style={style} ref={setNodeRef}>
       <DragHandleDots2Icon className="cursor-grab focus:outline-none" {...attributes} {...listeners} />
       <div className="min-w-4 text-foreground whitespace-nowrap">
         {props.selected ? editing ? (
