@@ -56,6 +56,23 @@
   "home_courses_term_sec": {
     "message": "2nd sem"
   },
+  "home_courses_term_delete_title": {
+    "message": "Are you sure to delete $term_label$?",
+    "placeholders": {
+      "term_label": {
+        "content": "$1"
+      }
+    }
+  },
+  "home_courses_term_delete_description": {
+    "message": "This action cannot be undone. This will permanently delete the term."
+  },
+  "home_courses_term_delete_cancel": {
+    "message": "Cancel"
+  },
+  "home_courses_term_delete_action": {
+    "message": "Continue"
+  },
   "home_courses_cards": {
     "message": "Cards"
   },

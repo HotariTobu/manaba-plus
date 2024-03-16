@@ -182,7 +182,7 @@ const initializeYears = (courses: Course[]) => {
 
 
 const initializeTerms = (courses: Course[]) => {
-  const terms = new Set<string>(store.terms)
+  const termSet = new Set<string>()
 
   for (const course of courses) {
     const period = dynamicStore.period.get(course.id)
@@ -191,18 +191,40 @@ const initializeTerms = (courses: Course[]) => {
     }
 
     for (const term of period.keys()) {
-      terms.add(term)
+      termSet.add(term)
     }
   }
 
-  const sorted = Array.from(terms).sort()
+  const sorted = Array.from(termSet).sort()
 
-  if (terms.size === 0) {
-    sorted.push(t('home_courses_term_default'))
+  if (sorted.length === 0) {
+    sorted.push('default')
   }
 
-  store.term = sorted[0]
-  store.terms = new Set(sorted)
+  const newTerms = new Map(store.terms)
+
+  for (const term of sorted) {
+    if (newTerms.has(term)) {
+      continue
+    }
+
+    const label = t(`home_courses_term_${term}`)
+    if (label === '') {
+      newTerms.set(term, term)
+    }
+    else {
+      newTerms.set(term, label)
+    }
+  }
+
+  if (!newTerms.has(store.term)) {
+    const newTerm = newTerms.keys().next().value
+    if (typeof newTerm === 'string') {
+      store.term = newTerm
+    }
+  }
+
+  store.terms = Array.from(newTerms)
 }
 
 /**
