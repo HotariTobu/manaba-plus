@@ -1,8 +1,0 @@
-theme: minima
-
-minima:
-  skin: auto
-  
-header_pages:
-  - feature/index.md
-  - development/index.md

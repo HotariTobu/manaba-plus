@@ -19,57 +19,5 @@
     },
     "options_ui": {
       "page": "pages/options/index.html"
-    },
-    "content_scripts": [
-
-
-      {
-        "matches": [
-          "$manaba-url$*"
-        ],
-        "js": [
-          "manabaTimeSchedule/loader.js"
-        ],
-        "css": [
-          "manabaTimeSchedule/css/courseCard.css"
-        ]
-      },
-
-
-      ,
-      {
-        "matches": [
-          "https://hotaritobu.github.io/manaba-plus/reminders/google-calendar/"
-        ],
-        "js": [
-          "modifiers/reminders/google-calendar/index.js"
-        ]
-      }
-    ],
-    "web_accessible_resources": [
-
-
-      {
-        "resources": [
-          "manabaTimeSchedule/js/content.js",
-          "manabaTimeSchedule/js/createCourseCard.js",
-          "manabaTimeSchedule/js/courseCardDrag.js",
-          "manabaTimeSchedule/js/table.js"
-        ],
-        "matches": [
-          "$manaba-url$"
-        ]
-      },
-
-
-      {
-        "resources": [
-          "pages/contents/index.html",
-          "pages/options/index.html"
-        ],
-        "matches": [
-          "$manaba-url$"
-        ]
-      }
-    ]
+    }
   }
