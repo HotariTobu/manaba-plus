@@ -1,17 +1,5 @@
 import { t } from "@/utils/i18n"
-import { DayOfWeek } from "../../types/course"
-
-/** Header labels of the timetable */
-const headers: Record<DayOfWeek, string> = {
-  [DayOfWeek.Monday]: t('home_courses_Monday'),
-  [DayOfWeek.Tuesday]: t('home_courses_Tuesday'),
-  [DayOfWeek.Wednesday]: t('home_courses_Wednesday'),
-  [DayOfWeek.Thursday]: t('home_courses_Thursday'),
-  [DayOfWeek.Friday]: t('home_courses_Friday'),
-  [DayOfWeek.Saturday]: t('home_courses_Saturday'),
-  [DayOfWeek.Sunday]: t('home_courses_Sunday'),
-  [DayOfWeek.Count]: '',
-}
+import { daysOfWeek } from "../../types/course"
 
 export const CourseTimetableHeader = (props: {
   startColumn: number
@@ -22,7 +10,7 @@ export const CourseTimetableHeader = (props: {
       const day = props.startColumn + i
       return (
         <div className="p-2 text-center font-bold rounded-md bg-primary text-primary-foreground" key={day}>
-          {headers[day as DayOfWeek]}
+          {t(`home_courses_${daysOfWeek[day]}`)}
         </div>
       )
     })}

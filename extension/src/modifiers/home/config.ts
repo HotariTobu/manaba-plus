@@ -1,4 +1,5 @@
 import { defineArrangeMap, defineClassMap, defineSelectorMap } from "@/types/config"
+import { StatusType } from "./dock/items/courses/types/course"
 
 export const arrangeMap = defineArrangeMap({
   html: {
@@ -184,18 +185,24 @@ export const getFiscalYear = (date: Date = new Date()) => {
   return date.getFullYear();
 }
 
+/**
+ * Get the default year of courses.
+ * @returns The current fiscal year
+ */
 export const getDefaultYear = () => {
   return getFiscalYear().toString()
 }
 
+/** The relative path to the top page that has all courses */
+export const allCoursesPath = 'home__all'
 
 /**
  * Suffixes of URLs related to status icons.
  */
-const statusSuffix = [
-  '_news',
-  '',
-  '_grade',
-  '_topics',
-  '_coursecollection_user',
-]
+export const statusSuffixes: Record<StatusType, string> = {
+  news: '_news',
+  assignment: '',
+  grade: '_grade',
+  topic: '_topics',
+  collection: '_coursecollection_user',
+}

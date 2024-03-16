@@ -114,5 +114,8 @@
   },
   "home_courses_course_linked": {
     "message": "*Linked"
+  },
+  "home_courses_show_all_courses": {
+    "message": "Show all courses"
   }
 }

@@ -1,6 +1,6 @@
 import { f, ff } from "@/utils/element"
 import { getDefaultYear, getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
-import { Course } from "../../types/course"
+import { Course, statusTypes } from "../../types/course"
 import { dynamicStore, store } from "../../store"
 import { getPeriod } from "../../period"
 import { t } from "@/utils/i18n"
@@ -66,7 +66,7 @@ const toNullableInt = (text: string | null | undefined) => {
 const getStatus = (element: Element) => {
   return Object.fromEntries(
     f<HTMLImageElement>(selectorMap.courses.status, element)
-      .map((a, i) => [i, statusRegex.test(a.src)])
+      .map((a, i) => [statusTypes[i], statusRegex.test(a.src)])
   )
 }
 

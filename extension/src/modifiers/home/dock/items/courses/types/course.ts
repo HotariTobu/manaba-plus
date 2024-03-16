@@ -1,23 +1,22 @@
-export enum DayOfWeek {
-  Monday,
-  Tuesday,
-  Wednesday,
-  Thursday,
-  Friday,
-  Saturday,
-  Sunday,
-  Count,
-}
+export const daysOfWeek = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+] as const
+export type DayOfWeek = (typeof daysOfWeek)[number]
 
-export const days: readonly number[] = [...new Array(DayOfWeek.Count).keys()]
-
-export enum StatusType {
-  News,
-  Assignment,
-  Grade,
-  Topic,
-  Collection,
-}
+export const statusTypes = [
+  'news',
+  'assignment',
+  'grade',
+  'topic',
+  'collection',
+] as const
+export type StatusType = (typeof statusTypes)[number]
 
 export interface Course {
   /** A string to identify the course */

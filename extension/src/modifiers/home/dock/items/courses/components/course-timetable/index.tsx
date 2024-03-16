@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { DayOfWeek, type Course } from "../../types/course"
+import { DayOfWeek, type Course, daysOfWeek } from "../../types/course"
 import { dynamicStore } from "../../store"
 import { SortableZone } from "@/components/sortable/sortable-zone"
 import { classNames } from "../zone-color"
@@ -101,7 +101,7 @@ export const CourseTimetable = (props: {
     boundingBox.height += boundingBox.top + 1
     boundingBox.left = 0
     boundingBox.top = 0
-    boundingBox.width = DayOfWeek.Count
+    boundingBox.width = daysOfWeek.length
   }
   else if (boundingBox.width === 0 || boundingBox.height === 0) {
     return

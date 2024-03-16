@@ -1,5 +1,5 @@
 import { Coordinate, toNumber } from "../../types/coordinate"
-import { days } from "../../types/course"
+import { daysOfWeek } from "../../types/course"
 import { DroppableCell } from "./droppable-cell"
 
 export const DroppableCells = (props: {
@@ -12,11 +12,11 @@ export const DroppableCells = (props: {
 
   const coordinates: Coordinate[] = []
 
-  for (const day of days) {
+  for (let column = 0; column < daysOfWeek.length; column++) {
     for (let row = 0; row < props.rowCount; row++) {
       coordinates.push({
-        column: day,
-        row: row,
+        column,
+        row,
       })
     }
   }

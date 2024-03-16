@@ -14,6 +14,8 @@ import { CourseCards } from "./course-cards"
 import { CourseList } from "./course-list"
 import { useRef } from "react"
 import { YearTermSelect } from "./year-term-select"
+import { Button } from "@/components/ui/button"
+import { allCoursesPath } from "@/modifiers/home/config"
 
 const Overlay = (props: {
   item: Course
@@ -58,6 +60,7 @@ export const CoursesContainer = () => {
   return (
     <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")} {...longPress}>
       <YearTermSelect sortable={sortable} {...selectProps} />
+
       <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>
         <CourseTimetable term={selectProps.term} position="timetable" courses={timetable} sortable={sortable} />
 
@@ -86,6 +89,12 @@ export const CoursesContainer = () => {
           </TabsContent>
         </Tabs >
       </SortableContainer>
+
+      {location.pathname.includes(allCoursesPath) || (
+        <Button className="ms-auto text-foreground" variant="link" asChild>
+          <a href={allCoursesPath}>{t('home_courses_show_all_courses')}</a>
+        </Button>
+      )}
     </div>
   )
 }
