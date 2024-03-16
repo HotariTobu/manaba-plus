@@ -39,7 +39,7 @@ interface SortableContainerProps<I extends Item> extends
   setItemsMap: (itemsMap: ItemsMap<I>) => void
 
   overlayClassName?: string
-  Overlay: (props: { item: I }) => ReactNode
+  Overlay?: (props: { item: I }) => ReactNode
 
   createCollisionDetection?: (defaultDetector: CollisionDetection) => CollisionDetection
   createDragStartHandler?: (defaultHandler: DragStart) => DragStart
@@ -246,9 +246,11 @@ export const SortableContainer = <I extends Item>({
       {...props}
     >
       {children}
-      <DragOverlay className={overlayClassName}>
-        {activeItem && <Overlay item={activeItem} />}
-      </DragOverlay>
+      {Overlay && (
+        <DragOverlay className={overlayClassName}>
+          {activeItem && <Overlay item={activeItem} />}
+        </DragOverlay>
+      )}
     </DndContext>
   );
 }

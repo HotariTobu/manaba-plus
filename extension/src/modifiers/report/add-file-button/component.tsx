@@ -17,7 +17,7 @@ export const AddFileButtonPanel = () => {
 
   return (
     <div className='mt-2'>
-      <Button className=' bg-[white] hover:bg-sky-200 cursor-pointer' asChild type='button'>
+      <Button className=' bg-[white] hover:bg-sky-200 text-foreground' asChild role='button'>
         <label>
           <input hidden type="file" multiple onChange={handleChange} />
           <FilePlusIcon className='me-1' />{t('report_add_file')}

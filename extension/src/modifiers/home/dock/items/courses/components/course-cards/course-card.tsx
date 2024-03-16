@@ -37,7 +37,7 @@ export const CourseCard = (props: {
   course: Course
   sortable: boolean
 }) => (
-  <SortableItem className={cn("flex-1", props.sortable ? 'cursor-pointer' : 'cursor-auto')} item={props.course} disabled={!props.sortable}>
+  <SortableItem className={cn("flex-1", props.sortable ? 'cursor-grab' : 'cursor-auto')} item={props.course} disabled={!props.sortable}>
     <CourseCardBase course={props.course} sortable={props.sortable} />
   </SortableItem>
 )

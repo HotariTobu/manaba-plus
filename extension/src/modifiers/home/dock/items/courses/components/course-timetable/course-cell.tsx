@@ -49,7 +49,7 @@ export const CourseCell = (props: CourseCellData & {
   }
 
   return (
-    <div className={cn('relative', props.sortable ? 'cursor-pointer' : 'cursor-auto')} style={{
+    <div className={cn('relative', props.sortable ? 'cursor-grab' : 'cursor-auto')} style={{
       gridColumnStart: props.column + 1,
       gridRowStart: props.row + 1,
       gridRowEnd: `span ${props.span}`,
@@ -73,7 +73,7 @@ export const LostCourseCell = (props: {
   course: Course
   sortable: boolean
 }) => (
-  <SortableItem className={cn(props.sortable ? 'cursor-pointer' : 'cursor-auto')} item={props.course} disabled={{
+  <SortableItem className={cn(props.sortable ? 'cursor-grab' : 'cursor-auto')} item={props.course} disabled={{
     draggable: !props.sortable,
     droppable: true,
   }}>

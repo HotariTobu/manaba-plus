@@ -16,7 +16,7 @@ export type NodeItemsMap = ItemsMap<NodeItem>
 
 const Overlay = (props: {
   item: NodeItem
-}) => <PageContentBase className="shadow-xl" item={props.item} sortable />
+}) => <PageContentBase className="shadow-xl cursor-grabbing" item={props.item} sortable />
 
 export const PageBody = (props: {
   itemsMap: NodeItemsMap

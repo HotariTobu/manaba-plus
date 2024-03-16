@@ -13,13 +13,11 @@ import { CourseTimetable } from "./course-timetable"
 import { CourseCards } from "./course-cards"
 import { CourseList } from "./course-list"
 import { useRef } from "react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useDndContext } from "@dnd-kit/core"
 import { YearTermSelect } from "./year-term-select"
 
 const Overlay = (props: {
   item: Course
-}) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2" course={props.item} sortable />
+}) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grabbing" course={props.item} sortable />
 
 export const CoursesContainer = () => {
   const { coursesMap, setCoursesMap, storeCoursesMap, ...selectProps } = useCourses()
@@ -59,7 +57,7 @@ export const CoursesContainer = () => {
 
   return (
     <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")}>
-      <YearTermSelect {...selectProps} />
+      <YearTermSelect sortable={sortable} {...selectProps} />
       {/* {sortable && <YearTermSelect {...selectProps} />} */}
       <div className="contents" {...longPress}>
         <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>

@@ -43,7 +43,7 @@ export const CourseRow = (props: {
   course: Course
   sortable: boolean
 }) => (
-  <SortableItem className={cn("grid grid-cols-subgrid col-span-full", props.sortable ? 'cursor-pointer' : 'even:bg-slate-700/5 cursor-auto')} item={props.course} disabled={!props.sortable}>
+  <SortableItem className={cn("grid grid-cols-subgrid col-span-full", props.sortable ? 'cursor-grab' : 'even:bg-slate-700/5 cursor-auto')} item={props.course} disabled={!props.sortable}>
     <CourseRowBase course={props.course} sortable={props.sortable} />
   </SortableItem>
 )

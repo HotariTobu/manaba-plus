@@ -16,7 +16,7 @@ export const PageContent = (props: {
   item: NodeItem
   sortable: boolean
 }) => (
-  <SortableItem className={cn(props.sortable ? 'cursor-pointer' : 'cursor-auto')} item={props.item} disabled={!props.sortable}>
+  <SortableItem className={cn(props.sortable ? 'cursor-grab' : 'cursor-auto')} item={props.item} disabled={!props.sortable}>
     <PageContentBase item={props.item} sortable={props.sortable} />
   </SortableItem>
 )
