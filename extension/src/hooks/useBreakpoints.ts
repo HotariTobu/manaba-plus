@@ -29,19 +29,12 @@ export const useBreakpoints = <T extends Record<string, number>>(breakpointsDefi
   }
 
   const [breakpoints, setBreakpoints] = useState<Breakpoints<T> | null>(null)
-  const ref = useRef<{
-    element: HTMLElement | null
-    lastValue: number
-  }>({
-    element: null,
+  const ref = useRef({
     lastValue: 0,
   })
 
-  const updateBreakpoints = () => {
-    const { element, lastValue } = ref.current
-    if (element === null) {
-      return
-    }
+  const updateBreakpoints = (element: HTMLElement) => {
+    const { lastValue } = ref.current
 
     const value = element.clientWidth
     if (Math.abs(lastValue - value) < options.threshold) {
@@ -56,31 +49,27 @@ export const useBreakpoints = <T extends Record<string, number>>(breakpointsDefi
     ) as Breakpoints<T>)
   }
 
+  const { getNodeRef, setNodeRef } = useResize(updateBreakpoints, !options.dynamic)
+
   useEffect(() => {
     if (options.dynamic) {
       return
     }
 
-    const { element } = ref.current
+    const element = getNodeRef()
     if (element === null) {
       return
     }
 
-    updateBreakpoints()
-  }, [options])
-
-  const { setRef: resizeSetRef } = useResize(updateBreakpoints, !options.dynamic)
-
-  /** Should be passed to the ref props of the target element */
-  const setRef: SetRef = element => {
-    ref.current.element = element
-    resizeSetRef(element)
-  }
+    updateBreakpoints(element)
+  }, [options, getNodeRef])
 
   return [
     breakpoints ?? Object.fromEntries(
       keys.map(key => [key, false])
     ) as Breakpoints<T>,
-    setRef
+
+    /** Should be passed to the ref props of the target element */
+    setNodeRef
   ]
 }

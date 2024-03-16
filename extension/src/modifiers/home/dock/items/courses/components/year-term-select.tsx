@@ -9,34 +9,26 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { HTMLAttributes, InputHTMLAttributes, forwardRef, useEffect, useRef, useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useResize } from "@/hooks/useResize";
 
-const FlexibleTextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({style, ...props}, ref) => {
-  const [width, setWidth] = useState()
+const FlexibleTextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ style, ...props }, ref) => {
+  const [width, setWidth] = useState<number | undefined>()
 
-  const updateWidth = () => {
-    const element = internalRef.current
-    if (element === null) {
-      return
-    }
-
+  const updateWidth = (element: HTMLElement) => {
     setWidth(element.clientWidth)
   }
 
-  useEffect(() => {
-    const element = internalRef.current
-    if (element === null) {
-      return
-    }
+  const { setNodeRef } = useResize(updateWidth)
 
-    const observer = new ResizeObserver(updateWidth)
-    observer.observe(element)
-    return () => observer.unobserve(element)
-  }, [])
+  const mergedStyle = {
+    width,
+    ...style,
+  }
 
   return (
-    <div>
-      <div ref={internalRef}>{props.value}</div>
-      <input width={} type="text" {...props} ref={ref} />
+    <div className="contents">
+      <div className="w-fit h-0 overflow-y-hidden whitespace-pre" ref={setNodeRef}>{props.value}</div>
+      <input style={mergedStyle} {...props} ref={ref} />
     </div>
   )
 })
@@ -79,7 +71,7 @@ const TermItem = (props: {
       < DragHandleDots2Icon {...attributes} {...listeners} />
       <div className="text-foreground whitespace-nowrap">
         {props.selected ? (
-          <input className="bg-transparent focus:outline-none" value={newTerm} type="text" />
+          <FlexibleTextInput className="bg-transparent focus:outline-none" value={newTerm} onChange={e => setNewTerm(e.target.value)} type="text" />
         ) : (
           <div onClick={props.onSelect} role="button" tabIndex={0}>
             {label}

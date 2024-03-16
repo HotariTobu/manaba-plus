@@ -1,7 +1,15 @@
 import { useEffect, useRef } from "react"
 
-export const useResize = (callback: ResizeObserverCallback, disabled?: boolean) => {
+export const useResize = (callback: (element: HTMLElement) => void, disabled?: boolean) => {
     const ref = useRef<HTMLElement | null>(null)
+
+    const getNodeRef = () => {
+        return ref.current
+    }
+
+    const setNodeRef = (element: HTMLElement | null) => {
+        ref.current = element
+    }
 
     useEffect(() => {
         if (disabled === true) {
@@ -13,16 +21,13 @@ export const useResize = (callback: ResizeObserverCallback, disabled?: boolean) 
             return
         }
 
-        const observer = new ResizeObserver(callback)
+        const observer = new ResizeObserver(() => callback(element))
         observer.observe(element)
         return () => observer.unobserve(element)
     }, [callback, disabled])
 
-    const setRef = (element: HTMLElement | null) => {
-        ref.current = element
-    }
-
     return {
-        setRef
+        getNodeRef,
+        setNodeRef,
     }
 }
