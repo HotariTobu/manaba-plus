@@ -21,6 +21,8 @@ const getMemorizedCourses = () => {
 }
 
 export const useCourses = () => {
+  const courses = getMemorizedCourses()
+
   const [coursesMap, setCoursesMap] = useState<ItemsMap<Course>>(new Map())
 
   const [year, setYear] = useState(getDefaultYear())
@@ -56,7 +58,6 @@ export const useCourses = () => {
 
   // Restore a layout of a course map.
   useEffect(() => {
-    const courses = getMemorizedCourses()
     const coursePairs = courses.map<[Position, Course]>(course => {
       const position = getCourseDefaultPosition(course)
       return [position, course]
