@@ -74,7 +74,7 @@ export const CoursesContainer = () => {
             <CourseCards position="current" courses={current} sortable={sortable} />
             <CourseCards position="other" courses={other} sortable={sortable} />
             <CourseCards position="rest" courses={rest} sortable={sortable} />
-            <Trash hidden={!sortable}>
+            <Trash visible={sortable}>
               <CourseCards position="trash" courses={trash} sortable={sortable} />
             </Trash>
           </TabsContent>
@@ -83,7 +83,7 @@ export const CoursesContainer = () => {
             <CourseList position="current" courses={current} sortable={sortable} />
             <CourseList position="other" courses={other} sortable={sortable} />
             <CourseList position="rest" courses={rest} sortable={sortable} />
-            <Trash hidden={!sortable}>
+            <Trash visible={sortable}>
               <CourseList position="trash" courses={trash} sortable={sortable} />
             </Trash>
           </TabsContent>

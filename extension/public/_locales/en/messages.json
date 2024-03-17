@@ -47,6 +47,27 @@
     "message": "To the self-registration page"
   },
 
+  "home_assignments_assignment_type": {
+    "message": "Type"
+  },
+  "home_assignments_assignment_title": {
+    "message": "Title"
+  },
+  "home_assignments_assignment_course": {
+    "message": "Course"
+  },
+  "home_assignments_assignment_deadline": {
+    "message": "Deadline"
+  },
+  "home_assignments_assignment_deadline_day_count": {
+    "message": "$day_count$ days",
+    "placeholders": {
+      "day_count": {
+        "content": "$1"
+      }
+    }
+  },
+
   "home_courses_term_default": {
     "message": "Term name"
   },

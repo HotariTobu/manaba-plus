@@ -1,6 +1,6 @@
-import { createStore } from "@/utils/createStore";
-import { Layout } from "../../types/layout";
+import { createDynamicStore } from "@/utils/createStore";
 
-export const [store] = await createStore(import.meta.dirname, {
-  assignmentLayout: new Map() as Layout,
+export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
+  /** <assignment id, whether the assignment is hidden> True if the assignment is hidden, otherwise false */
+  hidden: false as boolean,
 })

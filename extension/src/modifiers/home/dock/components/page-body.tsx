@@ -84,7 +84,7 @@ export const PageBody = (props: {
 
             <PageColumn position="bottom" items={bottom} sortable={sortable} />
 
-            <Trash hidden={disabled}>
+            <Trash visible={sortable}>
               <PageColumn position="trash" items={trash} sortable={sortable} />
             </Trash>
           </SortableContainer>

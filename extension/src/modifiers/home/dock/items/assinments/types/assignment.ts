@@ -3,17 +3,17 @@ import { z } from 'zod'
 const assignmentSchema = z.object({
   id: z.string(),
 
-  url: z.string(),
+  url: z.string().url(),
   title: z.string(),
   deadline: z.coerce.date().nullable(),
 
   type: z.object({
-    url: z.string(),
+    url: z.string().url(),
     label: z.string(),
   }).nullable(),
 
   course: z.object({
-    url: z.string(),
+    url: z.string().url(),
     title: z.string(),
   }).nullable(),
 })

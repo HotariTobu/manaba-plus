@@ -14,6 +14,18 @@ const createAnchorGetter = (element: Element) => {
 }
 
 /**
+ * Complete a assignment object by determining the assignment's id.
+ * @param props Assignment properties excluded id
+ * @returns A assignment object with id properties
+ */
+const createAssignment = (props: Omit<Assignment, 'id'>) => {
+  return {
+    id: props.url,
+    ...props
+  }
+}
+
+/**
  * Get a Date object from string.
  * @param str The string that includes date-time
  * @returns The Date object
@@ -50,9 +62,7 @@ const getRowAssignment = (element: Element): Assignment | null => {
   const typeAnchor = a(selectorMap.assignments.type)
   const courseAnchor = a(selectorMap.assignments.course)
 
-  return {
-    id: assignmentAnchor.href,
-
+  return createAssignment({
     url: assignmentAnchor.href,
     title: assignmentAnchor.textContent ?? '',
     deadline: parseDateTime(ff(selectorMap.assignments.deadline, element)?.textContent),
@@ -65,7 +75,7 @@ const getRowAssignment = (element: Element): Assignment | null => {
       url: courseAnchor.href,
       title: courseAnchor.textContent ?? '',
     },
-  }
+  })
 }
 
 /**
@@ -83,7 +93,7 @@ export const getAssignments = async () => {
 
   const doc = fetchResult.data
 
-  const assignments = []
+  const assignments: Assignment[] = []
 
   const rows = f(selectorMap.assignments.row, doc)
   for (const row of rows) {
@@ -95,8 +105,68 @@ export const getAssignments = async () => {
     assignments.push(assignment)
   }
 
-  console.log(assignments)
-  await new Promise<void>(r => setTimeout(r, 500))
+  debug: {
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth()
+    const date = now.getDate()
+    const hours = now.getHours()
+    const minutes = now.getMinutes()
+
+    assignments.push({
+      id: crypto.randomUUID(),
+      url: "",
+      title: "過ぎてしまった課題",
+      deadline: new Date(year, month, date, hours - 1, minutes),
+      type: {
+        url: '',
+        label: 'エスパー',
+      },
+      course: {
+        url: '',
+        title: "コースの1つ",
+      },
+    }, {
+      id: crypto.randomUUID(),
+      url: "",
+      title: "めっちゃやばい課題",
+      deadline: new Date(year, month, date, hours + 1, minutes),
+      type: {
+        url: '',
+        label: 'ほのお',
+      },
+      course: {
+        url: '',
+        title: "何らかのコース",
+      },
+    }, {
+      id: crypto.randomUUID(),
+      url: "",
+      title: "ちょっと焦る課題",
+      deadline: new Date(year, month, date + 2, hours, minutes),
+      type: {
+        url: '',
+        label: 'でんき',
+      },
+      course: {
+        url: '',
+        title: "あるコース"
+      },
+    }, {
+      id: crypto.randomUUID(),
+      url: "",
+      title: "まだ余裕がある課題",
+      deadline: new Date(year, month, date + 5, hours, minutes),
+      type: {
+        url: '',
+        label: 'くさ',
+      },
+      course: {
+        url: '',
+        title: "どうでもいいコース"
+      },
+    })
+  }
 
   return assignments
 }
