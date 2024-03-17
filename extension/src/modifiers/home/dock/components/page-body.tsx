@@ -79,7 +79,7 @@ export const PageBody = (props: {
               left={<PageColumn position="left" items={left} sortable={sortable} />}
               right={<PageColumn position="right" items={right} sortable={sortable} />}
               disabled={disabled}
-              onResized={middle => store.middle = middle}
+              onResize={middle => store.middle = middle}
             />
 
             <PageColumn position="bottom" items={bottom} sortable={sortable} />

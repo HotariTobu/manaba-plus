@@ -1,5 +1,6 @@
 import { ReactNode, useState, PointerEvent, useRef, CSSProperties } from "react"
 import { cn } from "@/lib/utils"
+import { useResizable } from "@/hooks/useResizable"
 
 /**
  * Clamp number in [min, max].
@@ -18,56 +19,29 @@ export const PageResizable = (props: {
   left: ReactNode
   right: ReactNode
   disabled?: boolean
-  onResized?: (middle: number) => void
+  onResize?: (middle: number) => void
 }) => {
-  const [middle, setMiddle] = useState(clamp(props.initialMiddle, props.minMiddle, props.maxMiddle))
-  const [dragging, setDragging] = useState(false)
+  const getClampedMiddle = (middle: number) => clamp(middle, props.minMiddle, props.maxMiddle)
 
-  const last = useRef({
-    screenX: 0,
-    middle: 0,
-  })
+  const [middle, setMiddle] = useState(props.initialMiddle)
+  const { grabbing, offsetX, resizableProps } = useResizable(({ offsetX }) => {
+    const newMiddle = getClampedMiddle(middle + offsetX)
+    setMiddle(newMiddle)
+    props.onResize?.call(this, newMiddle)
+  }, props.disabled)
 
-  const handleDown = (event: PointerEvent) => {
-    if (props.disabled) {
-      return
-    }
-
-    event.preventDefault()
-
-    setDragging(true)
-    last.current = {
-      screenX: event.screenX,
-      middle: middle,
-    }
-  }
-
-  const handleMove = (event: PointerEvent) => {
-    if (dragging) {
-      event.preventDefault()
-
-      if (event.buttons === 0) {
-        setDragging(false)
-        props.onResized?.call(this, middle)
-      }
-      else {
-        const { middle, screenX } = last.current
-        const dif = event.screenX - screenX
-        setMiddle(clamp(middle + dif, props.minMiddle, props.maxMiddle))
-      }
-    }
-  }
+  const clampedMiddle = getClampedMiddle(middle + offsetX)
 
   const style: CSSProperties = {
-    gridTemplateColumns: `${middle}px auto minmax(0, 1fr)`,
-    userSelect: dragging ? 'none' : 'auto',
+    gridTemplateColumns: `${clampedMiddle}px auto minmax(0, 1fr)`,
+    userSelect: grabbing ? 'none' : 'auto',
   }
 
   return (
-    <div className={cn("block lg:grid", props.className)} style={style} onPointerMove={handleMove}>
+    <div className={cn("block lg:grid", props.className)} style={style}>
       {props.left}
       <div className="h-4 lg:w-4 lg:h-full flex justify-center">
-        <div className={cn('p-1 hidden lg:block', props.disabled || 'cursor-ew-resize')} onPointerDown={handleDown}>
+        <div className={cn('p-1 hidden lg:block', props.disabled || 'cursor-ew-resize')} {...resizableProps}>
           <div className={cn('w-[1px] h-full', props.disabled || 'bg-slate-400')} />
         </div>
       </div>
