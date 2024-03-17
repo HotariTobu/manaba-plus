@@ -25,6 +25,7 @@ export const useCourses = () => {
 
   const [year, setYear] = useState(getDefaultYear())
   const [term, setRawTerm] = useState(store.term)
+  const periodKey = getPeriodKey(year, term)
 
   /**
    * Get where the course should be located at.
@@ -61,12 +62,11 @@ export const useCourses = () => {
       return [position, course]
     })
 
-    const periodKey = getPeriodKey(year, term)
     const layout = dynamicStore.courseLayout.get(periodKey)
 
     const coursesMap = itemsMapFromLayout(coursePairs, layout)
     setCoursesMap(coursesMap)
-  }, [year, term])
+  }, [periodKey])
 
   /**
    * Store a layout of a courses map.
@@ -74,7 +74,6 @@ export const useCourses = () => {
    * @returns
    */
   const storeCoursesMap = (coursesMap: ItemsMap<Course>) => {
-    const periodKey = getPeriodKey(year, term)
     const layout = itemsMapToLayout(coursesMap)
     dynamicStore.courseLayout.set(periodKey, layout)
   }

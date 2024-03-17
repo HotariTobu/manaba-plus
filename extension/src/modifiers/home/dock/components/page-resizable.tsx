@@ -1,15 +1,7 @@
 import { ReactNode, useState, PointerEvent, useRef, CSSProperties } from "react"
 import { cn } from "@/lib/utils"
 import { useResizable } from "@/hooks/useResizable"
-
-/**
- * Clamp number in [min, max].
- * @param num The number
- * @param min The minimum number
- * @param max The maximum number
- * @returns The clamped number
- */
-const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
+import { clamp } from "@/utils/clamp"
 
 export const PageResizable = (props: {
   initialMiddle: number
