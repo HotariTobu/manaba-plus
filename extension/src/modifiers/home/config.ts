@@ -150,6 +150,13 @@ export const selectorMap = defineSelectorMap({
       counter: '.my-unreadcount',
     }
   },
+  assignments: {
+    row: 'table.stdlist tr:not(.title)',
+    type: 'td:first-of-type a',
+    assignment: '.myassignments-title a',
+    course: '.mycourse-title a',
+    deadline: 'td:nth-last-of-type(2)',
+  }
 })
 
 export const classMap = defineClassMap({
@@ -210,3 +217,9 @@ export const statusSuffixes: Record<StatusType, string> = {
   topic: '_topics',
   collection: '_coursecollection_user',
 }
+
+/** The regex to extract date-time from a string. */
+export const dateTimeRegex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/
+
+/** The relative path to the top page that lists all assignments */
+export const allAssignmentsPath = 'home_library_query'

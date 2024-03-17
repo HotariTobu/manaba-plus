@@ -6,7 +6,7 @@ import { classNames } from "../zone-color"
 import { CourseTimetableHeader } from "./course-timetable-header"
 import { CourseTimetableIndex } from "./course-timetable-index"
 import { Position } from "../../types/position"
-import { fromNumber } from "../../types/coordinate"
+import { coordinateFromNumber } from "../../types/coordinate"
 import { CourseCells } from "./course-cells"
 import { DroppableCells } from "./droppable-cells"
 import { rectSwappingStrategy } from "@dnd-kit/sortable"
@@ -58,7 +58,7 @@ const getBoundingBox = (coordinateMap: Map<number, Course>): BoundingBox => {
   let bottom = -Infinity
 
   for (const key of coordinateMap.keys()) {
-    const { row, column } = fromNumber(key)
+    const { row, column } = coordinateFromNumber(key)
 
     left = Math.min(left, column)
     top = Math.min(top, row)

@@ -126,7 +126,7 @@ export const replace = <T extends Element>(target: string | T | T[], replacer: (
       return
     }
 
-    pastElement.after(element)
+    pastElement.before(element)
     hide(pastElement)
   })
 }

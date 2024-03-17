@@ -1,12 +1,15 @@
+import { Toaster } from "sonner";
+import { ErrorBoundary } from "react-error-boundary";
 import { addClass, c, f, replace } from "@/utils/element"
 import { mount } from "@/utils/mount"
-import { ErrorReporter } from "@/components/error-reporter"
 import type { NodeItem } from "./types/nodeItem"
-import { fromLayout } from "./layout"
+import { itemsMapFromLayout } from "./layout"
 import { store } from "./store"
 import { arrangeMap, selectorMap } from "../config"
 import { PageBody } from "./components/page-body"
 import { coursesItem } from "./items/courses"
+import { ErrorAlert } from "@/components/error-alert";
+import { AssignmentsItem } from "./items/assinments";
 
 /** Key-value of positions and elements */
 type Pair = [string, HTMLElement]
@@ -107,15 +110,17 @@ export default () => {
 
     // Add the extension's sortable items.
     itemPairs.push(['left', coursesItem])
+    itemPairs.push(['top', AssignmentsItem])
 
-    const itemsMap = fromLayout(itemPairs, store.pageLayout)
+    const itemsMap = itemsMapFromLayout(itemPairs, store.pageLayout)
 
     // Not use the default container to keep the layout of the page.
     const container = c('div')
     mount((
-      <ErrorReporter onError={unhide}>
+      <ErrorBoundary FallbackComponent={ErrorAlert} onError={unhide}>
         <PageBody itemsMap={itemsMap} />
-      </ErrorReporter>
+        <Toaster richColors />
+      </ErrorBoundary>
     ), container)
     return container
   })

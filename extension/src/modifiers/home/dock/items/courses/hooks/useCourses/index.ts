@@ -5,16 +5,22 @@ import { getDefaultYear } from "@/modifiers/home/config"
 import { dynamicStore, store } from "../../store"
 import { getCourses } from "./courses"
 import { Position } from "../../types/position"
-import { fromLayout, toLayout } from "@/modifiers/home/dock/layout"
+import { itemsMapFromLayout, itemsMapToLayout } from "@/modifiers/home/dock/layout"
 import { getPeriodKey } from "../../period"
 
-let courses: Course[] = []
+let courses: Course[] | null = null
+
+const getMemorizedCourses = () => {
+  if (courses === null) {
+    courses = getCourses()
+    return courses
+  }
+  else {
+    return courses
+  }
+}
 
 export const useCourses = () => {
-  if (courses.length === 0) {
-    courses = getCourses()
-  }
-
   const [coursesMap, setCoursesMap] = useState<ItemsMap<Course>>(new Map())
 
   const [year, setYear] = useState(getDefaultYear())
@@ -47,25 +53,18 @@ export const useCourses = () => {
     return 'rest'
   }
 
-  /**
-   * Combine positions and courses.
-   * @returns An array of tuples of default position and course
-   */
-  const getCoursePairs = () => {
+  // Restore a layout of a course map.
+  useEffect(() => {
+    const courses = getMemorizedCourses()
     const coursePairs = courses.map<[Position, Course]>(course => {
       const position = getCourseDefaultPosition(course)
       return [position, course]
     })
 
-    return coursePairs
-  }
-
-  // Restore a layout of a course map.
-  useEffect(() => {
-    const coursePairs = getCoursePairs()
     const periodKey = getPeriodKey(year, term)
     const layout = dynamicStore.courseLayout.get(periodKey)
-    const coursesMap = fromLayout(coursePairs, layout)
+
+    const coursesMap = itemsMapFromLayout(coursePairs, layout)
     setCoursesMap(coursesMap)
   }, [year, term])
 
@@ -76,7 +75,7 @@ export const useCourses = () => {
    */
   const storeCoursesMap = (coursesMap: ItemsMap<Course>) => {
     const periodKey = getPeriodKey(year, term)
-    const layout = toLayout(coursesMap)
+    const layout = itemsMapToLayout(coursesMap)
     dynamicStore.courseLayout.set(periodKey, layout)
   }
 

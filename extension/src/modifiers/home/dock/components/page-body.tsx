@@ -4,7 +4,7 @@ import { SortableContainer } from "@/components/sortable/sortable-container";
 import { useLongPress } from "@/hooks/useLongPress";
 import type { NodeItem } from "../types/nodeItem";
 import { PageContext, PageSetterContext, PageStatus } from "../hooks/usePageContext";
-import { toLayout } from "../layout";
+import { itemsMapToLayout } from "../layout";
 import { store } from "../store";
 import { PageResizable } from "./page-resizable";
 import { PageColumn } from "./page-column";
@@ -51,7 +51,7 @@ export const PageBody = (props: {
   }, [status])
 
   const handleDrop = (itemsMap: NodeItemsMap) => {
-    const layout = toLayout(itemsMap)
+    const layout = itemsMapToLayout(itemsMap)
     store.pageLayout = layout
   }
 

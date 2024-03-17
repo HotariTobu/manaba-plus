@@ -7,7 +7,7 @@ import type { Layout } from "./types/layout"
  * @param layout The stored layout
  * @returns An items map sorted with the layout
  */
-export const fromLayout = <I extends Item>(itemPairs: readonly [string, I][], layout: Layout) => {
+export const itemsMapFromLayout = <I extends Item>(itemPairs: readonly [string, I][], layout: Layout) => {
   /** The map to get positions and items by ids */
   const flatItemsMap = new Map(
     itemPairs.map(pair => [
@@ -59,7 +59,7 @@ export const fromLayout = <I extends Item>(itemPairs: readonly [string, I][], la
  * @param itemsMap The items map
  * @returns A layout to restore the items order
  */
-export const toLayout = <I extends Item>(itemsMap: ItemsMap<I>) => {
+export const itemsMapToLayout = <I extends Item>(itemsMap: ItemsMap<I>) => {
   const layout: Layout = new Map()
 
   for (const [position, items] of itemsMap) {

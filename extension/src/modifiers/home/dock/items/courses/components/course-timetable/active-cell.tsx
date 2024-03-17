@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Coordinate, fromNumber, toNumber } from "../../types/coordinate"
+import { Coordinate, coordinateFromNumber, coordinateToNumber } from "../../types/coordinate"
 import { Active, DragEndEvent, DragOverEvent, useDndMonitor } from "@dnd-kit/core"
 import { DisabledAt, getDroppableCellData } from "./droppable-cell"
 import { getCourseCellData } from "./course-cell"
@@ -43,7 +43,7 @@ export const ActiveCell = (props: {
       return
     }
 
-    setActiveCoordinate(fromNumber(coordinate))
+    setActiveCoordinate(coordinateFromNumber(coordinate))
   }
 
   const onDragEnd = (event: DragEndEvent) => {
@@ -65,7 +65,7 @@ export const ActiveCell = (props: {
     else {
       // Add a new coordinate.
       const currentCoordinate = getCoordinate(event.active)
-      const newCoordinate = toNumber(activeCoordinate)
+      const newCoordinate = coordinateToNumber(activeCoordinate)
 
       const coordinates = period.get(props.term)
       if (typeof coordinates === 'undefined') {

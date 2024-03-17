@@ -1,13 +1,13 @@
 import { useDndContext } from "@dnd-kit/core"
 import { dynamicStore } from "../../store"
-import { fromNumber, toNumber } from "../../types/coordinate"
+import { coordinateFromNumber, coordinateToNumber } from "../../types/coordinate"
 import { Course } from "../../types/course"
 import { CourseCell } from "./course-cell"
 
 const getNextCoordinate = (coordinate: number) => {
-  const { column, row } = fromNumber(coordinate)
+  const { column, row } = coordinateFromNumber(coordinate)
 
-  const nextCoordinate = toNumber({
+  const nextCoordinate = coordinateToNumber({
     column,
     row: row + 1,
   })
@@ -69,7 +69,7 @@ export const CourseCells = (props: {
     return (
       <>
         {Array.from(props.coordinateMap).map(([coordinate, course]) => {
-          const { column, row } = fromNumber(coordinate)
+          const { column, row } = coordinateFromNumber(coordinate)
 
           const nextCoordinate = nextCoordinateMap.get(coordinate)
           if (typeof nextCoordinate === 'undefined') {
@@ -98,7 +98,7 @@ export const CourseCells = (props: {
     return (
       <>
         {Array.from(mergedCoordinateMap).map(([coordinate, [span, course]]) => {
-          const { column, row } = fromNumber(coordinate)
+          const { column, row } = coordinateFromNumber(coordinate)
           return (
             <CourseCell column={column - props.startColumn} row={row - props.startRow} span={span} course={course} sortable={props.sortable} coordinate={coordinate} canExtend={false} onExtend={() => { }} key={coordinate} />
           )

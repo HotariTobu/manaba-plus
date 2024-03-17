@@ -1,4 +1,4 @@
-import { Coordinate, toNumber } from "../../types/coordinate"
+import { Coordinate, coordinateToNumber } from "../../types/coordinate"
 import { daysOfWeek } from "../../types/course"
 import { DroppableCell } from "./droppable-cell"
 
@@ -24,7 +24,7 @@ export const DroppableCells = (props: {
   return (
     <>
       {coordinates.map(coordinate => {
-        const key = toNumber(coordinate)
+        const key = coordinateToNumber(coordinate)
         return (
           <DroppableCell {...coordinate} coordinate={key} key={key} {...props} />
         )
