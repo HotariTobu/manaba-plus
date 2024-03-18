@@ -26,30 +26,11 @@ export const ActiveCell = (props: {
   }
 
   const onDragOver = (event: DragOverEvent) => {
-    console.log(event)
+    // console.log(event)
     // console.log(event.active.data.current)
     // console.log(event.over?.data.current)
     // console.error('')
     // console.log(event.collisions)
-
-    // if (event.over === null || event.collisions === null) {
-    //   return
-    // }
-
-    // if (event.over.id !== 'timetable') {
-    //   return
-    // }
-
-    // const closestDroppableCellCollision = event.collisions.find(collision => {
-    //   const data = getDroppableCellData(collision)
-    //   return data !== null
-    // })
-
-    // if (typeof closestDroppableCellCollision === 'undefined') {
-    //   return
-    // }
-
-    // const droppableCellData = getDroppableCellData(closestDroppableCellCollision)
 
     const droppableCellData = getDroppableCellData(event.over)
     if (droppableCellData === null) {
@@ -67,6 +48,9 @@ export const ActiveCell = (props: {
   }
 
   const onDragEnd = (event: DragEndEvent) => {
+    // console.log(event)
+    // console.log(event.active.data.current)
+
     onDeactivate()
 
     const { id: courseId } = event.active

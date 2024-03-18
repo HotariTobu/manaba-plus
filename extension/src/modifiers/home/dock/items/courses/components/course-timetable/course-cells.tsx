@@ -60,12 +60,11 @@ export const CourseCells = (props: {
   sortable: boolean
 }) => {
   const nextCoordinateMap = getNextCoordinateMap(props.coordinateMap)
-  const mergedCoordinateMap = mergeNextCoordinates(props.coordinateMap, nextCoordinateMap)
-
-  const { active } = useDndContext()
-  const notDragging = active === null
 
   if (props.sortable) {
+    const { active } = useDndContext()
+    const notDragging = active === null
+
     return (
       <>
         {Array.from(props.coordinateMap).map(([coordinate, course]) => {
@@ -93,6 +92,8 @@ export const CourseCells = (props: {
     )
   }
   else {
+    const mergedCoordinateMap = mergeNextCoordinates(props.coordinateMap, nextCoordinateMap)
+
     return (
       <>
         {Array.from(mergedCoordinateMap).map(([coordinate, [span, course]]) => {
