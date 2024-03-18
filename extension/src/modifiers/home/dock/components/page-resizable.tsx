@@ -15,7 +15,7 @@ export const PageResizable = (props: {
 }) => {
   const getClampedMiddle = (middle: number) => clamp(middle, props.minMiddle, props.maxMiddle)
 
-  const [middle, setMiddle] = useState(props.initialMiddle)
+  const [middle, setMiddle] = useState(getClampedMiddle(props.initialMiddle))
   const { grabbing, offsetX, resizableProps } = useResizable(({ offsetX }) => {
     const newMiddle = getClampedMiddle(middle + offsetX)
     setMiddle(newMiddle)
