@@ -1,9 +1,10 @@
 import { f, ff } from "@/utils/element"
-import { getDefaultYear, getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
+import { getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
 import { Course, statusTypes } from "../../types/course"
-import { dynamicStore, store } from "../../store"
-import { getPeriod } from "../../period"
+import { dynamicStore, getYearTermKey, store } from "../../store"
+import { Period, getPeriods } from "../../period"
 import { t } from "@/utils/i18n"
+import { CoordinatesMap } from "../../types/coordinate"
 
 /**
  * Create a function to get attribute values of descendants of the specific element.
@@ -138,70 +139,63 @@ const getTimetableCourse = (element: Element): Course => {
   })
 }
 
+interface PeriodInfo extends Period {
+  courseId: string,
+  year: number,
+}
+
 /**
  * Set course period store only for the first time.
  * @param course The course
  */
-const initializePeriod = (course: Course) => {
-  if (dynamicStore.period.has(course.id)) {
-    return
-  }
-
-  const { remarks } = course
+const getPeriodInfoList = (course: Course) => {
+  const { id, year, remarks } = course
   if (remarks === null) {
-    return
+    return null
   }
 
-  const period = getPeriod(remarks)
-  if (period === null) {
-    return
+  const periods = getPeriods(remarks)
+  if (periods === null) {
+    return null
   }
 
-  dynamicStore.period.set(course.id, period)
+  const periodInfoList: PeriodInfo[] = []
+
+  for (const period of periods) {
+    periodInfoList.push({
+      courseId: id,
+      year,
+      ...period,
+    })
+  }
+
+  return periodInfoList
 }
 
 const initializeYears = (courses: Course[]) => {
-  const years = new Set<string>()
+  const newYears = new Set(store.years)
 
   for (const course of courses) {
-    if (course.year === null) {
-      continue
-    }
-
-    years.add(course.year.toString())
+    newYears.add(course.year)
   }
 
-  const sorted = Array.from(years).sort()
-
-  if (years.size === 0) {
-    sorted.push(getDefaultYear())
+  const sorted = Array.from(newYears).sort()
+  if (sorted.length === 0) {
+    sorted.push(getFiscalYear())
   }
 
   store.years = new Set(sorted)
 }
 
-
-const initializeTerms = (courses: Course[]) => {
-  const termSet = new Set<string>()
-
-  for (const course of courses) {
-    const period = dynamicStore.period.get(course.id)
-    if (period === null) {
-      continue
-    }
-
-    for (const term of period.keys()) {
-      termSet.add(term)
-    }
-  }
-
-  const sorted = Array.from(termSet).sort()
-
+const initializeTerms = (terms: Set<string>) => {
+  const sorted = Array.from(terms).sort()
   if (sorted.length === 0) {
     sorted.push('default')
   }
 
-  const newTerms = new Map(store.terms)
+  const newTerms = new Map(store.terms.map(
+    ({ id, label }) => [id, label]
+  ))
 
   for (const term of sorted) {
     if (newTerms.has(term)) {
@@ -224,7 +218,56 @@ const initializeTerms = (courses: Course[]) => {
     }
   }
 
-  store.terms = Array.from(newTerms)
+  store.terms = Array.from(newTerms).map(
+    ([id, label]) => ({ id, label })
+  )
+}
+
+const initializeStore = (courses: Course[]) => {
+  const periodInfoList = courses.flatMap(getPeriodInfoList)
+
+  const terms = new Set<string>()
+
+  const newCoordinatesMapMap = new Map<string, CoordinatesMap>()
+
+  for (const info of periodInfoList) {
+    if (info === null) {
+      continue
+    }
+
+    const { courseId, year, term, coordinates } = info
+    terms.add(term)
+
+    const yearTermKey = getYearTermKey(year, term)
+
+    const coordinatesMap = newCoordinatesMapMap.get(yearTermKey)
+    if (typeof coordinatesMap === 'undefined') {
+      newCoordinatesMapMap.set(yearTermKey, new Map([
+        [courseId, coordinates],
+      ]))
+    }
+    else {
+      coordinatesMap.set(courseId, coordinates)
+      newCoordinatesMapMap.set(yearTermKey, coordinatesMap)
+    }
+  }
+
+  for (const [yearTermKey, newCoordinatesMap] of newCoordinatesMapMap) {
+    const coordinatesMap = dynamicStore.coordinatesMap.get(yearTermKey)
+
+    for (const [courseId, coordinates] of newCoordinatesMap) {
+      if (coordinatesMap.has(courseId)) {
+        continue
+      }
+
+      coordinatesMap.set(courseId, coordinates)
+    }
+
+    dynamicStore.coordinatesMap.set(yearTermKey, coordinatesMap)
+  }
+
+  initializeYears(courses)
+  initializeTerms(terms)
 }
 
 /**
@@ -238,9 +281,7 @@ export const getCourses = () => {
     ...f(selectorMap.courses.timetable.source).map(getTimetableCourse),
   ]
 
-  courses.forEach(initializePeriod)
-  initializeYears(courses)
-  initializeTerms(courses)
+  initializeStore(courses)
 
   return courses
 }

@@ -5,17 +5,16 @@ import { Course } from "../../types/course"
 import { CourseLink } from "../course-link"
 import { CourseStar } from "../course-star"
 import { CourseStatus } from "../course-status"
-import { defineCustomSortableData } from "@/utils/defineCustomSortableData"
+import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
-import { DisabledAt } from "./droppable-cell"
 import { MouseEvent } from "react"
 
 interface CourseCellData {
-  coordinate: Number
+  coordinate: number
 }
 
-export const [, createCourseCellData, getCourseCellData] = defineCustomSortableData<CourseCellData>()
+export const [, createCourseCellData, getCourseCellData] = defineCustomDnDData<CourseCellData>()
 
 export const CourseCellBase = (props: {
   course: Course
@@ -54,7 +53,10 @@ export const CourseCell = (props: CourseCellData & {
       gridRowStart: props.row + 1,
       gridRowEnd: `span ${props.span}`,
     }}>
-      <SortableItem className="h-full" item={props.course} disabled={{
+      <SortableItem className="h-full" item={{
+        ...props.course,
+        // id: `${props.course.id}-${props.coordinate}`,
+      }} disabled={{
         draggable: !props.sortable,
         droppable: true,
       }} data={createCourseCellData(props)}>
@@ -73,7 +75,7 @@ export const LostCourseCell = (props: {
   course: Course
   sortable: boolean
 }) => (
-  <SortableItem className={cn(props.sortable ? 'cursor-grab' : 'cursor-auto')} item={props.course} disabled={{
+  <SortableItem className={cn("w-48", props.sortable ? 'cursor-grab' : 'cursor-auto')} item={props.course} disabled={{
     draggable: !props.sortable,
     droppable: true,
   }}>

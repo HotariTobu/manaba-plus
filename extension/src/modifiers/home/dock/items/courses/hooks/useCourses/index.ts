@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { ItemsMap } from "@/components/sortable/item"
 import { Course } from "../../types/course"
-import { getDefaultYear } from "@/modifiers/home/config"
-import { dynamicStore, store } from "../../store"
+import { getFiscalYear } from "@/modifiers/home/config"
+import { dynamicStore, getYearTermKey, store } from "../../store"
 import { getCourses } from "./courses"
 import { Position } from "../../types/position"
 import { itemsMapFromLayout, itemsMapToLayout } from "@/modifiers/home/dock/layout"
-import { getPeriodKey } from "../../period"
+import { CoordinatesMap } from "../../types/coordinate"
 
 let courses: Course[] | null = null
 
@@ -20,28 +20,20 @@ const getMemorizedCourses = () => {
   }
 }
 
-export const useCourses = () => {
-  const courses = getMemorizedCourses()
 
-  const [coursesMap, setCoursesMap] = useState<ItemsMap<Course>>(new Map())
-
-  const [year, setYear] = useState(getDefaultYear())
-  const [term, setRawTerm] = useState(store.term)
-  const periodKey = getPeriodKey(year, term)
-
-  /**
-   * Get where the course should be located at.
-   * @param course The course
-   * @returns The default position
-   */
-  const getCourseDefaultPosition = (course: Course): Position => {
+/**
+ * Get where the course should be located at.
+ * @param course The course
+ * @returns The default position
+ */
+const createCourseDefaultPositionGetter = (year: number, coordinatesMap: CoordinatesMap) => {
+  return (course: Course): Position => {
     if (course.url === null) {
       return 'trash'
     }
 
-    if (course.year.toString() === year) {
-      const period = dynamicStore.period.get(course.id)
-      const coordinates = period.get(term)
+    if (course.year === year) {
+      const coordinates = coordinatesMap.get(course.id)
       if (typeof coordinates === 'undefined') {
         return 'other'
       }
@@ -55,19 +47,31 @@ export const useCourses = () => {
 
     return 'rest'
   }
+}
+
+export const useCourses = () => {
+  const courses = getMemorizedCourses()
+
+  const [coursesMap, setCoursesMap] = useState<ItemsMap<Course>>(new Map())
+
+  const [year, setYear] = useState(getFiscalYear())
+  const [term, internalSetTerm] = useState(store.term)
+  const yearTermKey = getYearTermKey(year, term)
 
   // Restore a layout of a course map.
   useEffect(() => {
+    const coordinatesMap = dynamicStore.coordinatesMap.get(yearTermKey)
+    const getCourseDefaultPosition = createCourseDefaultPositionGetter(year, coordinatesMap)
     const coursePairs = courses.map<[Position, Course]>(course => {
       const position = getCourseDefaultPosition(course)
       return [position, course]
     })
 
-    const layout = dynamicStore.courseLayout.get(periodKey)
+    const layout = dynamicStore.coursesLayout.get(yearTermKey)
 
     const coursesMap = itemsMapFromLayout(coursePairs, layout)
     setCoursesMap(coursesMap)
-  }, [periodKey])
+  }, [yearTermKey])
 
   /**
    * Store a layout of a courses map.
@@ -76,11 +80,11 @@ export const useCourses = () => {
    */
   const storeCoursesMap = (coursesMap: ItemsMap<Course>) => {
     const layout = itemsMapToLayout(coursesMap)
-    dynamicStore.courseLayout.set(periodKey, layout)
+    dynamicStore.coursesLayout.set(yearTermKey, layout)
   }
 
   const setTerm = (term: string) => {
-    setRawTerm(term)
+    internalSetTerm(term)
     store.term = term
   }
 
@@ -88,9 +92,12 @@ export const useCourses = () => {
     coursesMap,
     setCoursesMap,
     storeCoursesMap,
-    year,
-    setYear,
-    term,
-    setTerm,
+    selectProps: {
+      year,
+      setYear,
+      term,
+      setTerm,
+    },
+    yearTermKey,
   }
 }

@@ -196,14 +196,6 @@ export const getFiscalYear = (date: Date = new Date()) => {
   return date.getFullYear();
 }
 
-/**
- * Get the default year of courses.
- * @returns The current fiscal year
- */
-export const getDefaultYear = () => {
-  return getFiscalYear().toString()
-}
-
 /** The relative path to the top page that has all courses */
 export const allCoursesPath = 'home__all'
 

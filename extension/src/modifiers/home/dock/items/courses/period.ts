@@ -1,9 +1,13 @@
 import { coordinateToNumber } from "./types/coordinate"
-import { Period } from "./types/period"
 
-type PeriodGetter = (remarks: string) => Period | null
+export interface Period {
+  term: string
+  coordinates: number[]
+}
 
-const periodGetters: Record<string, (() => PeriodGetter) | undefined> = {
+type PeriodsGetter = (remarks: string) => Period[] | null
+
+const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
   "room.chuo-u.ac.jp": () => {
     const joinWords = (obj: object) => {
       const keys = Object.keys(obj)
@@ -52,28 +56,27 @@ const periodGetters: Record<string, (() => PeriodGetter) | undefined> = {
         const rawDay = periodMatch[1].toLowerCase()
         const column = days[rawDay]
         const row = parseInt(periodMatch[2]) - 1
-        return {
+        return coordinateToNumber({
           column,
           row,
-        }
+        })
       })
 
       const termList = term === 'ful' ? ['fir', 'sec'] : [term]
-      const period: Period = new Map()
+      const periods: Period[] = []
 
       for (const term of termList) {
-        period.set(term, coordinates.map(coordinateToNumber))
+        periods.push({
+          term,
+          coordinates,
+        })
       }
 
-      return period
+      return periods
     }
   }
 }
 
 const { hostname } = location
 
-export const getPeriod = (periodGetters[hostname] ?? (() => () => null))()
-
-export const getPeriodKey = (year: string | number, term: string) => {
-  return `${year}-${term}`
-}
+export const getPeriods = (periodsGetters[hostname] ?? (() => () => null))()

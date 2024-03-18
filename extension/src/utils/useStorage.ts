@@ -55,12 +55,11 @@ export const useStorage = async (area: StorageArea = sync) => {
    * @returns The value if it is stored, otherwise `defaultValue`
    */
   const get = <T extends StorageItem>(key: string, defaultValue: T) => {
-    const value = values[key]
-    if (typeof value === 'undefined') {
-      return defaultValue
+    if (key in values) {
+      return values[key] as T
     }
     else {
-      return value as T
+      return defaultValue
     }
   }
 

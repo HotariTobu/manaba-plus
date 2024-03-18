@@ -1,8 +1,8 @@
 import { useDndContext } from "@dnd-kit/core"
-import { dynamicStore } from "../../store"
 import { coordinateFromNumber, coordinateToNumber } from "../../types/coordinate"
 import { Course } from "../../types/course"
 import { CourseCell } from "./course-cell"
+import { UpdateCoordinatesMap } from "../../hooks/useCoordinatesMap"
 
 const getNextCoordinate = (coordinate: number) => {
   const { column, row } = coordinateFromNumber(coordinate)
@@ -53,7 +53,7 @@ const mergeNextCoordinates = (coordinateMap: Map<number, Course>, nextCoordinate
 }
 
 export const CourseCells = (props: {
-  term: string
+  updateCoordinatesMap: UpdateCoordinatesMap
   coordinateMap: Map<number, Course>
   startColumn: number
   startRow: number
@@ -78,13 +78,11 @@ export const CourseCells = (props: {
 
           const canExtend = props.sortable && notDragging && typeof props.coordinateMap.get(nextCoordinate) === 'undefined'
           const handleExtend = () => {
-            const period = dynamicStore.period.get(course.id)
-
-            // Add a new coordinate.
-            const coordinates = period.get(props.term)
-            coordinates?.push(nextCoordinate)
-
-            dynamicStore.period.set(course.id, period)
+            props.updateCoordinatesMap({
+              courseId: course.id,
+              method: 'add',
+              at: nextCoordinate
+            })
           }
 
           return (

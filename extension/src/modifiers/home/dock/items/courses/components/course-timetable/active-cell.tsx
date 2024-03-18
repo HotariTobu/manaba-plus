@@ -3,10 +3,10 @@ import { Coordinate, coordinateFromNumber, coordinateToNumber } from "../../type
 import { Active, DragEndEvent, DragOverEvent, useDndMonitor } from "@dnd-kit/core"
 import { DisabledAt, getDroppableCellData } from "./droppable-cell"
 import { getCourseCellData } from "./course-cell"
-import { dynamicStore } from "../../store"
+import { UpdateCoordinatesMap } from "../../hooks/useCoordinatesMap"
 
 export const ActiveCell = (props: {
-  term: string
+  updateCoordinatesMap: UpdateCoordinatesMap
   disabledAt: DisabledAt
 }) => {
   const [activeCoordinate, setActiveCoordinate] = useState<Coordinate | null>(null)
@@ -26,10 +26,30 @@ export const ActiveCell = (props: {
   }
 
   const onDragOver = (event: DragOverEvent) => {
+    console.log(event)
     // console.log(event.active.data.current)
     // console.log(event.over?.data.current)
     // console.error('')
     // console.log(event.collisions)
+
+    // if (event.over === null || event.collisions === null) {
+    //   return
+    // }
+
+    // if (event.over.id !== 'timetable') {
+    //   return
+    // }
+
+    // const closestDroppableCellCollision = event.collisions.find(collision => {
+    //   const data = getDroppableCellData(collision)
+    //   return data !== null
+    // })
+
+    // if (typeof closestDroppableCellCollision === 'undefined') {
+    //   return
+    // }
+
+    // const droppableCellData = getDroppableCellData(closestDroppableCellCollision)
 
     const droppableCellData = getDroppableCellData(event.over)
     if (droppableCellData === null) {
@@ -55,33 +75,35 @@ export const ActiveCell = (props: {
     }
 
     // Update the course period.
-    const period = dynamicStore.period.get(courseId)
-
     if (activeCoordinate === null) {
       // Dropped out of timetable.
       // Remove all coordinates in the same term.
-      period.delete(props.term)
+      props.updateCoordinatesMap({
+        courseId,
+        method: 'clear',
+      })
     }
     else {
       // Add a new coordinate.
-      const currentCoordinate = getCoordinate(event.active)
       const newCoordinate = coordinateToNumber(activeCoordinate)
 
-      const coordinates = period.get(props.term)
-      if (typeof coordinates === 'undefined') {
-        period.set(props.term, [newCoordinate])
+      const currentCoordinate = getCoordinate(event.active)
+      if (currentCoordinate === null) {
+        props.updateCoordinatesMap({
+          courseId,
+          method: 'add',
+          at: newCoordinate
+        })
       }
       else {
-        // Remove the current coordinate.
-        const newCoordinates = coordinates.filter(
-          coordinate => coordinate !== currentCoordinate
-        )
-        newCoordinates.push(newCoordinate)
-        period.set(props.term, newCoordinates)
+        props.updateCoordinatesMap({
+          courseId,
+          method: 'move',
+          from: currentCoordinate,
+          to: newCoordinate,
+        })
       }
     }
-
-    dynamicStore.period.set(courseId, period)
   }
 
   useDndMonitor({

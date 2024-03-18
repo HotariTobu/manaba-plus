@@ -3,8 +3,8 @@ import { YearSelect } from "./year-select";
 import { TermSelect } from "./term-select";
 
 export const YearTermSelect = (props: {
-  year: string;
-  setYear: (year: string) => void;
+  year: number;
+  setYear: (year: number) => void;
   term: string;
   setTerm: (term: string) => void;
   sortable: boolean

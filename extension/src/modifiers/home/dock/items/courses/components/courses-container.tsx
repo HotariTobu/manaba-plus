@@ -9,20 +9,52 @@ import { Course } from "../types/course"
 import { useCourses } from "../hooks/useCourses"
 import { store } from "../store"
 import { CourseCardBase } from "./course-cards/course-card"
-import { CourseTimetable } from "./course-timetable"
+import { CourseTimetable, getTimetableZoneData } from "./course-timetable"
 import { CourseCards } from "./course-cards"
 import { CourseList } from "./course-list"
 import { useRef } from "react"
 import { YearTermSelect } from "./year-term-select"
 import { Button } from "@/components/ui/button"
 import { allCoursesPath } from "@/modifiers/home/config"
+import { CollisionDetection } from "@dnd-kit/core"
+import { getDroppableCellData } from "./course-timetable/droppable-cell"
+import { hasSortableData } from "@dnd-kit/sortable"
+
+const createCollisionDetection = (defaultDetector: CollisionDetection): CollisionDetection => {
+  return args => {
+    const collisions = defaultDetector(args)
+
+    if (!hasSortableData(args.active)) {
+      return collisions
+    }
+
+    if (collisions.length === 0) {
+      return collisions
+    }
+
+    const firstCollision = collisions[0]
+    if (getTimetableZoneData(firstCollision) === null) {
+      return collisions
+    }
+
+    if (args.active.data.current.sortable.containerId !== firstCollision.id) {
+      return collisions
+    }
+
+    const droppableCellCollisions = collisions.filter(collision => {
+      return getDroppableCellData(collision) !== null
+    })
+
+    return droppableCellCollisions.concat(collisions)
+  }
+}
 
 const Overlay = (props: {
   item: Course
 }) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grabbing" course={props.item} sortable />
 
 export const CoursesContainer = () => {
-  const { coursesMap, setCoursesMap, storeCoursesMap, ...selectProps } = useCourses()
+  const { coursesMap, setCoursesMap, storeCoursesMap, selectProps, yearTermKey } = useCourses()
 
   const { status, setStatus } = usePageContext()
   const dragging = useRef(false)
@@ -61,8 +93,8 @@ export const CoursesContainer = () => {
     <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")} {...longPress}>
       <YearTermSelect sortable={sortable} {...selectProps} />
 
-      <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>
-        <CourseTimetable term={selectProps.term} position="timetable" courses={timetable} sortable={sortable} />
+      <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d} createCollisionDetection={createCollisionDetection}>
+        <CourseTimetable yearTermKey={yearTermKey} position="timetable" courses={timetable} sortable={sortable} />
 
         <Tabs className="contents" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
           <TabsList className="bg-primary me-auto">

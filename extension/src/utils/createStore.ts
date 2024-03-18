@@ -1,7 +1,7 @@
 import type { StorageItem } from "@/types/storageItem";
 import { StorageArea, sync, useStorage } from "./useStorage";
 
-export type StoreItem = StorageItem | Map<StorageItem, StorageItem> | Set<string | number>
+export type StoreItem = StorageItem | Map<string | number, StorageItem> | Set<string | number>
 export type Store = Record<string, StoreItem>
 
 export interface DynamicStoreItem<V extends StoreItem> {
@@ -24,7 +24,7 @@ type ClearStore = () => void
  * @param area Where the store I/O values
  */
 export const createStore = async <T extends Store>(prefix: string, defaultValues: T, area: StorageArea = sync): Promise<[T, ClearStore]> => {
-  const { get, set, remove } = await useStorage(area)
+  const storage = await useStorage(area)
 
   const keys = Object.keys(defaultValues)
   const prefixedKeys = keys.map(key => prefix + key)
@@ -38,35 +38,35 @@ export const createStore = async <T extends Store>(prefix: string, defaultValues
 
     if (defaultValue instanceof Map) {
       Object.defineProperty(storeBase, key, {
-        get() {
-          const entries = get(prefixedKey, defaultValue as never)
+        get: () => {
+          const entries = storage.get(prefixedKey, defaultValue as never)
           return new Map(entries)
         },
-        set(value: typeof defaultValue) {
+        set: (value: typeof defaultValue) => {
           const entries = Array.from(value)
-          set(prefixedKey, entries)
+          storage.set(prefixedKey, entries)
         },
       })
     }
     else if (defaultValue instanceof Set) {
       Object.defineProperty(storeBase, key, {
-        get() {
-          const items = get(prefixedKey, defaultValue as never)
+        get: () => {
+          const items = storage.get(prefixedKey, defaultValue as never)
           return new Set(items)
         },
-        set(value: typeof defaultValue) {
+        set: (value: typeof defaultValue) => {
           const items = Array.from(value)
-          set(prefixedKey, items)
+          storage.set(prefixedKey, items)
         },
       })
     }
     else {
       Object.defineProperty(storeBase, key, {
-        get() {
-          return get(prefixedKey, defaultValue)
+        get: () => {
+          return storage.get(prefixedKey, defaultValue)
         },
-        set(value: typeof defaultValue) {
-          set(prefixedKey, value)
+        set: (value: typeof defaultValue) => {
+          storage.set(prefixedKey, value)
         },
       })
     }
@@ -76,7 +76,7 @@ export const createStore = async <T extends Store>(prefix: string, defaultValues
   const store = storeBase as T
 
   /** Remove all store values to the defaults */
-  const clearStore = () => remove(...prefixedKeys)
+  const clearStore = () => storage.remove(...prefixedKeys)
 
   return [store, clearStore]
 }
@@ -90,7 +90,7 @@ export const createStore = async <T extends Store>(prefix: string, defaultValues
  * @param area Where the store I/O values
  */
 export const createDynamicStore = async <T extends Store>(prefix: string, defaultValues: T, area: StorageArea = sync): Promise<[DynamicStore<T>, ClearStore]> => {
-  const { has, get, set, remove, getAllKeys } = await useStorage(area)
+  const storage = await useStorage(area)
 
   const keys = Object.keys(defaultValues)
   const prefixedKeys = keys.map(key => prefix + key)
@@ -102,46 +102,68 @@ export const createDynamicStore = async <T extends Store>(prefix: string, defaul
     const prefixedKey = prefixedKeys[index]
     const defaultValue = defaultValues[key]
 
+    const has = (subKey: string) => {
+      return storage.has(prefixedKey + subKey)
+    }
+
     if (defaultValue instanceof Map) {
       storeBase[key] = {
-        has(subKey) {
-          return has(prefixedKey + subKey)
-        },
-        get(subKey) {
-          const entries = get(prefixedKey + subKey, defaultValue as never)
+        has,
+        get: (subKey) => {
+          const entries = storage.get(prefixedKey + subKey, defaultValue as never)
           return new Map(entries)
         },
-        set(subKey, value: typeof defaultValue) {
+        set: (subKey, value: typeof defaultValue) => {
           const entries = Array.from(value)
-          set(prefixedKey + subKey, entries)
+          storage.set(prefixedKey + subKey, entries)
         },
       }
     }
     else if (defaultValue instanceof Set) {
       storeBase[key] = {
-        has(subKey) {
-          return has(prefixedKey + subKey)
-        },
-        get(subKey) {
-          const items = get(prefixedKey + subKey, defaultValue as never)
+        has,
+        get: (subKey) => {
+          const items = storage.get(prefixedKey + subKey, defaultValue as never)
           return new Set(items)
         },
-        set(subKey, value: typeof defaultValue) {
+        set: (subKey, value: typeof defaultValue) => {
           const items = Array.from(value)
-          set(prefixedKey + subKey, items)
+          storage.set(prefixedKey + subKey, items)
+        },
+      }
+    }
+    else if (Array.isArray(defaultValue)) {
+      storeBase[key] = {
+        has,
+        get: (subKey) => {
+          const items = storage.get(prefixedKey + subKey, defaultValue)
+          return [...items]
+        },
+        set: (subKey, value: typeof defaultValue) => {
+          storage.set(prefixedKey + subKey, value)
+        },
+      }
+    }
+    else if (typeof defaultValue === 'object' && defaultValue !== null) {
+      storeBase[key] = {
+        has,
+        get: (subKey) => {
+          const entries = storage.get(prefixedKey + subKey, defaultValue)
+          return { ...entries }
+        },
+        set: (subKey, value: typeof defaultValue) => {
+          storage.set(prefixedKey + subKey, value)
         },
       }
     }
     else {
       storeBase[key] = {
-        has(subKey) {
-          return has(prefixedKey + subKey)
+        has,
+        get: (subKey) => {
+          return storage.get(prefixedKey + subKey, defaultValue)
         },
-        get(subKey) {
-          return get(prefixedKey + subKey, defaultValue)
-        },
-        set(subKey, value: typeof defaultValue) {
-          set(prefixedKey + subKey, value)
+        set: (subKey, value: typeof defaultValue) => {
+          storage.set(prefixedKey + subKey, value)
         },
       }
     }
@@ -149,7 +171,7 @@ export const createDynamicStore = async <T extends Store>(prefix: string, defaul
 
   const store = storeBase as DynamicStore<T>
 
-  const clearStore = () => remove(...getAllKeys().filter(key => {
+  const clearStore = () => storage.remove(...storage.getAllKeys().filter(key => {
     for (const prefixedKey of prefixedKeys) {
       if (key.startsWith(prefixedKey)) {
         return true

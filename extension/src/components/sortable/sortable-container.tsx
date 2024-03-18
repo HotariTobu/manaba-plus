@@ -129,7 +129,15 @@ export const SortableContainer = <I extends Item>({
   }
 
   const getToData = (over: Over): Data | null => {
-    if (hasSortableZoneData(over)) {
+    if (hasSortableData(over)) {
+      const { containerId, index } = over.data.current.sortable
+      return {
+        containerId,
+        items: itemsMap.get(containerId) ?? [],
+        index
+      }
+    }
+    else if (hasSortableZoneData(over)) {
       return {
         containerId: over.id,
         items: itemsMap.get(over.id) ?? [],
@@ -137,17 +145,7 @@ export const SortableContainer = <I extends Item>({
       }
     }
     else {
-      if (hasSortableData(over)) {
-        const { containerId, index } = over.data.current.sortable
-        return {
-          containerId,
-          items: itemsMap.get(containerId) ?? [],
-          index
-        }
-      }
-      else {
-        return null
-      }
+      return null
     }
   }
 
@@ -181,6 +179,10 @@ export const SortableContainer = <I extends Item>({
     }
 
     const item = from.items[from.index]
+    if (typeof item === 'undefined') {
+      return
+    }
+
     setActiveItem(item)
     setIsDragging(true)
   }

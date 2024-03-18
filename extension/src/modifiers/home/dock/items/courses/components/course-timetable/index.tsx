@@ -1,18 +1,21 @@
 import { cn } from "@/lib/utils"
-import { DayOfWeek, type Course, daysOfWeek } from "../../types/course"
-import { dynamicStore } from "../../store"
+import { type Course, daysOfWeek } from "../../types/course"
 import { SortableZone } from "@/components/sortable/sortable-zone"
 import { classNames } from "../zone-color"
 import { CourseTimetableHeader } from "./course-timetable-header"
 import { CourseTimetableIndex } from "./course-timetable-index"
 import { Position } from "../../types/position"
-import { coordinateFromNumber } from "../../types/coordinate"
+import { CoordinatesMap, coordinateFromNumber } from "../../types/coordinate"
 import { CourseCells } from "./course-cells"
 import { DroppableCells } from "./droppable-cells"
 import { rectSwappingStrategy } from "@dnd-kit/sortable"
 import { ActiveCell } from "./active-cell"
 import { LostCourseCell } from "./course-cell"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
+import { useCoordinatesMap } from "../../hooks/useCoordinatesMap"
+
+export const [, createTimetableZoneData, getTimetableZoneData] = defineCustomDnDData()
 
 /** Bounding box of courses */
 interface BoundingBox {
@@ -22,13 +25,12 @@ interface BoundingBox {
   height: number
 }
 
-const getCoordinateMap = (term: string, courses: Course[]) => {
+const getCoordinateMap = (coordinatesMap: CoordinatesMap, courses: Course[]) => {
   const coordinateMap = new Map<number, Course>()
   const noCoordinateCourses: Course[] = []
 
   for (const course of courses) {
-    const period = dynamicStore.period.get(course.id)
-    const coordinates = period.get(term)
+    const coordinates = coordinatesMap.get(course.id)
     if (typeof coordinates === 'undefined') {
       noCoordinateCourses.push(course)
       continue
@@ -88,12 +90,14 @@ const getBoundingBox = (coordinateMap: Map<number, Course>): BoundingBox => {
 }
 
 export const CourseTimetable = (props: {
-  term: string
+  yearTermKey: string
   position: Position
   courses: Course[]
   sortable: boolean
 }) => {
-  const { coordinateMap, noCoordinateCourses } = getCoordinateMap(props.term, props.courses)
+  const { coordinatesMap, updateCoordinatesMap } = useCoordinatesMap(props.yearTermKey)
+
+  const { coordinateMap, noCoordinateCourses } = getCoordinateMap(coordinatesMap, props.courses)
   const boundingBox = getBoundingBox(coordinateMap)
 
   // Show all columns and rows in sorting, otherwise omit empty ones.
@@ -115,7 +119,9 @@ export const CourseTimetable = (props: {
 
   return (
     <ScrollArea>
-      <SortableZone className={cn("gap-2 flex flex-col", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy}>
+      <SortableZone className={cn("gap-2 flex flex-col", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy} useDroppableProps={{
+        data: createTimetableZoneData({})
+      }}>
         <div className="gap-1 grid" style={{
           gridTemplateColumns: `auto repeat(${width}, 1fr)`,
           gridTemplateRows: `auto repeat(${height}, 1fr`,
@@ -124,12 +130,12 @@ export const CourseTimetable = (props: {
           <CourseTimetableIndex startRow={top} rowCount={height} />
           <div className={cn("col-start-2 col-end-[-1] row-start-2 row-end-[-1] grid grid-cols-subgrid grid-rows-subgrid")}>
             <DroppableCells rowCount={height} sortable={props.sortable} />
-            <CourseCells term={props.term} coordinateMap={coordinateMap} startColumn={left} startRow={top} sortable={props.sortable} />
-            <ActiveCell term={props.term} disabledAt={coordinate => coordinateMap.has(coordinate)} />
+            <CourseCells updateCoordinatesMap={updateCoordinatesMap} coordinateMap={coordinateMap} startColumn={left} startRow={top} sortable={props.sortable} />
+            <ActiveCell updateCoordinatesMap={updateCoordinatesMap} disabledAt={coordinate => coordinateMap.has(coordinate)} />
           </div>
         </div>
         {props.sortable && (
-          <div className="mt-auto flex">
+          <div className="gap-1 mt-auto flex flex-wrap">
             {noCoordinateCourses.map(course => (
               <LostCourseCell course={course} sortable={props.sortable} key={course.id} />
             ))}

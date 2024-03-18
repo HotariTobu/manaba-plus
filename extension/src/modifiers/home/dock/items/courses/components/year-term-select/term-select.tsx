@@ -24,10 +24,9 @@ import { SortableContainer } from "@/components/sortable/sortable-container";
 import { ItemsMap } from "@/components/sortable/item";
 import { SortableZone } from "@/components/sortable/sortable-zone";
 import { restrictToHorizontalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
+import { Term } from "../../types/term";
 
-type Terms = typeof store.terms
-
-interface TermItem {
+type TermItem = {
   id: string
   label: string
   selected: boolean
@@ -163,11 +162,10 @@ const TermOverlay = (props: {
 
 const containerId = 'container-id'
 
-const toItemsMap = (terms: Terms, currentTerm: string) => {
-  const items = terms.map<TermItem>(([term, label]) => ({
-    id: term,
-    label,
-    selected: term === currentTerm,
+const toItemsMap = (terms: Term[], currentTerm: string) => {
+  const items = terms.map<TermItem>(term => ({
+    ...term,
+    selected: term.id === currentTerm,
   }))
 
   return {
@@ -182,7 +180,7 @@ const fromItemsMap = (itemsMap: ItemsMap<TermItem>) => {
     return null
   }
 
-  return items.map<[string, string]>(({ id, label }) => [id, label])
+  return items.map<Term>(({ id, label }) => ({ id, label }))
 }
 
 export const TermSelect = (props: {
@@ -192,7 +190,7 @@ export const TermSelect = (props: {
 }) => {
   const [terms, setTerms] = useState(store.terms)
 
-  const updateTerms = (newTerms: Terms) => {
+  const updateTerms = (newTerms: Term[]) => {
     store.terms = newTerms
     setTerms(newTerms)
   }
@@ -206,22 +204,34 @@ export const TermSelect = (props: {
   }
 
   const addTerm = () => {
-    const term = crypto.randomUUID()
+    const id = crypto.randomUUID()
     const label = t('home_courses_term_default')
-    const newTerms: Terms = [
+    const newTerms: Term[] = [
       ...terms,
-      [term, label],
+      {
+        id,
+        label,
+      },
     ]
     updateTerms(newTerms)
   }
 
-  const editTerm = (term: string, label: string) => {
-    const newTerms = terms.map<[string, string]>(p => p[0] === term ? [term, label] : p)
+  const editTerm = (id: string, label: string) => {
+    const newTerms = terms.map<Term>(term => {
+      if (term.id === id) {
+        return {
+          id, label
+        }
+      }
+      else {
+        return term
+      }
+    })
     updateTerms(newTerms)
   }
 
-  const deleteTerm = (term: string) => {
-    const newTerms = terms.filter(p => p[0] !== term)
+  const deleteTerm = (id: string) => {
+    const newTerms = terms.filter(term => term.id !== id)
     updateTerms(newTerms)
   }
 
