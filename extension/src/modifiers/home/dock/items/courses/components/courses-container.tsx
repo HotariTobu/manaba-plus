@@ -82,13 +82,6 @@ export const CoursesContainer = () => {
   const rest = coursesMap.get('rest') ?? []
   const trash = coursesMap.get('trash') ?? []
 
-  // console.log('timetable', timetable)
-  // console.log('current', current)
-  // console.log('other', other)
-  // console.log('rest', rest)
-  // console.log('trash', trash)
-  // console.warn('')
-
   return (
     <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")} {...longPress}>
       <YearTermSelect sortable={sortable} {...selectProps} />

@@ -113,12 +113,12 @@ export const CourseTimetable = (props: {
 
   const { left, top, width, height } = boundingBox
 
-  // console.log(props.courses)
-  // console.log([...coordinateMap.entries()])
-  // console.log(noCoordinateCourses)
+  // NOTE: ScrollArea can cause ugly scrolling when sorting.
+  const Container = props.sortable ? 'div' : ScrollArea
 
   return (
-    <ScrollArea>
+    <Container className={cn(props.sortable && "overflow-hidden")}>
+      {/* <ScrollArea> */}
       <SortableZone className={cn("gap-2 flex flex-col", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy} useDroppableProps={{
         data: createTimetableZoneData({})
       }}>
@@ -142,7 +142,11 @@ export const CourseTimetable = (props: {
           </div>
         )}
       </SortableZone>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+      {/* <ScrollBar orientation="horizontal" />
+    </ScrollArea> */}
+      {props.sortable || (
+        <ScrollBar orientation="horizontal" />
+      )}
+    </Container>
   )
 }
