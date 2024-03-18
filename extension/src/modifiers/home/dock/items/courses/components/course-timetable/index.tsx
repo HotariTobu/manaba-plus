@@ -12,10 +12,7 @@ import { rectSwappingStrategy } from "@dnd-kit/sortable"
 import { ActiveCell } from "./active-cell"
 import { LostCourseCell } from "./course-cell"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
 import { useCoordinatesMap } from "../../hooks/useCoordinatesMap"
-
-export const [, createTimetableZoneData, getTimetableZoneData] = defineCustomDnDData()
 
 /** Bounding box of courses */
 interface BoundingBox {
@@ -119,9 +116,7 @@ export const CourseTimetable = (props: {
   return (
     <Container className={cn(props.sortable && "overflow-hidden")}>
       {/* <ScrollArea> */}
-      <SortableZone className={cn("gap-2 flex flex-col", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy} useDroppableProps={{
-        data: createTimetableZoneData({})
-      }}>
+      <SortableZone className={cn("gap-2 flex flex-col", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy}>
         <div className="gap-1 grid" style={{
           gridTemplateColumns: `auto repeat(${width}, 1fr)`,
           gridTemplateRows: `auto repeat(${height}, 1fr`,

@@ -1,6 +1,5 @@
 import { SortableItem } from "@/components/sortable/sortable-item"
 import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
-import { useDroppable } from "@dnd-kit/core"
 
 export type DisabledAt = (coordinate: number) => boolean
 
@@ -14,27 +13,13 @@ export const [droppableCellDataId, createDroppableCellData, getDroppableCellData
 export const DroppableCell = (props: DroppableCellData & {
   column: number
   row: number
-}) => {
-  const { setNodeRef } = useDroppable({
-    data: createDroppableCellData(props),
+}) => (
+  <SortableItem className='cursor-auto' data={createDroppableCellData(props)} item={{
     id: `${droppableCellDataId}-${JSON.stringify(props.coordinate)}`,
-  })
-
-  return (
-    <div style={{
-      gridColumnStart: props.column + 1,
-      gridRowStart: props.row + 1,
-    }} ref={setNodeRef} />
-  )
-
-  return (
-    <SortableItem className='cursor-auto' data={createDroppableCellData(props)} item={{
-      id: `${droppableCellDataId}-${JSON.stringify(props.coordinate)}`,
-    }} disabled={{
-      draggable: true,
-    }} style={{
-      gridColumnStart: props.column + 1,
-      gridRowStart: props.row + 1,
-    }} />
-  )
-}
+  }} disabled={{
+    draggable: true,
+  }} style={{
+    gridColumnStart: props.column + 1,
+    gridRowStart: props.row + 1,
+  }} />
+)
