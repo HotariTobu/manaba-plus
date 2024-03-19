@@ -59,10 +59,11 @@ export const CourseCells = (props: {
   startRow: number
   sortable: boolean
 }) => {
+  const { active } = useDndContext()
+
   const nextCoordinateMap = getNextCoordinateMap(props.coordinateMap)
 
   if (props.sortable) {
-    const { active } = useDndContext()
     const notDragging = active === null
 
     return (

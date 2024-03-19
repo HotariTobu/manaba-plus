@@ -2,39 +2,67 @@ import { useEffect, useRef, useState } from "react"
 
 export const useSortableFocus = () => {
   const [focus, setFocus] = useState(false)
-  const ref = useRef<HTMLElement | null>(null)
+  const ref = useRef({
+    element: null as HTMLElement | null,
+    // innerFlag: false,
+  })
+
+  const focusOn = () => {
+    setFocus(true)
+  }
+
+  const focusOff = () => {
+    setFocus(false)
+  }
+
+  // const handleEnter = () => {
+  //   ref.current.innerFlag = true
+  // }
+
+  // const handleLeave = () => {
+  //   if (ref.current.innerFlag) {
+  //     ref.current.innerFlag = false;
+  //   } else {
+  //     setFocus(false)
+  //   }
+  // }
+
+  // const handleOver = () => {
+  //   if (ref.current.innerFlag) {
+  //     ref.current.innerFlag = false
+  //     setFocus(true)
+  //   }
+  // }
 
   useEffect(() => {
-    const element = ref.current
+    const { element } = ref.current
     if (element === null) {
       return
     }
 
-    const h = (e: PointerEvent) => console.log(e.type, e.target.tagName)
+    // element.addEventListener('pointerenter', handleEnter)
+    // element.addEventListener('pointerleave', handleLeave)
+    // element.addEventListener('pointerover', handleOver)
 
-    // element.addEventListener('pointercancel', h)
-    // element.addEventListener('pointerdown', h)
-    element.addEventListener('pointerenter', h)
-    element.addEventListener('pointerleave', h)
-    // element.addEventListener('pointermove', h)
-    element.addEventListener('pointerout', h)
-    element.addEventListener('pointerover', h)
-    // element.addEventListener('pointerup', h)
+    element.addEventListener('pointerenter', focusOn)
+    element.addEventListener('pointerleave', focusOff)
+    element.addEventListener('focusin', focusOn)
+    element.addEventListener('focusout', focusOff)
 
     return () => {
-      element.removeEventListener('pointercancel', h)
-      element.removeEventListener('pointerdown', h)
-      element.removeEventListener('pointerenter', h)
-      element.removeEventListener('pointerleave', h)
-      element.removeEventListener('pointermove', h)
-      element.removeEventListener('pointerout', h)
-      element.removeEventListener('pointerover', h)
-      element.removeEventListener('pointerup', h)
+      // element.removeEventListener('pointerenter', handleEnter)
+      // element.removeEventListener('pointerleave', handleLeave)
+      // element.removeEventListener('pointerover', handleOver)
+
+      element.removeEventListener('pointerenter', focusOn)
+      element.removeEventListener('pointerleave', focusOff)
+      element.removeEventListener('focusin', focusOn)
+      element.removeEventListener('focusout', focusOff)
     }
   }, [])
 
   const setNodeRef = (element: HTMLElement | null) => {
-    ref.current = element
+    ref.current.element = element
   }
 
   return {

@@ -1,7 +1,7 @@
 import { t } from "@/utils/i18n"
 import { cn } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { DragOver, SortableContainer } from "@/components/sortable/sortable-container"
+import { SortableContainer } from "@/components/sortable/sortable-container"
 import { useLongPress } from "@/hooks/useLongPress"
 import { usePageContext } from "../../../hooks/usePageContext"
 import { Trash } from "../../../components/trash"
@@ -16,26 +16,6 @@ import { useRef } from "react"
 import { YearTermSelect } from "./year-term-select"
 import { Button } from "@/components/ui/button"
 import { allCoursesPath } from "@/modifiers/home/config"
-import { getCourseCellData } from "./course-timetable/course-cell"
-import { hasSortableData } from "@dnd-kit/sortable"
-
-// const createDragOverHandler = (defaultHandler: DragOver): DragOver => {
-//   return event => {
-//     const courseCellData = getCourseCellData(event.active)
-//     if (courseCellData === null) {
-//       return defaultHandler(event)
-//     }
-
-//     if (!hasSortableData(event.active)) {
-//       return defaultHandler(event)
-//     }
-
-//     const { sortable } = event.active.data.current
-//     sortable.index = sortable.items.indexOf(courseCellData.course.id)
-
-//     return defaultHandler(event)
-//   }
-// }
 
 const Overlay = (props: {
   item: Course

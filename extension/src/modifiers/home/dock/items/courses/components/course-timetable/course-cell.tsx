@@ -8,8 +8,8 @@ import { CourseStatus } from "../course-status"
 import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
-import { MouseEvent, useState } from "react"
-import { DragStartEvent, useDndContext, useDndMonitor } from "@dnd-kit/core"
+import { MouseEvent } from "react"
+import { useDndContext } from "@dnd-kit/core"
 import { useSortableFocus } from "../../hooks/useSortableFocus"
 
 interface CourseCellData {
@@ -44,44 +44,30 @@ export const CourseCell = (props: CourseCellData & {
   canExtend: boolean
   onExtend: () => void
 }) => {
+  /**
+   * For courses that have multiple coordinates, 1 course must have unique id for each coordinates.
+   * However, to move courses between not timetable container, the id of the active item must be just the course id.
+   * To achieve this, the course item ids should be dynamically changed based on the focus and active states of the items.
+   */
+  const { focus, setNodeRef } = useSortableFocus()
   const { active } = useDndContext()
-
   const courseCellData = getCourseCellData(active)
 
-  const [phantomId, setPhantomId] = useState(false)
-
-  const onDragStart = (event: DragStartEvent) => {
-    console.log(event)
-
+  const item = focus || props.coordinate === courseCellData?.coordinate ? props.course : {
+    id: `${props.course.id}-${props.coordinate}`
   }
-
-  const onDeactivate = () => {
-    setPhantomId(false)
-  }
-
-  useDndMonitor({
-    onDragStart,
-    onDragEnd: onDeactivate,
-    onDragCancel: onDeactivate,
-  })
-
-  const {setNodeRef} = useSortableFocus()
 
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation()
     props.onExtend()
   }
 
-  const item = phantomId ? {
-    id: `${props.course.id}-${props.coordinate}`
-  } : props.course
-
   return (
     <div className={cn('relative', props.sortable ? 'cursor-grab' : 'cursor-auto')} style={{
       gridColumnStart: props.column + 1,
       gridRowStart: props.row + 1,
       gridRowEnd: `span ${props.span}`,
-    }} onPointerEnter={() => setPhantomId(false)} onPointerLeave={() => setPhantomId(true)}>
+    }}>
       <SortableItem className="h-full" item={item} disabled={{
         draggable: !props.sortable,
         droppable: true,
