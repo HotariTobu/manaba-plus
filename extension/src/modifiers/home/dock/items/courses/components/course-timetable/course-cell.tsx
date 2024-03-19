@@ -8,10 +8,13 @@ import { CourseStatus } from "../course-status"
 import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
-import { MouseEvent } from "react"
+import { MouseEvent, useState } from "react"
+import { DragStartEvent, useDndContext, useDndMonitor } from "@dnd-kit/core"
+import { useSortableFocus } from "../../hooks/useSortableFocus"
 
 interface CourseCellData {
   coordinate: number
+  course: Course
 }
 
 export const [, createCourseCellData, getCourseCellData] = defineCustomDnDData<CourseCellData>()
@@ -37,29 +40,52 @@ export const CourseCell = (props: CourseCellData & {
   column: number
   row: number
   span: number
-  course: Course
   sortable: boolean
   canExtend: boolean
   onExtend: () => void
 }) => {
+  const { active } = useDndContext()
+
+  const courseCellData = getCourseCellData(active)
+
+  const [phantomId, setPhantomId] = useState(false)
+
+  const onDragStart = (event: DragStartEvent) => {
+    console.log(event)
+
+  }
+
+  const onDeactivate = () => {
+    setPhantomId(false)
+  }
+
+  useDndMonitor({
+    onDragStart,
+    onDragEnd: onDeactivate,
+    onDragCancel: onDeactivate,
+  })
+
+  const {setNodeRef} = useSortableFocus()
+
   const handleClick = (event: MouseEvent) => {
     event.stopPropagation()
     props.onExtend()
   }
+
+  const item = phantomId ? {
+    id: `${props.course.id}-${props.coordinate}`
+  } : props.course
 
   return (
     <div className={cn('relative', props.sortable ? 'cursor-grab' : 'cursor-auto')} style={{
       gridColumnStart: props.column + 1,
       gridRowStart: props.row + 1,
       gridRowEnd: `span ${props.span}`,
-    }}>
-      <SortableItem className="h-full" item={{
-        ...props.course,
-        // id: `${props.course.id}-${props.coordinate}`,
-      }} disabled={{
+    }} onPointerEnter={() => setPhantomId(false)} onPointerLeave={() => setPhantomId(true)}>
+      <SortableItem className="h-full" item={item} disabled={{
         draggable: !props.sortable,
         droppable: true,
-      }} data={createCourseCellData(props)}>
+      }} data={createCourseCellData(props)} ref={setNodeRef}>
         <CourseCellBase course={props.course} sortable={props.sortable} />
       </SortableItem>
       {props.canExtend && (

@@ -1,15 +1,15 @@
-import { CSSProperties, PropsWithChildren } from "react";
+import { CSSProperties, PropsWithChildren, forwardRef } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable, UseSortableArguments } from "@dnd-kit/sortable";
 import { Item } from "./item";
 
-interface SortableItemProps<I> extends PropsWithChildren<Omit<UseSortableArguments, 'id'>> {
-  item: I
+interface SortableItemProps extends PropsWithChildren<Omit<UseSortableArguments, 'id'>> {
+  item: Item
   className?: string
   style?: CSSProperties
 }
 
-export const SortableItem = <I extends Item>({ item, className, style, children, ...props }: SortableItemProps<I>) => {
+export const SortableItem = forwardRef<HTMLElement, SortableItemProps>(({ item, className, style, children, ...props }, ref) => {
   const {
     active,
     attributes,
@@ -28,9 +28,24 @@ export const SortableItem = <I extends Item>({ item, className, style, children,
     ...style
   };
 
+  const internalSetRef = (element: HTMLElement | null) => {
+    setNodeRef(element)
+
+    if (ref === null) {
+      return
+    }
+
+    if (typeof ref === 'function') {
+      ref(element)
+    }
+    else {
+      ref.current = element
+    }
+  }
+
   return (
-    <div className={className} style={mergedStyle} ref={setNodeRef} {...attributes} {...listeners}>
+    <div className={className} style={mergedStyle} ref={internalSetRef} {...attributes} {...listeners}>
       {children}
     </div>
   );
-}
+})

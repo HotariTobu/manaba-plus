@@ -50,6 +50,7 @@ export const ActiveCell = (props: {
   const onDragEnd = (event: DragEndEvent) => {
     // console.log(event)
     // console.log(event.active.data.current)
+    // console.log(event.over?.data.current)
 
     onDeactivate()
 
