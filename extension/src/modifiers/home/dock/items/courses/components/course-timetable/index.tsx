@@ -117,9 +117,16 @@ export const CourseTimetable = (props: {
     <Container className={cn(props.sortable && "overflow-hidden")}>
       {/* <ScrollArea> */}
       <SortableZone className={cn("gap-2 flex flex-col", props.sortable && classNames[props.position])} containerId={props.position} items={props.courses} disabled={!props.sortable} growOnlyHeight={props.sortable} strategy={rectSwappingStrategy}>
+        {props.sortable && (
+          <div className="gap-1 mt-auto flex flex-wrap">
+            {noCoordinateCourses.map(course => (
+              <LostCourseCell course={course} sortable={props.sortable} key={course.id} />
+            ))}
+          </div>
+        )}
         <div className="gap-1 grid" style={{
           gridTemplateColumns: `auto repeat(${width}, 1fr)`,
-          gridTemplateRows: `auto repeat(${height}, 1fr`,
+          gridTemplateRows: `auto repeat(${height}, 1fr)`,
         }}>
           <CourseTimetableHeader startColumn={left} columnCount={width} />
           <CourseTimetableIndex startRow={top} rowCount={height} />
@@ -129,13 +136,6 @@ export const CourseTimetable = (props: {
             <ActiveCell updateCoordinatesMap={updateCoordinatesMap} disabledAt={coordinate => coordinateMap.has(coordinate)} />
           </div>
         </div>
-        {props.sortable && (
-          <div className="gap-1 mt-auto flex flex-wrap">
-            {noCoordinateCourses.map(course => (
-              <LostCourseCell course={course} sortable={props.sortable} key={course.id} />
-            ))}
-          </div>
-        )}
       </SortableZone>
       {/* <ScrollBar orientation="horizontal" />
     </ScrollArea> */}
