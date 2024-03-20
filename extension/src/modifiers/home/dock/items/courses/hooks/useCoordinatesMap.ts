@@ -1,8 +1,11 @@
-import { Reducer, useReducer } from "react"
+import { Reducer, useEffect, useReducer } from "react"
 import { CoordinatesMap } from "../types/coordinate"
 import { dynamicStore } from "../store"
 
 type CoordinatesMapReducerAction = {
+  method: 'replace'
+  coordinatesMap: CoordinatesMap
+} | {
   courseId: string
 } & ({
   method: 'add'
@@ -22,6 +25,10 @@ type CoordinatesMapReducer = Reducer<CoordinatesMap, CoordinatesMapReducerAction
 
 export const useCoordinatesMap = (yearTermKey: string) => {
   const coordinatesMapReducer: CoordinatesMapReducer = (prevState, action) => {
+    if (action.method === 'replace') {
+      return action.coordinatesMap
+    }
+
     const coordinates = prevState.get(action.courseId)
 
     if (action.method === 'add') {
@@ -76,8 +83,15 @@ export const useCoordinatesMap = (yearTermKey: string) => {
     return nextState
   }
 
-  const initialCoordinatesMap = dynamicStore.coordinatesMap.get(yearTermKey)
-  const [coordinatesMap, updateCoordinatesMap] = useReducer<CoordinatesMapReducer>(storeSyncReducer, initialCoordinatesMap)
+  const [coordinatesMap, updateCoordinatesMap] = useReducer<CoordinatesMapReducer>(storeSyncReducer, new Map())
+
+  useEffect(() => {
+    const coordinatesMap = dynamicStore.coordinatesMap.get(yearTermKey)
+    updateCoordinatesMap({
+      method: 'replace',
+      coordinatesMap,
+    })
+  }, [yearTermKey])
 
   return {
     coordinatesMap,
