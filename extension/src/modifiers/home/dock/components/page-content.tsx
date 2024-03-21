@@ -7,6 +7,7 @@ export const PageContentBase = ({ item, sortable, className, ...props }: {
   sortable: boolean
   className?: string
 }) => (
+  // Limit the item height to prevent sortable items from moving at high speed.
   <div className={cn("bg-white/40 transition-shadow", sortable && 'max-h-64 shadow-lg overflow-hidden', className)} {...props}>
     {item.node}
   </div>

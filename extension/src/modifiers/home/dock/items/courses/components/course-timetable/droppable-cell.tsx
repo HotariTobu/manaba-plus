@@ -13,11 +13,13 @@ export const [droppableCellDataId, createDroppableCellData, getDroppableCellData
 export const DroppableCell = (props: DroppableCellData & {
   column: number
   row: number
+  sortable: boolean
 }) => (
   <SortableItem className='cursor-auto' data={createDroppableCellData(props)} item={{
     id: `${droppableCellDataId}-${JSON.stringify(props.coordinate)}`,
   }} disabled={{
     draggable: true,
+    droppable: !props.sortable,
   }} style={{
     gridColumnStart: props.column + 1,
     gridRowStart: props.row + 1,

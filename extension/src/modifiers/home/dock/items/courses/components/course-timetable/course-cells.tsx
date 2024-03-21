@@ -4,6 +4,11 @@ import { Course } from "../../types/course"
 import { CourseCell } from "./course-cell"
 import { UpdateCoordinatesMap } from "../../hooks/useCoordinatesMap"
 
+/**
+ * Get a coordinate next to the specified coordinate.
+ * @param coordinate The target coordinate
+ * @returns A coordinate one row below the specified coordinate
+ */
 const getNextCoordinate = (coordinate: number) => {
   const { column, row } = coordinateFromNumber(coordinate)
 
@@ -15,6 +20,11 @@ const getNextCoordinate = (coordinate: number) => {
   return nextCoordinate
 }
 
+/**
+ * Create a map of coordinates for getting the next coordinates.
+ * @param coordinateMap The map of coordinates and courses
+ * @returns The map to get the next coordinate by another coordinate
+ */
 const getNextCoordinateMap = (coordinateMap: Map<number, Course>) => {
   const nextCoordinateMap = new Map<number, number>()
 
@@ -26,9 +36,17 @@ const getNextCoordinateMap = (coordinateMap: Map<number, Course>) => {
   return nextCoordinateMap
 }
 
+/**
+ * Create a new map of coordinates and courses.
+ * Coordinates are merged into 1 item if their courses are the same and they stand in a vertical line.
+ * @param coordinateMap The map of coordinates and courses
+ * @param nextCoordinateMap The map of coordinates
+ * @returns A merged coordinate map
+ */
 const mergeNextCoordinates = (coordinateMap: Map<number, Course>, nextCoordinateMap: Map<number, number>) => {
   const mergedCoordinateMap = new Map<number, [number, Course]>()
 
+  // Sort items descending by coordinates.
   const coordinateEntries = Array.from(coordinateMap.entries())
   coordinateEntries.sort((a, b) => b[0] - a[0])
 
@@ -43,6 +61,7 @@ const mergeNextCoordinates = (coordinateMap: Map<number, Course>, nextCoordinate
       mergedCoordinateMap.set(coordinate, [1, course])
     }
     else {
+      // Merge items.
       const span = mergedCoordinateItem[0] + 1
       mergedCoordinateMap.delete(nextCoordinate)
       mergedCoordinateMap.set(coordinate, [span, course])
@@ -76,7 +95,9 @@ export const CourseCells = (props: {
             return
           }
 
-          const canExtend = props.sortable && notDragging && typeof props.coordinateMap.get(nextCoordinate) === 'undefined'
+          const nextIsEmpty = typeof props.coordinateMap.get(nextCoordinate) === 'undefined'
+
+          const canExtend = props.sortable && notDragging && nextIsEmpty
           const handleExtend = () => {
             props.updateCoordinatesMap({
               courseId: course.id,

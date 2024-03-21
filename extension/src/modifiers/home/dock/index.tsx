@@ -9,7 +9,7 @@ import { arrangeMap, selectorMap } from "../config"
 import { PageBody } from "./components/page-body"
 import { coursesItem } from "./items/courses"
 import { ErrorAlert } from "@/components/error-alert";
-import { AssignmentsItem } from "./items/assinments";
+import { AssignmentsItem } from "./items/assignment";
 
 /** Key-value of positions and elements */
 type Pair = [string, HTMLElement]

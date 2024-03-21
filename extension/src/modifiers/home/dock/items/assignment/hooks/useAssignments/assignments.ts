@@ -105,6 +105,7 @@ export const getAssignments = async () => {
     assignments.push(assignment)
   }
 
+  // Inject dummy data in debugging.
   debug: {
     const now = new Date()
     const year = now.getFullYear()

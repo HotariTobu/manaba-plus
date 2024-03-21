@@ -39,6 +39,7 @@ export const PageBody = (props: {
     }
   })
 
+  // Register the long press event handlers not to the container component but to the root document.
   useEffect(() => {
     document.addEventListener('pointerdown', longPress.onPointerDown)
     document.addEventListener('pointermove', longPress.onPointerMove)
@@ -50,6 +51,7 @@ export const PageBody = (props: {
     }
   }, [status])
 
+  // Save the page layout when some item is dropped.
   const handleDrop = (itemsMap: NodeItemsMap) => {
     const layout = itemsMapToLayout(itemsMap)
     store.pageLayout = layout
@@ -67,6 +69,7 @@ export const PageBody = (props: {
   return (
     <PageContext.Provider value={status}>
       <PageSetterContext.Provider value={setStatus}>
+        {/* Take a bottom margin to move tall items smoothly when sortable. */}
         <div className={cn("min-h-screen gap-4 flex flex-col", sortable && 'mb-[100vh]')}>
           <SortableContainer itemsMap={itemsMap} setItemsMap={setItemsMap} Overlay={Overlay} onDropped={handleDrop} setIsDragging={d => dragging.current = d}>
             <PageColumn position="top" items={top} sortable={sortable} />

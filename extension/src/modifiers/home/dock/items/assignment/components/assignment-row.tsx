@@ -97,6 +97,7 @@ const Deadline = (props: {
       return
     }
 
+    // Update deadline label per 1 second if `countingDown` is true, otherwise per 1 hour.
     const interval = deadlineParams.countingDown ? 1000 : 3600 * 1000
     const timerId = setInterval(() => setNow(Date.now()), interval)
     return () => clearInterval(timerId)

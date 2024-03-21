@@ -83,6 +83,7 @@ export const CourseCell = (props: CourseCellData & {
   )
 }
 
+/** Represent a lost child course(has no coordinates) */
 export const LostCourseCell = (props: {
   course: Course
   sortable: boolean

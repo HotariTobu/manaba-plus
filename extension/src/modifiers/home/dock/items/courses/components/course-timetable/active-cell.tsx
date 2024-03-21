@@ -5,12 +5,19 @@ import { DisabledAt, getDroppableCellData } from "./droppable-cell"
 import { getCourseCellData } from "./course-cell"
 import { UpdateCoordinatesMap } from "../../hooks/useCoordinatesMap"
 
+/** Represent the drop area in which the dragging course item will be put */
 export const ActiveCell = (props: {
   updateCoordinatesMap: UpdateCoordinatesMap
   disabledAt: DisabledAt
 }) => {
+  // The coordinate of the drop area
   const [activeCoordinate, setActiveCoordinate] = useState<Coordinate | null>(null)
 
+  /**
+   * Get the coordinate of the dragging course item.
+   * @param active The active object in dragging events
+   * @returns The course coordinate or null
+   */
   const getCoordinate = (active: Active) => {
     const courseCellData = getCourseCellData(active)
     if (courseCellData === null) {
@@ -22,22 +29,26 @@ export const ActiveCell = (props: {
   }
 
   const onDeactivate = () => {
+    // Dispose of the drop area when dragging is ended or canceled.
     setActiveCoordinate(null)
   }
 
   const onDragOver = (event: DragOverEvent) => {
+    // Dispose of the drop area if the over object does not have droppable cell data.
     const droppableCellData = getDroppableCellData(event.over)
     if (droppableCellData === null) {
       setActiveCoordinate(null)
       return
     }
 
+    // Skip if other courses have the target coordinate.
     const currentCoordinate = getCoordinate(event.active)
     const { coordinate } = droppableCellData
     if (currentCoordinate !== coordinate && props.disabledAt(coordinate)) {
       return
     }
 
+    // Update the drop area.
     setActiveCoordinate(coordinateFromNumber(coordinate))
   }
 
@@ -59,11 +70,11 @@ export const ActiveCell = (props: {
       })
     }
     else {
-      // Add a new coordinate.
       const newCoordinate = coordinateToNumber(activeCoordinate)
 
       const currentCoordinate = getCoordinate(event.active)
       if (currentCoordinate === null) {
+        // Add a new coordinate.
         props.updateCoordinatesMap({
           courseId,
           method: 'add',
@@ -71,6 +82,8 @@ export const ActiveCell = (props: {
         })
       }
       else {
+        // Remove the current coordinate from the list.
+        // And add a new one.
         props.updateCoordinatesMap({
           courseId,
           method: 'move',

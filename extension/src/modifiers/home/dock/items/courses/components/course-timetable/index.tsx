@@ -22,6 +22,11 @@ interface BoundingBox {
   height: number
 }
 
+/**
+ * Get a map of coordinates and courses.
+ * @param coordinatesMap The map of course ids and coordinate lists
+ * @param courses The courses
+ */
 const getCoordinateMap = (coordinatesMap: CoordinatesMap, courses: Course[]) => {
   const coordinateMap = new Map<number, Course>()
   const noCoordinateCourses: Course[] = []
@@ -39,16 +44,18 @@ const getCoordinateMap = (coordinatesMap: CoordinatesMap, courses: Course[]) => 
   }
 
   return {
+    /** A map to get courses by coordinates */
     coordinateMap,
+    /** Courses that have no coordinates */
     noCoordinateCourses,
   }
 }
 
 /**
- * Get bounding box of course rects.
- *
- *
- * @returns A bounding box that contains all course rects
+ * Get a bounding box of course coordinates.
+ * If the specified map has no items, returned properties will be 0.
+ * @param coordinateMap The map of coordinates and courses
+ * @returns A bounding box that contains all course coordinates.
  */
 const getBoundingBox = (coordinateMap: Map<number, Course>): BoundingBox => {
   let left = Infinity
