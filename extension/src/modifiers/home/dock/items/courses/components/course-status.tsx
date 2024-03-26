@@ -51,6 +51,7 @@ const StatusAnchor = (props: {
 }) => {
   const [assignmentHref, setAssignmentHref] = useState<string | null>(null)
 
+  // Update the anchor url if the course has not submitted assignments.
   useEffect(() => {
     if (props.type !== 'assignment') {
       return
@@ -69,7 +70,7 @@ const StatusAnchor = (props: {
     return
   }
 
-  const href = props.type === 'assignment' && assignmentHref !== null ? assignmentHref : props.courseUrl + suffix
+  const href = assignmentHref === null ? props.courseUrl + suffix : assignmentHref
 
   return (
     <a className={cn(props.value ? 'text-destructive animate-bounce' : 'text-slate-400', 'hover:text-destructive hover:animate-none')} href={href}>

@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { t } from "@/utils/i18n"
 
+/** Represent that the course is linked to another */
 export const CourseLink = (props: {
   linked: boolean
   className?: string

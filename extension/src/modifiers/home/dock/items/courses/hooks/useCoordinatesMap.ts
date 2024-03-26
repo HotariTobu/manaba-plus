@@ -78,6 +78,7 @@ export const useCoordinatesMap = (yearTermKey: string) => {
   }
 
   const storeSyncReducer: CoordinatesMapReducer = (prevState, action) => {
+    // Apply the change of the coordinates map.
     const nextState = coordinatesMapReducer(prevState, action)
     dynamicStore.coordinatesMap.set(yearTermKey, nextState)
     return nextState

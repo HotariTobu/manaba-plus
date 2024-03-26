@@ -169,6 +169,7 @@ export const classMap = defineClassMap({
   }
 })
 
+/** The regex to determine whether a status icon is on or off */
 export const statusRegex = /.+on\.\w+$/
 
 /**
@@ -210,7 +211,7 @@ export const statusSuffixes: Record<StatusType, string> = {
   collection: '_coursecollection_user',
 }
 
-/** The regex to extract date-time from a string. */
+/** The regex to extract date-time from a string in the page */
 export const dateTimeRegex = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})/
 
 /** The relative path to the top page that lists all assignments */

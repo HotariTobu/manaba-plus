@@ -1,3 +1,4 @@
+/** Represent a timetable cell coordinate */
 export interface Coordinate extends Record<string, number> {
   column: number
   row: number
@@ -6,6 +7,7 @@ export interface Coordinate extends Record<string, number> {
 /** <course id, coordinate list> */
 export type CoordinatesMap = Map<string, number[]>
 
+/** A factor to convert a coordinate and a number for each other */
 const factor = 10
 
 export const coordinateToNumber = (coordinate: Coordinate) => {

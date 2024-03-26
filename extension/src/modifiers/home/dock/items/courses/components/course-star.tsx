@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils"
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons"
 import { dynamicStore } from "../store"
 
+/** Represent if the course is favorite */
 export const CourseStar = (props: {
   courseId: string
 }) => {

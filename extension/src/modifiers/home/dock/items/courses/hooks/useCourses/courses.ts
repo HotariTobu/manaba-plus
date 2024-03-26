@@ -145,8 +145,10 @@ interface PeriodInfo extends Period {
 }
 
 /**
- * Set course period store only for the first time.
- * @param course The course
+ * Get period info list of a course.
+ * Period info includes the course id, the year, the class term, and the timetable coordinates.
+ * @param course The course object
+ * @returns An array of period info
  */
 const getPeriodInfoList = (course: Course) => {
   const { id, year, remarks } = course
@@ -172,6 +174,10 @@ const getPeriodInfoList = (course: Course) => {
   return periodInfoList
 }
 
+/**
+ * Add new years to the course years store.
+ * @param courses The course object
+ */
 const initializeYears = (courses: Course[]) => {
   const newYears = new Set(store.years)
 
@@ -187,6 +193,10 @@ const initializeYears = (courses: Course[]) => {
   store.years = new Set(sorted)
 }
 
+/**
+ * Add new terms to the course terms store.
+ * @param terms The set of all terms
+ */
 const initializeTerms = (terms: Set<string>) => {
   const sorted = Array.from(terms).sort()
   if (sorted.length === 0) {
@@ -223,11 +233,18 @@ const initializeTerms = (terms: Set<string>) => {
   )
 }
 
+/**
+ * Update the course store.
+ * @param courses The array of course objects
+ */
 const initializeStore = (courses: Course[]) => {
   const periodInfoList = courses.flatMap(getPeriodInfoList)
 
   const terms = new Set<string>()
 
+  // Separate updating timetable coordinates maps into 2 steps to reduce writing access to the storage.
+
+  // Step 1: Get coordinates maps merged of the existing and the new.
   const newCoordinatesMapMap = new Map<string, CoordinatesMap>()
 
   for (const info of periodInfoList) {
@@ -252,6 +269,7 @@ const initializeStore = (courses: Course[]) => {
     }
   }
 
+  // Step 2: Apply the new coordinates maps to the store.
   for (const [yearTermKey, newCoordinatesMap] of newCoordinatesMapMap) {
     const coordinatesMap = dynamicStore.coordinatesMap.get(yearTermKey)
 

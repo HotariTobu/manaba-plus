@@ -4,25 +4,26 @@ import { CoordinatesMap } from "./types/coordinate";
 import { Term } from "./types/term";
 
 export const [store] = await createStore(import.meta.dirname, {
+  /** The selectable years */
   years: new Set<number>(),
 
-  /** The selected term in the courses panel */
+  /** The selected term */
   term: '',
-  /** <id, label> */
+  /** The selectable terms */
   terms: [] as Term[],
 
-  /** The selected tab in the courses panel */
+  /** The selected tab */
   tab: 'cards',
 })
 
 export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
-  /** True if the course is starred, otherwise false. By course ids */
+  /** <course id, whether the course is starred> True if the course is starred, otherwise false */
   star: false as boolean,
 
-  /** <year-term-key, coordinate map> */
+  /** <year-term-key, coordinate map> Locations of courses in a timetable by years and terms */
   coordinatesMap: new Map() as CoordinatesMap,
 
-  /** The key-value pairs of course ids and course positions. By period keys*/
+  /** <year-term-key, courses layout> Positions of courses in sortable containers */
   coursesLayout: new Map() as Layout,
 })
 

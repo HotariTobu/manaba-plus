@@ -32,6 +32,7 @@ type TermItem = {
   selected: boolean
 }
 
+/** A text input whose width is shrunk and grown to fit the content */
 const FlexibleTextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(({ style, ...props }, ref) => {
   const [width, setWidth] = useState<number | undefined>()
 
@@ -55,6 +56,7 @@ const FlexibleTextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLI
   )
 })
 
+/** An option of terms */
 const TermChip = (props: {
   className?: string
   term: string
@@ -162,7 +164,13 @@ const TermOverlay = (props: {
 
 const containerId = 'container-id'
 
-const toItemsMap = (terms: Term[], currentTerm: string) => {
+/**
+ * Create an items map from an array of terms.
+ * @param terms The array of terms
+ * @param currentTerm The currently selected term
+ * @returns An items map of the terms
+ */
+const termsToItemsMap = (terms: Term[], currentTerm: string) => {
   const items = terms.map<TermItem>(term => ({
     ...term,
     selected: term.id === currentTerm,
@@ -174,7 +182,12 @@ const toItemsMap = (terms: Term[], currentTerm: string) => {
   }
 }
 
-const fromItemsMap = (itemsMap: ItemsMap<TermItem>) => {
+/**
+ * Extract an array of terms from an items map.
+ * @param itemsMap The items map of terms
+ * @returns An array of terms
+ */
+const termsFromItemsMap = (itemsMap: ItemsMap<TermItem>) => {
   const items = itemsMap.get(containerId)
   if (typeof items === 'undefined') {
     return null
@@ -196,13 +209,16 @@ export const TermSelect = (props: {
   }
 
   const handleDrop = (itemsMap: ItemsMap<TermItem>) => {
-    const newTerms = fromItemsMap(itemsMap)
+    const newTerms = termsFromItemsMap(itemsMap)
     if (newTerms === null) {
       return
     }
     updateTerms(newTerms)
   }
 
+  /**
+   * Add a new term with the default label.
+   */
   const addTerm = () => {
     const id = crypto.randomUUID()
     const label = t('home_courses_term_default')
@@ -216,6 +232,11 @@ export const TermSelect = (props: {
     updateTerms(newTerms)
   }
 
+  /**
+   * Update the label of the specified term.
+   * @param id The id of the term
+   * @param label The new label of the term
+   */
   const editTerm = (id: string, label: string) => {
     const newTerms = terms.map<Term>(term => {
       if (term.id === id) {
@@ -230,12 +251,16 @@ export const TermSelect = (props: {
     updateTerms(newTerms)
   }
 
+  /**
+   * Delete the specified term.
+   * @param id The id of the term
+   */
   const deleteTerm = (id: string) => {
     const newTerms = terms.filter(term => term.id !== id)
     updateTerms(newTerms)
   }
 
-  const { itemsMap, items } = toItemsMap(terms, props.term)
+  const { itemsMap, items } = termsToItemsMap(terms, props.term)
 
   return (
     <ScrollArea>

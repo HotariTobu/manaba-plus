@@ -5,6 +5,6 @@ export const [store] = await createStore(import.meta.dirname, {
   /** The width of the left panel */
   middle: 10000,
 
-  /** The key-value pairs of node ids and node positions*/
+  /** <page node id, position key> Positions of page nodes */
   pageLayout: new Map() as Layout,
 })
