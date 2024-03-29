@@ -138,5 +138,12 @@
   },
   "home_courses_show_all_courses": {
     "message": "Show all courses"
+  },
+
+  "popup_reset_label": {
+    "message": "Reset the state and the settings"
+  },
+  "popup_reset_button": {
+    "message": "Reset"
   }
 }

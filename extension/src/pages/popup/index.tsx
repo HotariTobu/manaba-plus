@@ -1,6 +1,10 @@
-import { local, managed, session, sync } from '@/utils/useStorage';
-import { mount } from "@/utils/mount";
 import { Button } from '@/components/ui/button';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { usePageContextProvider } from '@/modifiers/home/dock/hooks/usePageContext';
+import { AssignmentsContainer } from '@/modifiers/home/dock/items/assignment/components/assignments-container';
+import { t } from '@/utils/i18n';
+import { mount } from "@/utils/mount";
+import { local, managed, session, sync } from '@/utils/useStorage';
 
 debug: {
   const areas = {
@@ -16,17 +20,21 @@ debug: {
   }
 }
 
-function Popup() {
+const Popup = () => {
+  const { Provider, providerProps } = usePageContextProvider()
   return (
-    <div className='w-80'>
-      <Button onClick={() => sync.clear()}>BUTTON</Button>
-      <Button className='bg-secondary'>BUTTON</Button>
-      <img src="/icon-with-shadow.svg" />
-      <h1>vite-plugin-web-extension</h1>
-      <p>
-        Template: <code>react-ts</code>
-      </p>
-    </div>
+    <Provider {...providerProps}>
+      <ScrollArea className='w-[48rem] h-[32rem]'>
+        <div className='m-2 gap-2 flex flex-col'>
+          <AssignmentsContainer />
+          <ScrollBar orientation="vertical" />
+          <div className='gap-2 flex items-center'>
+            {t('popup_reset_label')}
+            <Button onClick={() => sync.clear()}>{t('popup_reset_button')}</Button>
+          </div>
+        </div>
+      </ScrollArea>
+    </Provider>
   )
 }
 

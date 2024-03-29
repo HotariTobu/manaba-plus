@@ -1,6 +1,6 @@
-import { HTMLAttributes, forwardRef } from "react";
+import { AnchorHTMLAttributes, forwardRef } from "react";
 
-interface AnchorProps extends HTMLAttributes<HTMLAnchorElement> {
+interface AnchorProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
   href: string | null | undefined
 }
 

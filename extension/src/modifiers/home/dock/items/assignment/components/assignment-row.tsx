@@ -143,9 +143,9 @@ export const AssignmentRow = (props: {
           <Icon className='m-1' />
         </div>
       )}
-      <Anchor className="p-1 m-auto" href={props.assignment.type?.url}><Truncated text={props.assignment.type?.label} /></Anchor>
-      <Anchor className="p-1 border-primary border-s" href={props.assignment.url}><Truncated text={props.assignment.title} /></Anchor>
-      <Anchor className="p-1 border-primary border-x" href={props.assignment.course?.url}><Truncated text={props.assignment.course?.title} /></Anchor>
+      <Anchor className="p-1 m-auto" href={props.assignment.type?.url} target='_blank'><Truncated text={props.assignment.type?.label} /></Anchor>
+      <Anchor className="p-1 border-primary border-s" href={props.assignment.url} target='_blank'><Truncated text={props.assignment.title} /></Anchor>
+      <Anchor className="p-1 border-primary border-x" href={props.assignment.course?.url} target='_blank'><Truncated text={props.assignment.course?.title} /></Anchor>
       <div className="p-1 m-auto"><Deadline deadline={props.assignment.deadline} /></div>
     </div>
   )
