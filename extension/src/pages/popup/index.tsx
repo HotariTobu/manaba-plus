@@ -1,10 +1,6 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-
-import { useEffect } from 'react';
-import "./popup.css";
-import { Button } from '@/components/ui/button';
 import { local, managed, session, sync } from '@/utils/useStorage';
+import { mount } from "@/utils/mount";
+import { Button } from '@/components/ui/button';
 
 debug: {
   const areas = {
@@ -21,10 +17,6 @@ debug: {
 }
 
 function Popup() {
-  useEffect(() => {
-    console.log("Hello from the popup!");
-  }, []);
-
   return (
     <div className='w-80'>
       <Button onClick={() => sync.clear()}>BUTTON</Button>
@@ -38,9 +30,4 @@ function Popup() {
   )
 }
 
-
-ReactDOM.createRoot(document.body).render(
-  <React.StrictMode>
-    <Popup />
-  </React.StrictMode>
-);
+mount(<Popup />, '#app')

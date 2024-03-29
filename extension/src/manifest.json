@@ -14,7 +14,7 @@
     "downloads"
   ],
   "action": {
-    "default_popup": "src/popup.html"
+    "default_popup": "src/pages/popup/index.html"
   },
   "background": {
     "{{chrome}}.service_worker": "src/background.ts",
