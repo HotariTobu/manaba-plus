@@ -84,6 +84,9 @@ const getRowAssignment = (element: Element): Assignment | null => {
  */
 export const getAssignments = async () => {
   const rootUrl = o.common.rootUrl.value
+  if (rootUrl === '') {
+    throw new Error('Reopen the top page of manaba.')
+  }
   const url = rootUrl + allAssignmentsPath
 
   const fetchResult = await fetchDOM(url)
