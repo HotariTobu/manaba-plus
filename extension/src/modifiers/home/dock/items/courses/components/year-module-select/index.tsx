@@ -1,12 +1,12 @@
 import { PointerEvent } from "react";
 import { YearSelect } from "./year-select";
-import { TermSelect } from "./term-select";
+import { ModuleSelect } from "./module-select";
 
-export const YearTermSelect = (props: {
+export const YearModuleSelect = (props: {
   year: number;
   setYear: (year: number) => void;
-  term: string;
-  setTerm: (term: string) => void;
+  module: string;
+  setModule: (module: string) => void;
   sortable: boolean
 }) => {
   const handlePointerDown = (event: PointerEvent) => {
@@ -16,7 +16,7 @@ export const YearTermSelect = (props: {
   return (
     <div className="me-auto gap-2 flex items-center" onPointerDown={handlePointerDown}>
       <YearSelect {...props} />
-      <TermSelect {...props} />
+      <ModuleSelect {...props} />
     </div>
   )
 }

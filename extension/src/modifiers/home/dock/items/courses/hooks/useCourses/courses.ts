@@ -1,7 +1,7 @@
 import { f, ff } from "@/utils/element"
 import { getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
 import { Course, statusTypes } from "../../types/course"
-import { dynamicStore, getYearTermKey, store } from "../../store"
+import { dynamicStore, getYearModuleKey, store } from "../../store"
 import { Period, getPeriods } from "../../period"
 import { t } from "@/utils/i18n"
 import { CoordinatesMap } from "../../types/coordinate"
@@ -146,7 +146,7 @@ interface PeriodInfo extends Period {
 
 /**
  * Get period info list of a course.
- * Period info includes the course id, the year, the class term, and the timetable coordinates.
+ * Period info includes the course id, the year, the class module, and the timetable coordinates.
  * @param course The course object
  * @returns An array of period info
  */
@@ -194,41 +194,41 @@ const initializeYears = (courses: Course[]) => {
 }
 
 /**
- * Add new terms to the course terms store.
- * @param terms The set of all terms
+ * Add new modules to the course modules store.
+ * @param modules The set of all modules
  */
-const initializeTerms = (terms: Set<string>) => {
-  const sorted = Array.from(terms).sort()
+const initializeModules = (modules: Set<string>) => {
+  const sorted = Array.from(modules).sort()
   if (sorted.length === 0) {
     sorted.push('default')
   }
 
-  const newTerms = new Map(store.terms.map(
+  const newModules = new Map(store.modules.map(
     ({ id, label }) => [id, label]
   ))
 
-  for (const term of sorted) {
-    if (newTerms.has(term)) {
+  for (const module of sorted) {
+    if (newModules.has(module)) {
       continue
     }
 
-    const label = t(`home_courses_term_${term}`)
+    const label = t(`home_courses_module_${module}`)
     if (label === '') {
-      newTerms.set(term, term)
+      newModules.set(module, module)
     }
     else {
-      newTerms.set(term, label)
+      newModules.set(module, label)
     }
   }
 
-  if (!newTerms.has(store.term)) {
-    const newTerm = newTerms.keys().next().value
-    if (typeof newTerm === 'string') {
-      store.term = newTerm
+  if (!newModules.has(store.module)) {
+    const newModule = newModules.keys().next().value
+    if (typeof newModule === 'string') {
+      store.module = newModule
     }
   }
 
-  store.terms = Array.from(newTerms).map(
+  store.modules = Array.from(newModules).map(
     ([id, label]) => ({ id, label })
   )
 }
@@ -240,7 +240,7 @@ const initializeTerms = (terms: Set<string>) => {
 const initializeStore = (courses: Course[]) => {
   const periodInfoList = courses.flatMap(getPeriodInfoList)
 
-  const terms = new Set<string>()
+  const modules = new Set<string>()
 
   // Separate updating timetable coordinates maps into 2 steps to reduce writing access to the storage.
 
@@ -252,26 +252,26 @@ const initializeStore = (courses: Course[]) => {
       continue
     }
 
-    const { courseId, year, term, coordinates } = info
-    terms.add(term)
+    const { courseId, year, module, coordinates } = info
+    modules.add(module)
 
-    const yearTermKey = getYearTermKey(year, term)
+    const yearModuleKey = getYearModuleKey(year, module)
 
-    const coordinatesMap = newCoordinatesMapMap.get(yearTermKey)
+    const coordinatesMap = newCoordinatesMapMap.get(yearModuleKey)
     if (typeof coordinatesMap === 'undefined') {
-      newCoordinatesMapMap.set(yearTermKey, new Map([
+      newCoordinatesMapMap.set(yearModuleKey, new Map([
         [courseId, coordinates],
       ]))
     }
     else {
       coordinatesMap.set(courseId, coordinates)
-      newCoordinatesMapMap.set(yearTermKey, coordinatesMap)
+      newCoordinatesMapMap.set(yearModuleKey, coordinatesMap)
     }
   }
 
   // Step 2: Apply the new coordinates maps to the store.
-  for (const [yearTermKey, newCoordinatesMap] of newCoordinatesMapMap) {
-    const coordinatesMap = dynamicStore.coordinatesMap.get(yearTermKey)
+  for (const [yearModuleKey, newCoordinatesMap] of newCoordinatesMapMap) {
+    const coordinatesMap = dynamicStore.coordinatesMap.get(yearModuleKey)
 
     for (const [courseId, coordinates] of newCoordinatesMap) {
       if (coordinatesMap.has(courseId)) {
@@ -281,11 +281,11 @@ const initializeStore = (courses: Course[]) => {
       coordinatesMap.set(courseId, coordinates)
     }
 
-    dynamicStore.coordinatesMap.set(yearTermKey, coordinatesMap)
+    dynamicStore.coordinatesMap.set(yearModuleKey, coordinatesMap)
   }
 
   initializeYears(courses)
-  initializeTerms(terms)
+  initializeModules(modules)
 }
 
 /**

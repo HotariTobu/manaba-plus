@@ -13,7 +13,7 @@ import { CourseTimetable } from "./course-timetable"
 import { CourseCards } from "./course-cards"
 import { CourseList } from "./course-list"
 import { useRef } from "react"
-import { YearTermSelect } from "./year-term-select"
+import { YearModuleSelect } from "./year-module-select"
 import { Button } from "@/components/ui/button"
 import { allCoursesPath } from "@/modifiers/home/config"
 
@@ -22,7 +22,7 @@ const Overlay = (props: {
 }) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grabbing" course={props.item} sortable />
 
 export const CoursesContainer = () => {
-  const { coursesMap, setCoursesMap, storeCoursesMap, selectProps, yearTermKey } = useCourses()
+  const { coursesMap, setCoursesMap, storeCoursesMap, selectProps, yearModuleKey } = useCourses()
 
   const { status, setStatus } = usePageContext()
   const dragging = useRef(false)
@@ -52,10 +52,10 @@ export const CoursesContainer = () => {
 
   return (
     <div className={cn(sortable ? 'gap-4' : 'gap-2', "flex flex-col")} {...longPress}>
-      <YearTermSelect sortable={sortable} {...selectProps} />
+      <YearModuleSelect sortable={sortable} {...selectProps} />
 
       <SortableContainer itemsMap={coursesMap} setItemsMap={setCoursesMap} Overlay={Overlay} onDropped={storeCoursesMap} setIsDragging={d => dragging.current = d}>
-        <CourseTimetable yearTermKey={yearTermKey} position="timetable" courses={timetable} sortable={sortable} />
+        <CourseTimetable yearModuleKey={yearModuleKey} position="timetable" courses={timetable} sortable={sortable} />
 
         <Tabs className="contents" defaultValue={store.tab} onValueChange={tab => store.tab = tab}>
           <TabsList className="bg-primary me-auto">

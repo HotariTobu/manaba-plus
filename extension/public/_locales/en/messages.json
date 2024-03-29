@@ -68,30 +68,48 @@
     }
   },
 
-  "home_courses_term_default": {
-    "message": "Term name"
+  "home_courses_module_default": {
+    "message": "Module name"
   },
-  "home_courses_term_fir": {
+  "home_courses_module_fir": {
     "message": "1st sem"
   },
-  "home_courses_term_sec": {
+  "home_courses_module_sec": {
     "message": "2nd sem"
   },
-  "home_courses_term_delete_title": {
-    "message": "Are you sure to delete $term_label$?",
+  "home_courses_module_spr_A": {
+    "message": "Spring A"
+  },
+  "home_courses_module_spr_B": {
+    "message": "Spring B"
+  },
+  "home_courses_module_spr_C": {
+    "message": "Spring C"
+  },
+  "home_courses_module_aut_A": {
+    "message": "Autumn A"
+  },
+  "home_courses_module_aut_B": {
+    "message": "Autumn B"
+  },
+  "home_courses_module_aut_C": {
+    "message": "Autumn C"
+  },
+  "home_courses_module_delete_title": {
+    "message": "Are you sure to delete $module_label$?",
     "placeholders": {
-      "term_label": {
+      "module_label": {
         "content": "$1"
       }
     }
   },
-  "home_courses_term_delete_description": {
-    "message": "This action cannot be undone. This will permanently delete the term."
+  "home_courses_module_delete_description": {
+    "message": "This action cannot be undone. This will permanently delete the module."
   },
-  "home_courses_term_delete_cancel": {
+  "home_courses_module_delete_cancel": {
     "message": "Cancel"
   },
-  "home_courses_term_delete_action": {
+  "home_courses_module_delete_action": {
     "message": "Continue"
   },
   "home_courses_cards": {

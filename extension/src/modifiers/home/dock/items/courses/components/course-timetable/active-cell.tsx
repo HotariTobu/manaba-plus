@@ -63,7 +63,7 @@ export const ActiveCell = (props: {
     // Update the course period.
     if (activeCoordinate === null) {
       // Dropped out of timetable.
-      // Remove all coordinates in the same term.
+      // Remove all coordinates in the same module.
       props.updateCoordinatesMap({
         courseId,
         method: 'clear',

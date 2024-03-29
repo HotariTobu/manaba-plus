@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { ItemsMap } from "@/components/sortable/item"
 import { Course } from "../../types/course"
 import { getFiscalYear } from "@/modifiers/home/config"
-import { dynamicStore, getYearTermKey, store } from "../../store"
+import { dynamicStore, getYearModuleKey, store } from "../../store"
 import { getCourses } from "./courses"
 import { Position } from "../../types/position"
 import { itemsMapFromLayout, itemsMapToLayout } from "@/modifiers/home/dock/layout"
@@ -55,23 +55,23 @@ export const useCourses = () => {
   const [coursesMap, setCoursesMap] = useState<ItemsMap<Course>>(new Map())
 
   const [year, setYear] = useState(getFiscalYear())
-  const [term, internalSetTerm] = useState(store.term)
-  const yearTermKey = getYearTermKey(year, term)
+  const [module, internalSetModule] = useState(store.module)
+  const yearModuleKey = getYearModuleKey(year, module)
 
   // Restore a layout of a course map.
   useEffect(() => {
-    const coordinatesMap = dynamicStore.coordinatesMap.get(yearTermKey)
+    const coordinatesMap = dynamicStore.coordinatesMap.get(yearModuleKey)
     const getCourseDefaultPosition = createCourseDefaultPositionGetter(year, coordinatesMap)
     const coursePairs = courses.map<[Position, Course]>(course => {
       const position = getCourseDefaultPosition(course)
       return [position, course]
     })
 
-    const layout = dynamicStore.coursesLayout.get(yearTermKey)
+    const layout = dynamicStore.coursesLayout.get(yearModuleKey)
 
     const coursesMap = itemsMapFromLayout(coursePairs, layout)
     setCoursesMap(coursesMap)
-  }, [yearTermKey])
+  }, [yearModuleKey])
 
   /**
    * Store a layout of a courses map.
@@ -80,12 +80,12 @@ export const useCourses = () => {
    */
   const storeCoursesMap = (coursesMap: ItemsMap<Course>) => {
     const layout = itemsMapToLayout(coursesMap)
-    dynamicStore.coursesLayout.set(yearTermKey, layout)
+    dynamicStore.coursesLayout.set(yearModuleKey, layout)
   }
 
-  const setTerm = (term: string) => {
-    internalSetTerm(term)
-    store.term = term
+  const setModule = (module: string) => {
+    internalSetModule(module)
+    store.module = module
   }
 
   return {
@@ -95,9 +95,9 @@ export const useCourses = () => {
     selectProps: {
       year,
       setYear,
-      term,
-      setTerm,
+      module,
+      setModule,
     },
-    yearTermKey,
+    yearModuleKey,
   }
 }

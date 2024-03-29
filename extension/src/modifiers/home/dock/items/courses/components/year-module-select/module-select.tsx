@@ -24,9 +24,9 @@ import { SortableContainer } from "@/components/sortable/sortable-container";
 import { ItemsMap } from "@/components/sortable/item";
 import { SortableZone } from "@/components/sortable/sortable-zone";
 import { restrictToHorizontalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
-import { Term } from "../../types/term";
+import { Module } from "../../types/module";
 
-type TermItem = {
+type ModuleItem = {
   id: string
   label: string
   selected: boolean
@@ -56,10 +56,10 @@ const FlexibleTextInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLI
   )
 })
 
-/** An option of terms */
-const TermChip = (props: {
+/** An option of modules */
+const ModuleChip = (props: {
   className?: string
-  term: string
+  module: string
   label: string
   selected: boolean
   disabled: boolean
@@ -77,7 +77,7 @@ const TermChip = (props: {
     setNodeRef,
     transform,
     transition
-  } = useSortable({ id: props.term, disabled: props.disabled });
+  } = useSortable({ id: props.module, disabled: props.disabled });
 
   const commonClass = cn("px-2 h-8 text-sm font-medium border rounded-md flex items-center", props.selected ? "bg-primary/50 border-primary" : "bg-background/50")
 
@@ -94,7 +94,7 @@ const TermChip = (props: {
     )
   }
 
-  const isActive = active?.id === props.term
+  const isActive = active?.id === props.module
 
   const style = {
     opacity: isActive ? 0 : 1,
@@ -143,12 +143,12 @@ const TermChip = (props: {
           <AlertDialogContent>
             <RootContainer>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('home_courses_term_delete_title', props.label)}</AlertDialogTitle>
-                <AlertDialogDescription>{t('home_courses_term_delete_description')}</AlertDialogDescription>
+                <AlertDialogTitle>{t('home_courses_module_delete_title', props.label)}</AlertDialogTitle>
+                <AlertDialogDescription>{t('home_courses_module_delete_description')}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t('home_courses_term_delete_cancel')}</AlertDialogCancel>
-                <AlertDialogAction onClick={props.onDelete}>{t('home_courses_term_delete_action')}</AlertDialogAction>
+                <AlertDialogCancel>{t('home_courses_module_delete_cancel')}</AlertDialogCancel>
+                <AlertDialogAction onClick={props.onDelete}>{t('home_courses_module_delete_action')}</AlertDialogAction>
               </AlertDialogFooter>
             </RootContainer>
           </AlertDialogContent>
@@ -158,22 +158,22 @@ const TermChip = (props: {
   )
 }
 
-const TermOverlay = (props: {
-  item: TermItem
-}) => <TermChip className="h-full cursor-grabbing" term={props.item.id} label={props.item.label} selected={props.item.selected} disabled onSelect={() => { }} onEdit={() => { }} onDelete={() => { }} />
+const ModuleOverlay = (props: {
+  item: ModuleItem
+}) => <ModuleChip className="h-full cursor-grabbing" module={props.item.id} label={props.item.label} selected={props.item.selected} disabled onSelect={() => { }} onEdit={() => { }} onDelete={() => { }} />
 
 const containerId = 'container-id'
 
 /**
- * Create an items map from an array of terms.
- * @param terms The array of terms
- * @param currentTerm The currently selected term
- * @returns An items map of the terms
+ * Create an items map from an array of modules.
+ * @param modules The array of modules
+ * @param currentModule The currently selected module
+ * @returns An items map of the modules
  */
-const termsToItemsMap = (terms: Term[], currentTerm: string) => {
-  const items = terms.map<TermItem>(term => ({
-    ...term,
-    selected: term.id === currentTerm,
+const modulesToItemsMap = (modules: Module[], currentModule: string) => {
+  const items = modules.map<ModuleItem>(module => ({
+    ...module,
+    selected: module.id === currentModule,
   }))
 
   return {
@@ -183,95 +183,95 @@ const termsToItemsMap = (terms: Term[], currentTerm: string) => {
 }
 
 /**
- * Extract an array of terms from an items map.
- * @param itemsMap The items map of terms
- * @returns An array of terms
+ * Extract an array of modules from an items map.
+ * @param itemsMap The items map of modules
+ * @returns An array of modules
  */
-const termsFromItemsMap = (itemsMap: ItemsMap<TermItem>) => {
+const modulesFromItemsMap = (itemsMap: ItemsMap<ModuleItem>) => {
   const items = itemsMap.get(containerId)
   if (typeof items === 'undefined') {
     return null
   }
 
-  return items.map<Term>(({ id, label }) => ({ id, label }))
+  return items.map<Module>(({ id, label }) => ({ id, label }))
 }
 
-export const TermSelect = (props: {
-  term: string;
-  setTerm: (term: string) => void;
+export const ModuleSelect = (props: {
+  module: string;
+  setModule: (module: string) => void;
   sortable: boolean
 }) => {
-  const [terms, setTerms] = useState(store.terms)
+  const [modules, setModules] = useState(store.modules)
 
-  const updateTerms = (newTerms: Term[]) => {
-    store.terms = newTerms
-    setTerms(newTerms)
+  const updateModules = (newModules: Module[]) => {
+    store.modules = newModules
+    setModules(newModules)
   }
 
-  const handleDrop = (itemsMap: ItemsMap<TermItem>) => {
-    const newTerms = termsFromItemsMap(itemsMap)
-    if (newTerms === null) {
+  const handleDrop = (itemsMap: ItemsMap<ModuleItem>) => {
+    const newModules = modulesFromItemsMap(itemsMap)
+    if (newModules === null) {
       return
     }
-    updateTerms(newTerms)
+    updateModules(newModules)
   }
 
   /**
-   * Add a new term with the default label.
+   * Add a new module with the default label.
    */
-  const addTerm = () => {
+  const addModule = () => {
     const id = crypto.randomUUID()
-    const label = t('home_courses_term_default')
-    const newTerms: Term[] = [
-      ...terms,
+    const label = t('home_courses_module_default')
+    const newModules: Module[] = [
+      ...modules,
       {
         id,
         label,
       },
     ]
-    updateTerms(newTerms)
+    updateModules(newModules)
   }
 
   /**
-   * Update the label of the specified term.
-   * @param id The id of the term
-   * @param label The new label of the term
+   * Update the label of the specified module.
+   * @param id The id of the module
+   * @param label The new label of the module
    */
-  const editTerm = (id: string, label: string) => {
-    const newTerms = terms.map<Term>(term => {
-      if (term.id === id) {
+  const editModule = (id: string, label: string) => {
+    const newModules = modules.map<Module>(module => {
+      if (module.id === id) {
         return {
           id, label
         }
       }
       else {
-        return term
+        return module
       }
     })
-    updateTerms(newTerms)
+    updateModules(newModules)
   }
 
   /**
-   * Delete the specified term.
-   * @param id The id of the term
+   * Delete the specified module.
+   * @param id The id of the module
    */
-  const deleteTerm = (id: string) => {
-    const newTerms = terms.filter(term => term.id !== id)
-    updateTerms(newTerms)
+  const deleteModule = (id: string) => {
+    const newModules = modules.filter(module => module.id !== id)
+    updateModules(newModules)
   }
 
-  const { itemsMap, items } = termsToItemsMap(terms, props.term)
+  const { itemsMap, items } = modulesToItemsMap(modules, props.module)
 
   return (
     <ScrollArea>
-      <SortableContainer itemsMap={itemsMap} setItemsMap={handleDrop} Overlay={TermOverlay} modifiers={[restrictToHorizontalAxis, restrictToParentElement]}>
+      <SortableContainer itemsMap={itemsMap} setItemsMap={handleDrop} Overlay={ModuleOverlay} modifiers={[restrictToHorizontalAxis, restrictToParentElement]}>
         <SortableZone containerId={containerId} items={items} strategy={horizontalListSortingStrategy}>
           <div className="gap-1 flex items-center">
             {items.map(({ id, label, selected }) => (
-              <TermChip term={id} label={label} selected={selected} disabled={!props.sortable} onSelect={() => props.setTerm(id)} onEdit={label => editTerm(id, label)} onDelete={() => deleteTerm(id)} key={id} />
+              <ModuleChip module={id} label={label} selected={selected} disabled={!props.sortable} onSelect={() => props.setModule(id)} onEdit={label => editModule(id, label)} onDelete={() => deleteModule(id)} key={id} />
             ))}
             {props.sortable && (
-              <Button className="w-8 h-8 p-0" variant="ghost" onClick={addTerm}>
+              <Button className="w-8 h-8 p-0" variant="ghost" onClick={addModule}>
                 <PlusIcon className="h-4 w-4" />
               </Button>
             )}

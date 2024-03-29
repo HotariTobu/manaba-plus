@@ -94,12 +94,12 @@ const getBoundingBox = (coordinateMap: Map<number, Course>): BoundingBox => {
 }
 
 export const CourseTimetable = (props: {
-  yearTermKey: string
+  yearModuleKey: string
   position: Position
   courses: Course[]
   sortable: boolean
 }) => {
-  const { coordinatesMap, updateCoordinatesMap } = useCoordinatesMap(props.yearTermKey)
+  const { coordinatesMap, updateCoordinatesMap } = useCoordinatesMap(props.yearModuleKey)
 
   const { coordinateMap, noCoordinateCourses } = getCoordinateMap(coordinatesMap, props.courses)
   const boundingBox = getBoundingBox(coordinateMap)

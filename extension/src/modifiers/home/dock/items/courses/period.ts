@@ -38,7 +38,7 @@ const joinWords = (obj: object) => {
 }
 
 export interface Period {
-  term: string
+  module: string
   coordinates: number[]
 }
 
@@ -46,24 +46,24 @@ type PeriodsGetter = (remarks: string) => Period[] | null
 
 const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
   "room.chuo-u.ac.jp": () => {
-    const terms: Record<string, string> = {
+    const modules: Record<string, string> = {
       '前': 'fir',
       '後': 'sec',
       '通': 'ful',
     }
 
-    const termRegex = new RegExp(joinWords(terms), 'i')
+    const moduleRegex = new RegExp(joinWords(modules), 'i')
     const periodRegex = new RegExp(`${dayGroup}.*?(\\d+)`, 'ig')
 
     return (remarks: string) => {
-      const termMatch = termRegex.exec(remarks)
-      if (termMatch === null) {
+      const moduleMatch = moduleRegex.exec(remarks)
+      if (moduleMatch === null) {
         return null
       }
       const periodMatches = Array.from(remarks.matchAll(periodRegex))
 
-      const rawTerm = termMatch[1].toLowerCase()
-      const term = terms[rawTerm] ?? rawTerm
+      const rawModule = moduleMatch[1].toLowerCase()
+      const module = modules[rawModule] ?? rawModule
 
       const coordinates = periodMatches.map(periodMatch => {
         const rawDay = periodMatch[1].toLowerCase()
@@ -75,12 +75,12 @@ const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
         })
       })
 
-      const termList = term === 'ful' ? ['fir', 'sec'] : [term]
+      const moduleList = module === 'ful' ? ['fir', 'sec'] : [module]
       const periods: Period[] = []
 
-      for (const term of termList) {
+      for (const module of moduleList) {
         periods.push({
-          term,
+          module,
           coordinates,
         })
       }
@@ -89,23 +89,23 @@ const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
     }
   },
   "manaba.tsukuba.ac.jp": () => {
-    const terms: Record<string, string> = {
+    const modules: Record<string, string> = {
       '春': 'spr',
       '秋': 'aut',
     }
 
-    const termRegex = new RegExp(`${joinWords(terms)}.*?([A-C]{1,})`, 'ig')
+    const moduleRegex = new RegExp(`${joinWords(modules)}.*?([A-C]{1,})`, 'ig')
     const periodRegex = new RegExp(`${dayGroup}.*?([\\d,]+)`, 'ig')
 
     return (remarks: string) => {
-      const termMatches = Array.from(remarks.matchAll(termRegex))
+      const moduleMatches = Array.from(remarks.matchAll(moduleRegex))
       const periodMatches = Array.from(remarks.matchAll(periodRegex))
 
-      const termList = termMatches.flatMap(termMatch => {
-        const rawTerm = termMatch[1].toLowerCase()
-        const term = terms[rawTerm] ?? rawTerm
-        return Array.from(termMatch[2]).map(
-          subTerm => `${term}-${subTerm}`
+      const moduleList = moduleMatches.flatMap(moduleMatch => {
+        const rawModule = moduleMatch[1].toLowerCase()
+        const module = modules[rawModule] ?? rawModule
+        return Array.from(moduleMatch[2]).map(
+          subModule => `${module}_${subModule}`
         )
       })
 
@@ -123,9 +123,9 @@ const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
 
       const periods: Period[] = []
 
-      for (const term of termList) {
+      for (const module of moduleList) {
         periods.push({
-          term,
+          module,
           coordinates,
         })
       }
@@ -146,10 +146,10 @@ export const getPeriods: PeriodsGetter = remarks => {
   }
 
   return periods
-    .map(({ term, coordinates: rawCoordinates }) => {
+    .map(({ module, coordinates: rawCoordinates }) => {
       const coordinates = rawCoordinates.filter(coordinate => isFinite(coordinate))
       return {
-        term,
+        module,
         coordinates,
       }
     })
