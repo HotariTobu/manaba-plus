@@ -36,6 +36,8 @@
     "@vitejs/plugin-react": "^4.2.1",
     "auto-changelog": "^2.4.0",
     "autoprefixer": "^10.4.17",
+    "bestzip": "^2.2.1",
+    "cross-env": "^7.0.3",
     "manaba-plus-lib": "link:../lib",
     "postcss": "^8.4.35",
     "postcss-add-root-selector": "^1.0.5",
@@ -48,7 +50,9 @@
   "scripts": {
     "dev": "vite",
     "wat": "vite build --watch --mode development",
-    "build": "tsc && vite build",
+    "build": "npm run build:chrome && npm run build:firefox",
+    "build:chrome": "cross-env BROWSER=chrome sh ./build.sh",
+    "build:firefox": "cross-env BROWSER=firefox sh ./build.sh",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   }
 }

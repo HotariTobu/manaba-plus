@@ -32,14 +32,15 @@ export default defineConfig({
     }),
 
     // Remove debug code
-    strip({
+    process.env.NODE_ENV === 'production' && strip({
+      include: ['**/src/**/*.{ts,tsx}'],
       labels: ['debug']
     }),
 
     // Make `import.meta` available in content scripts
     importMeta({
       basePath: import.meta.dirname,
-      include: ['**/src/modifiers/**/*.{ts,tsx}']
+      include: ['**/src/**/*.{ts,tsx}']
     }),
 
     // Change output format iife -> es and wrap output js with async iif to use toplevel await
@@ -47,7 +48,7 @@ export default defineConfig({
       format: 'es',
     }),
     topLevelAwait({
-      include: ['**/src/modifiers/**/*.js']
+      include: ['**/index.js']
     }),
   ],
   resolve: {

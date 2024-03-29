@@ -2,7 +2,7 @@ import { fetchDOM } from '@/utils/fetch'
 import { Assignment } from '../../types/assignment'
 import { allAssignmentsPath, dateTimeRegex, selectorMap } from "../../../../../config"
 import { f, ff } from '@/utils/element'
-import { o } from '@/stores/options'
+import { o } from '@/store'
 
 /**
  * Create a function to get anchor elements of descendants of the specific element.
@@ -83,7 +83,7 @@ const getRowAssignment = (element: Element): Assignment | null => {
  * @returns An array of assignment objects
  */
 export const getAssignments = async () => {
-  const rootUrl = o.common.rootUrl.value
+  const rootUrl = o.rootUrl
   if (rootUrl === '') {
     throw new Error('Reload the top page of manaba.')
   }

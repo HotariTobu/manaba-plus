@@ -11,6 +11,8 @@ import { PageColumn } from "./page-column";
 import { PageContentBase } from "./page-content";
 import { Trash } from "./trash";
 import { cn } from "@/lib/utils";
+import { localStore, popNotifications } from "@/store";
+import { toast } from "sonner";
 
 export type NodeItemsMap = ItemsMap<NodeItem>
 
@@ -51,6 +53,14 @@ export const PageBody = (props: {
       document.removeEventListener('pointerup', longPress.onPointerUp)
     }
   }, [status])
+
+  useEffect(() => {
+    setTimeout(() => {
+      for (const notification of popNotifications()) {
+        toast(notification)
+      }
+    });
+  }, [localStore.notifications.length])
 
   // Save the page layout when some item is dropped.
   const handleDrop = (itemsMap: NodeItemsMap) => {

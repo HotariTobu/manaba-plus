@@ -3,14 +3,14 @@
     "message": "Manaba Plus"
   },
   "extension_description": {
-    "message": "Add awesome modifications to manaba"
+    "message": "manabaの痒い所に手が届きます"
   },
 
   "notification_timeout": {
-    "message": "Returned to the home page because it seems timed out."
+    "message": "タイムアウトしていたので、ホーム画面に戻りました。"
   },
   "notification_version": {
-    "message": "$extension_name$ was updated into version $version$!!",
+    "message": "$extension_name$がバージョン$version$にアップデートされました！！",
     "placeholders": {
       "extension_name": {
         "content": "Manaba Plus"
@@ -21,7 +21,7 @@
     }
   },
   "notification_download": {
-    "message": "It's $day_count$ days ago that you downloaded contents at the last. How about you to do it again?",
+    "message": "最後にコンテンツをダウンロードしたのは$day_count$日前です。",
     "placeholders": {
       "day_count": {
         "content": "$1"
@@ -30,37 +30,37 @@
   },
 
   "grade_view_answer": {
-    "message": "View Answers"
+    "message": "回答の確認"
   },
 
   "report_add_file": {
-    "message": "Add files"
+    "message": "ファイルを追加"
   },
   "report_dnd_message": {
-    "message": "...or drop files here"
+    "message": "またはここにファイルをドロップ"
   },
   "report_backup_text": {
-    "message": "The backup assignment is below👇"
+    "message": "バックアップされたレポートはこちら👇"
   },
 
   "syllabus_to_self_registration": {
-    "message": "To the self-registration page"
+    "message": "自己登録ページへ"
   },
 
   "home_assignments_assignment_type": {
-    "message": "Type"
+    "message": "タイプ"
   },
   "home_assignments_assignment_title": {
-    "message": "Title"
+    "message": "タイトル"
   },
   "home_assignments_assignment_course": {
-    "message": "Course"
+    "message": "コース"
   },
   "home_assignments_assignment_deadline": {
-    "message": "Deadline"
+    "message": "締め切り"
   },
   "home_assignments_assignment_deadline_day_count": {
-    "message": "$day_count$ days",
+    "message": "$day_count$日",
     "placeholders": {
       "day_count": {
         "content": "$1"
@@ -69,34 +69,34 @@
   },
 
   "home_courses_module_default": {
-    "message": "Module name"
+    "message": "モジュール名"
   },
   "home_courses_module_fir": {
-    "message": "1st sem"
+    "message": "前期"
   },
   "home_courses_module_sec": {
-    "message": "2nd sem"
+    "message": "後期"
   },
   "home_courses_module_spr_A": {
-    "message": "Spring A"
+    "message": "春A"
   },
   "home_courses_module_spr_B": {
-    "message": "Spring B"
+    "message": "春B"
   },
   "home_courses_module_spr_C": {
-    "message": "Spring C"
+    "message": "春C"
   },
   "home_courses_module_aut_A": {
-    "message": "Autumn A"
+    "message": "秋A"
   },
   "home_courses_module_aut_B": {
-    "message": "Autumn B"
+    "message": "秋B"
   },
   "home_courses_module_aut_C": {
-    "message": "Autumn C"
+    "message": "秋C"
   },
   "home_courses_module_delete_title": {
-    "message": "Are you sure to delete $module_label$?",
+    "message": "本当に$module_label$を削除しますか？",
     "placeholders": {
       "module_label": {
         "content": "$1"
@@ -104,64 +104,64 @@
     }
   },
   "home_courses_module_delete_description": {
-    "message": "This action cannot be undone. This will permanently delete the module."
+    "message": "この操作は取り消せません。モジュールは完全に削除されます。"
   },
   "home_courses_module_delete_cancel": {
-    "message": "Cancel"
+    "message": "キャンセル"
   },
   "home_courses_module_delete_action": {
-    "message": "Delete"
+    "message": "削除"
   },
   "home_courses_cards": {
-    "message": "Cards"
+    "message": "カード"
   },
   "home_courses_list": {
-    "message": "List"
+    "message": "リスト"
   },
   "home_courses_Monday": {
-    "message": "Mon"
+    "message": "月"
   },
   "home_courses_Tuesday": {
-    "message": "Tue"
+    "message": "火"
   },
   "home_courses_Wednesday": {
-    "message": "Wed"
+    "message": "水"
   },
   "home_courses_Thursday": {
-    "message": "Thu"
+    "message": "木"
   },
   "home_courses_Friday": {
-    "message": "Fri"
+    "message": "金"
   },
   "home_courses_Saturday": {
-    "message": "Sat"
+    "message": "土"
   },
   "home_courses_Sunday": {
-    "message": "Sun"
+    "message": "日"
   },
   "home_courses_course_name": {
-    "message": "Course Name"
+    "message": "コース名"
   },
   "home_courses_course_year": {
-    "message": "Year"
+    "message": "年度"
   },
   "home_courses_course_remarks": {
-    "message": "Remarks"
+    "message": "備考"
   },
   "home_courses_course_teachers": {
-    "message": "Teachers"
+    "message": "教員"
   },
   "home_courses_course_linked": {
-    "message": "*Linked"
+    "message": "※リンク中"
   },
   "home_courses_show_all_courses": {
-    "message": "Show all courses"
+    "message": "全てのコースを表示する"
   },
 
   "popup_reset_label": {
-    "message": "Reset the state and the settings"
+    "message": "状態と設定をリセットする"
   },
   "popup_reset_button": {
-    "message": "Reset"
+    "message": "リセット"
   }
 }

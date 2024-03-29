@@ -1,13 +1,13 @@
 import { modify } from '@/utils/modify'
-import { o } from '@/stores/options'
 import { getRootUrl } from './config'
 import dock from './dock'
+import { o } from '@/store'
 
 // Store the root url.
-if (o.common.rootUrl.value === '') {
+if (o.rootUrl === '') {
   const rootUrl = getRootUrl(location.href)
   if (rootUrl !== null) {
-    o.common.rootUrl.value = rootUrl
+    o.rootUrl = rootUrl
   }
 }
 

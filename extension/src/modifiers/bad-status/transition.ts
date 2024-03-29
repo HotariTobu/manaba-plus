@@ -1,11 +1,12 @@
-import { o } from "@/stores/options"
+import { o as _o } from "@/stores/options"
 import { getHomeUrl } from "./config"
 import { z } from "zod"
+import { o } from '@/store'
 
-let url = o.timeout.destinationOnTimeout.value.trim()
+let url = _o.timeout.destinationOnTimeout.value.trim()
 if (url === '') {
   // Set the home page URL.
-  const rootUrl = o.common.rootUrl.value
+  const rootUrl = o.rootUrl
   url = getHomeUrl(rootUrl)
 }
 
