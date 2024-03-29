@@ -14,6 +14,7 @@
         "https://gakunin-idp.c.chuo-u.ac.jp/sso/timeout.cgi*",
         "https://gakunin-idp.c.chuo-u.ac.jp/saml/saml2/idp/SSOService.php*",
         "https://room.chuo-u.ac.jp/Shibboleth.sso/SLO/POST*",
+        "https://room.chuo-u.ac.jp/Shibboleth.sso/SLO/Redirect*",
         "https://room.chuo-u.ac.jp/Shibboleth.sso/SAML2/POST*"
     ]
 }
