@@ -5,6 +5,7 @@ import { AssignmentsContainer } from '@/modifiers/home/dock/items/assignment/com
 import { t } from '@/utils/i18n';
 import { mount } from "@/utils/mount";
 import { local, managed, session, sync } from '@/utils/useStorage';
+import { useState } from 'react';
 
 debug: {
   const areas = {
@@ -22,6 +23,15 @@ debug: {
 
 const Popup = () => {
   const { Provider, providerProps } = usePageContextProvider()
+  const [reset, setReset] = useState(false)
+
+  const handleReset = () => {
+    setReset(true)
+    local.clear()
+    session.clear()
+    sync.clear()
+  }
+
   return (
     <Provider {...providerProps}>
       <ScrollArea className='w-[48rem] h-[32rem]'>
@@ -30,7 +40,7 @@ const Popup = () => {
           <ScrollBar orientation="vertical" />
           <div className='gap-2 flex items-center'>
             {t('popup_reset_label')}
-            <Button onClick={() => sync.clear()}>{t('popup_reset_button')}</Button>
+            <Button onClick={handleReset} disabled={reset}>{t('popup_reset_button')}</Button>
           </div>
         </div>
       </ScrollArea>

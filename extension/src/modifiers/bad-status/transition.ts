@@ -1,6 +1,6 @@
 import { o } from "@/stores/options"
-import { isValidUrl } from "@/utils/isValidUrl"
 import { getHomeUrl } from "./config"
+import { z } from "zod"
 
 let url = o.timeout.destinationOnTimeout.value.trim()
 if (url === '') {
@@ -9,10 +9,13 @@ if (url === '') {
   url = getHomeUrl(rootUrl)
 }
 
+const urlSchema = z.string().url()
+const { success } = urlSchema.safeParse(url)
+
 /**
  * True if the url is invalid, otherwise false
  */
-export const invalidUrl = !isValidUrl(url)
+export const invalidUrl = !success
 
 /**
  * Transition to another page.
