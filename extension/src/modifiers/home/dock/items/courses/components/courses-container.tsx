@@ -15,7 +15,7 @@ import { CourseList } from "./course-list"
 import { useRef } from "react"
 import { YearModuleSelect } from "./year-module-select"
 import { Button } from "@/components/ui/button"
-import { allCoursesPath } from "@/modifiers/home/config"
+import { allCoursesPath } from "../../../../config"
 
 const Overlay = (props: {
   item: Course

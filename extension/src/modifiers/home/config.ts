@@ -174,7 +174,7 @@ export const statusRegex = /.+on\.\w+$/
 
 /**
  * Convert a home url into a root url.
- * @param rootUrl The home url
+ * @param homeUrl The home url
  * @returns The root url
  */
 export const getRootUrl = (homeUrl: string) => {
@@ -183,6 +183,17 @@ export const getRootUrl = (homeUrl: string) => {
     return null
   }
   return match[1]
+}
+
+/**
+ * Add a course format parameter to a home url.
+ * @param homeUrl The home url
+ * @returns The thumbnail formatted page url
+ */
+export const getThumbnailFormatUrl = (homeUrl: string) => {
+  const url = new URL(homeUrl)
+  url.searchParams.append('chglistformat', 'thumbnail')
+  return url.href
 }
 
 /**

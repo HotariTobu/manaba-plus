@@ -68,6 +68,12 @@
     }
   },
 
+  "home_courses_source_warning_description": {
+    "message": "コースに関するデータの一部が取得できなかった可能性があります。ページを再読み込みしますか？"
+  },
+  "home_courses_source_warning_action": {
+    "message": "再読み込み"
+  },
   "home_courses_module_default": {
     "message": "モジュール名"
   },

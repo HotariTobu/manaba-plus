@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { ItemsMap } from "@/components/sortable/item"
 import { Course } from "../../types/course"
-import { getFiscalYear } from "@/modifiers/home/config"
+import { getFiscalYear } from "../../../../../config"
 import { dynamicStore, getYearModuleKey, store } from "../../store"
 import { getCourses } from "./courses"
 import { Position } from "../../types/position"
-import { itemsMapFromLayout, itemsMapToLayout } from "@/modifiers/home/dock/layout"
+import { itemsMapFromLayout, itemsMapToLayout } from "../../../../../dock/layout"
 import { CoordinatesMap } from "../../types/coordinate"
 
 let courses: Course[] | null = null

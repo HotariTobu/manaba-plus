@@ -3,7 +3,7 @@ import { ChatBubbleIcon, Pencil1Icon, PersonIcon, ReaderIcon, SpeakerLoudIcon } 
 import { IconProps } from "@radix-ui/react-icons/dist/types"
 import { cn } from "@/lib/utils"
 import { type Course, StatusType } from "../types/course"
-import { statusSuffixes } from "@/modifiers/home/config"
+import { statusSuffixes } from "../../../../config"
 import { fetchDOM } from "@/utils/fetch"
 import { f, ff } from "@/utils/element"
 import { selectorMap } from "../../../../config"
