@@ -42,17 +42,15 @@ jobs:
           cache: pnpm
       - name: Setup Pages
         uses: actions/configure-pages@v4
-      - name: Change Working Directory
-        run: cd docs
       - name: Install dependencies
         # run: npm ci # or pnpm install / yarn install / bun install
         run: pnpm i
       - name: Build with VitePress
-        run: npm run build
+        run: pnpm --filter docs build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .vitepress/dist
+          path: docs/.vitepress/dist
 
   # Deployment job
   deploy:
