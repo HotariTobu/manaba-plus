@@ -20,6 +20,7 @@
     "format": "npm run format:prettier && npm run format:eslint",
     "format:prettier": "prettier --check --write --log-level=warn \"**/*.{ts,js,md}\"",
     "format:eslint": "eslint --max-warnings=0 --fix \"**/*.{ts,js}\"",
-    "dev:ext": "pnpm --filter extension dev"
+    "dev:ext": "pnpm --filter extension dev",
+    "dev:doc": "pnpm --filter docs dev"
   }
 }

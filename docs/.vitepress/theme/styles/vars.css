@@ -1,0 +1,50 @@
+/* https://vitepress.dev/guide/extending-default-theme#customizing-css */
+
+/* Colors: Palette */
+:root {
+  --mp-c-1: hsl(100, 55%, 45%);
+  --mp-c-2: hsl(100, 59%, 51%);
+  --mp-c-3: hsl(100, 54%, 57%);
+  --mp-c-soft: hsla(111, 100%, 70%, 0.14);
+}
+
+.dark {
+  --mp-c-1: hsl(108, 80%, 73%);
+  --mp-c-2: hsl(104, 74%, 63%);
+  --mp-c-3: hsl(100, 60%, 55%);
+  --mp-c-soft: hsla(111, 100%, 70%, 0.16);
+}
+
+/* Colors: Function */
+:root {
+  --vp-c-brand-1: var(--mp-c-1);
+  --vp-c-brand-2: var(--mp-c-2);
+  --vp-c-brand-3: var(--mp-c-3);
+  --vp-c-brand-soft: var(--mp-c-soft);
+}
+
+/* Typography */
+:root {
+  --vp-font-family-base: 'Noto Sans JP', ui-sans-serif,
+    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Helvetica, Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* Top Page */
+:root {
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, var(--vp-c-gray-1) 50%, var(--vp-c-gray-3) 50%);
+  --vp-home-hero-image-filter: blur(44px);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(68px);
+  }
+}
