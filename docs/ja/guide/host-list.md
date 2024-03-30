@@ -1,4 +1,4 @@
-# 対応する学校のリスト
+# 対応している学校のリスト
 
 - 山梨学院大学 [->](https://manaba.ygu.ac.jp/ct/login)
 - 和洋女子大学 [->](https://www.wayo.ac.jp/students)

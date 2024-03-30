@@ -17,7 +17,7 @@ export const ja = defineConfig({
         text: '⭐️ガイド⭐️',
         items: [
           { text: '使ってみる', link: '/ja/guide/' },
-          { text: '対応する学校のリスト', link: '/ja/guide/host-list' },
+          { text: '対応している学校のリスト', link: '/ja/guide/host-list' },
           { text: '好きなバージョンを追加する', link: '/ja/guide/manual-load/' },
           // { text: 'ダウンロードの確認ダイアログ', link: '/ja/guide/download-dialog/' },
           // { text: 'Googleカレンダーの通知設定', link: '/ja/guide/google-calendar/' },
@@ -63,7 +63,7 @@ export const ja = defineConfig({
     lastUpdated: {
       text: '最終更新',
       formatOptions: {
-        dateStyle: 'full',
+        dateStyle: 'long',
         timeStyle: 'medium'
       }
     }
