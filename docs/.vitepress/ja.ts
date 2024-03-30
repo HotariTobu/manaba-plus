@@ -61,7 +61,7 @@ export const ja = defineConfig({
     },
 
     lastUpdated: {
-      text: '最終更新: ',
+      text: '最終更新',
       formatOptions: {
         dateStyle: 'full',
         timeStyle: 'medium'
