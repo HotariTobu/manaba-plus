@@ -33,7 +33,8 @@
         "$bad-status$"
       ],
       "js": [
-        "src/modifiers/bad-status/index.ts"
+        "src/modifiers/bad-status/index.ts",
+        "src/modifiers/bad-status/redirect-check.ts"
       ],
       "css": [
         "src/modifier.css",
