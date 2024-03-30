@@ -67,6 +67,9 @@
       }
     }
   },
+  "home_assignments_no_assignments": {
+    "message": "ないヨ。_(:3 」∠ )_"
+  },
 
   "home_courses_source_warning_description": {
     "message": "コースに関するデータの一部が取得できなかった可能性があります。ページを再読み込みしますか？"

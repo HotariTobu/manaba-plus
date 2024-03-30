@@ -67,6 +67,9 @@
       }
     }
   },
+  "home_assignments_no_assignments": {
+    "message": "Nothing. _(:3 」∠ )_"
+  },
 
   "home_courses_source_warning_description": {
     "message": "It's possible that some data about courses could not be getting. Do you want to reload the page?"

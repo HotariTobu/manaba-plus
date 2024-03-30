@@ -2,8 +2,23 @@ import { Assignment } from "../types/assignment"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { useState } from "react"
 import { AssignmentHeader, AssignmentRow, Column } from "./assignment-row"
+import { dynamicStore } from "../store"
+import { t } from "@/utils/i18n"
 
 type Comparer = (a: Assignment, b: Assignment) => number
+
+const countVisibleAssignments = (assignments: Assignment[]) => {
+  let count = 0
+
+  for (const assignment of assignments) {
+    if (dynamicStore.hidden.get(assignment.id)) {
+      continue
+    }
+    count++
+  }
+
+  return count
+}
 
 /**
  * Get a compare function of the specific sorting method.
@@ -66,10 +81,6 @@ export const AssignmentsList = (props: {
   const [sortBy, setSortBy] = useState<Column>('deadline')
   const [ascending, setAscending] = useState(true)
 
-  if (props.assignments.length === 0 && !props.sortable) {
-    return
-  }
-
   const comparer = getComparer(sortBy, ascending)
   props.assignments.sort(comparer)
 
@@ -79,7 +90,11 @@ export const AssignmentsList = (props: {
         gridTemplateColumns: `${props.sortable ? 'auto' : ''} auto minmax(12rem, 5fr) minmax(8rem, 3fr) auto`,
       }}>
         <AssignmentHeader sortBy={sortBy} setSortBy={setSortBy} ascending={ascending} setAscending={setAscending} />
-        {props.assignments.map(assignment => (
+        {!props.sortable && countVisibleAssignments(props.assignments) === 0 ? (
+          <div className="text-center col-start-1 col-end-[-1]">
+            {t('home_assignments_no_assignments')}
+          </div>
+        ) : props.assignments.map(assignment => (
           <AssignmentRow assignment={assignment} sortable={props.sortable} key={assignment.id} />
         ))}
       </div>
