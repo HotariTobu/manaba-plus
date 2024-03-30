@@ -6,7 +6,7 @@ hero:
   name: Manaba Plus
   text: manabaのための<br>ブラウザ拡張機能
   tagline: manabaをちょこっと便利に
-  image: /assets/logo-large.png
+  image: /logo-large.png
   actions:
     - theme: brand
       text: 使ってみる

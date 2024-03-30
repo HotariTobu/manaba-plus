@@ -4,7 +4,7 @@ import { DefaultTheme } from "vitepress";
  * @see https://vitepress.dev/reference/default-theme-config
  */
 export const defineThemeConfig = (config: DefaultTheme.Config): DefaultTheme.Config => ({
-  logo: '/assets/logo.png',
+  logo: '/logo.png',
 
   socialLinks: [
     { icon: 'github', link: 'https://github.com/HotariTobu/manaba-plus' },
