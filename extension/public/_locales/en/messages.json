@@ -166,6 +166,9 @@
   "home_courses_show_all_courses": {
     "message": "Show all courses"
   },
+  "home_courses_show_current_courses": {
+    "message": "Show current courses"
+  },
 
   "popup_reset_label": {
     "message": "Reset the state and the settings"

@@ -166,6 +166,9 @@
   "home_courses_show_all_courses": {
     "message": "全てのコースを表示する"
   },
+  "home_courses_show_current_courses": {
+    "message": "現在のコースを表示する"
+  },
 
   "popup_reset_label": {
     "message": "状態と設定をリセットする"

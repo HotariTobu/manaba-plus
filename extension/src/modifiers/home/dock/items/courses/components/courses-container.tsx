@@ -15,7 +15,7 @@ import { CourseList } from "./course-list"
 import { useRef } from "react"
 import { YearModuleSelect } from "./year-module-select"
 import { Button } from "@/components/ui/button"
-import { allCoursesPath } from "../../../../config"
+import { allCoursesPath, currentCoursesPath } from "../../../../config"
 
 const Overlay = (props: {
   item: Course
@@ -83,11 +83,13 @@ export const CoursesContainer = () => {
         </Tabs >
       </SortableContainer>
 
-      {location.pathname.includes(allCoursesPath) || (
-        <Button className="ms-auto text-foreground" variant="link" asChild>
+      <Button className="ms-auto text-foreground" variant="link" asChild>
+        {location.pathname.includes(allCoursesPath) ? (
+          <a href={currentCoursesPath}>{t('home_courses_show_current_courses')}</a>
+        ) : (
           <a href={allCoursesPath}>{t('home_courses_show_all_courses')}</a>
-        </Button>
-      )}
+        )}
+      </Button>
     </div>
   )
 }

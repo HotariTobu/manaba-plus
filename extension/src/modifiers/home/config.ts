@@ -215,6 +215,9 @@ export const getFiscalYear = (date: Date = new Date()) => {
 /** The relative path to the top page that has all courses */
 export const allCoursesPath = 'home__all'
 
+/** The relative path to the top page that has current courses only */
+export const currentCoursesPath = 'home'
+
 /**
  * Suffixes of URLs related to status icons.
  */
