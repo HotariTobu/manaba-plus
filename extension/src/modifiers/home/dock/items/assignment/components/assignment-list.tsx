@@ -86,9 +86,7 @@ export const AssignmentsList = (props: {
 
   return (
     <ScrollArea className="rounded-md border-primary border">
-      <div className="grid" style={{
-        gridTemplateColumns: `${props.sortable ? 'auto' : ''} auto minmax(12rem, 5fr) minmax(8rem, 3fr) auto`,
-      }}>
+      <div className="grid-cols-[auto_auto_minmax(12rem,_5fr)_minmax(8rem,_3fr)_auto] grid">
         <AssignmentHeader sortBy={sortBy} setSortBy={setSortBy} ascending={ascending} setAscending={setAscending} />
         {!props.sortable && countVisibleAssignments(props.assignments) === 0 ? (
           <div className="text-center col-start-1 col-end-[-1]">

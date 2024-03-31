@@ -80,6 +80,12 @@
       "description": "未提出課題一覧から除外された課題は$length$個です。",
       "type": "collection",
       "value": []
+    },
+    "showVisibilityIcon": {
+      "hint": "表示切替アイコンを常に表示する",
+      "description": "チェックを入れると、編集状態にしなくても課題の表示を切り替えられます。",
+      "type": "checkbox",
+      "value": true
     }
   },
   "home": {

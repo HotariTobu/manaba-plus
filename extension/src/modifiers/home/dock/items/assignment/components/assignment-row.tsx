@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { CaretDownIcon, CaretUpIcon, EyeClosedIcon, EyeOpenIcon } from '@radix-ui/react-icons'
 import { getAssignmentPhase } from '../phase'
 import { Phase } from '../types/phase'
+import { o } from '@/stores/options'
 
 const classNames: Record<Phase, string> = {
   over: 'bg-purple-200/50',
@@ -136,13 +137,15 @@ export const AssignmentRow = (props: {
   const phase = getAssignmentPhase(props.assignment.deadline)
   const Icon = hidden ? EyeClosedIcon : EyeOpenIcon
 
+  const switchable = props.sortable || o.mainPanel.showVisibilityIcon.value
+
   return (
     <div className={cn("hover:bg-transparent col-span-full grid grid-cols-subgrid", classNames[phase], hidden && 'opacity-50')}>
-      {props.sortable && (
-        <div className="hover:text-destructive m-auto border-primary border-e" onClick={handleIconClick}>
+      <div className="hover:text-destructive m-auto border-primary border-e" onClick={handleIconClick}>
+        {switchable && (
           <Icon className='m-1' />
-        </div>
-      )}
+        )}
+      </div>
       <Anchor className="p-1 m-auto" href={props.assignment.type?.url} target='_blank'><Truncated text={props.assignment.type?.label} /></Anchor>
       <Anchor className="p-1 border-primary border-s" href={props.assignment.url} target='_blank'><Truncated text={props.assignment.title} /></Anchor>
       <Anchor className="p-1 border-primary border-x" href={props.assignment.course?.url} target='_blank'><Truncated text={props.assignment.course?.title} /></Anchor>
