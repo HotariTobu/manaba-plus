@@ -13,7 +13,7 @@ export const arrangeMap = defineArrangeMap({
     },
     alertList: {
       selector: '.alertlist div',
-      className: 'm-0'
+      className: 'm-0 h-fit bg-left-top'
     },
     myInfoList: {
       container: {
