@@ -6,6 +6,7 @@ description: Manaba Plusでmanabaのトップページのレイアウトを変�
 
 {{ $frontmatter.description }}
 
+![](./minimize-dock.gif)
 ![](./dock.gif)
 
 ::: info
