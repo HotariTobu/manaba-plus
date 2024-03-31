@@ -18,7 +18,7 @@ args = parser.parse_args()
 # Parse the date range.
 if args.range is not None:
     start_date_str, end_date_str = args.range.split('_')
-    
+
     date_format = '%Y-%m-%d'
     start_date = datetime.strptime(start_date_str, date_format)
     end_date = datetime.strptime(end_date_str, date_format)
@@ -45,7 +45,7 @@ def dump_url(tags):
 def dump_tweet(tags):
     if len(tags) == 0:
         return
-    
+
     print(args.template)
     print(' '.join(tags))
     print()
@@ -68,5 +68,6 @@ for host_path in hosts_dir.iterdir():
     with open(host_path, 'r', encoding='utf8') as f:
         obj = json.load(f)
 
-    # Do actions.
-    action(obj['tags'])
+    if 'tags' in obj:
+        # Do actions.
+        action(obj['tags'])
