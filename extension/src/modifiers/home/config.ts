@@ -2,6 +2,10 @@ import { defineArrangeMap, defineClassMap, defineSelectorMap } from "@/types/con
 import { StatusType } from "./dock/items/courses/types/course"
 
 export const arrangeMap = defineArrangeMap({
+  privacy: {
+    selector: '#screenname, .pageheader-course-coursename a',
+    className: 'opacity-0',
+  },
   html: {
     selector: 'html',
     className: 'overflow-visible',

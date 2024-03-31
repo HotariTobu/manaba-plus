@@ -1,7 +1,12 @@
 import { modify } from '@/utils/modify'
-import { getRootUrl } from './config'
+import { arrangeMap, getRootUrl } from './config'
 import dock from './dock'
 import { o } from '@/store'
+import { addClass } from '@/utils/element'
+
+debug: {
+  addClass(arrangeMap.privacy)
+}
 
 // Store the root url.
 if (o.rootUrl === '') {
