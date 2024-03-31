@@ -2,16 +2,19 @@ import { defineConfig } from 'vitepress'
 import { en } from './en'
 import { ja } from './ja'
 
+/** The prefix path */
+const base = '/manaba-plus/'
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/manaba-plus/',
+  base,
   title: 'Manaba Plus',
 
   lastUpdated: true,
 
   /* prettier-ignore */
   head: [
-    ['link', {rel: 'icon', href: '/logo.png'}],
+    ['link', {rel: 'icon', href: `${base}logo.png`}],
     ['link', {rel: 'preconnect', href: 'https://fonts.googleapis.com'}],
     ['link', {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: ''}],
     ['link', {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap'}],
