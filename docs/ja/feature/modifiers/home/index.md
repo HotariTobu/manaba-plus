@@ -1,6 +1,10 @@
+---
+description: Manaba Plusでmanabaのトップページのレイアウトを変更することで必要最低限のことだけ表示することができます！！
+---
+
 # シンプル派なそこのあなた！！
 
-Manaba Plusでmanabaのトップページのレイアウトを変更することで必要最低限のことだけ表示することができます！！
+{{ $frontmatter.description }}
 
 ![](./dock.gif)
 

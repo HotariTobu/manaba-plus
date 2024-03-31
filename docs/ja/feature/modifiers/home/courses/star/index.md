@@ -1,6 +1,10 @@
+---
+description: Manaba Plusはmanabaのトップページの⭐を再読み込みせずに付けたり外したりできます！！
+---
+
 # ⭐をつけたいそこのあなた！！
 
-Manaba Plusはmanabaのトップページの⭐を再読み込みせずに付けたり外したりできます！！
+{{ $frontmatter.description }}
 
 ![](./card-star.gif)
 ![](./list-star.gif)

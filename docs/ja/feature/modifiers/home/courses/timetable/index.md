@@ -1,6 +1,10 @@
+---
+description: Manaba Plusはmanabaのトップページのコースを時間割表上に自由に配置することができます！！
+---
+
 # 時間割表を切望しているそこのあなた！！
 
-Manaba Plusはmanabaのトップページのコースを時間割表上に自由に配置することができます！！
+{{ $frontmatter.description }}
 
 ![](./timetable.gif)
 

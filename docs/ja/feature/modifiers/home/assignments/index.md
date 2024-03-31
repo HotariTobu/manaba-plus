@@ -1,6 +1,10 @@
+---
+description: Manaba Plusはmanaba上の課題の締切までの時間を表示し、それによって色分けすることができます！！
+---
+
 # 課題を溜めがちなそこのあなた！！
 
-Manaba Plusはmanaba上の課題の締切までの時間を表示し、それによって色分けすることができます！！
+{{ $frontmatter.description }}
 
 ![](./assignments.gif)
 ![](./edit-assignments.gif)

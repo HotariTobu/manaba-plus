@@ -1,5 +1,9 @@
+---
+description: Manaba Plusはmanabaのページのメモを非表示にすることができます！！
+---
+
 # メモのアイコンを消したいと思ったそこのあなた！！
 
-Manaba Plusはmanabaのページのメモを非表示にすることができます！！
+{{ $frontmatter.description }}
 
 ![](./notes.gif)

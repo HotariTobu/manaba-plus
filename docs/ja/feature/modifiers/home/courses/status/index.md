@@ -1,5 +1,9 @@
+---
+description: Manaba Plusはトップページのコースにあるアイコンから各ページに移動できるようにします！！
+---
+
 # すぐにコースニュースなどを確認したいそこのあなた！！
 
-Manaba Plusはトップページのコースにあるアイコンから各ページに移動できるようにします！！
+{{ $frontmatter.description }}
 
 ![](./course-status.gif)

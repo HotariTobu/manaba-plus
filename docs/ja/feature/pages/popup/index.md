@@ -1,5 +1,9 @@
+---
+description: Manaba Plusはmanabaの課題一覧をブラウザの拡張機能アイコンから確認できるようにします！！
+---
+
 # 急に課題が気になりだすそこのあなた！！
 
-Manaba Plusはmanabaの課題一覧をブラウザの拡張機能アイコンから確認できるようにします！！
+{{ $frontmatter.description }}
 
 ![](./popup.gif)

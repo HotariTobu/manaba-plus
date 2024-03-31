@@ -1,5 +1,9 @@
+---
+description: Manaba Plusがmanabaのレポートの提出ページへのリンクを貼ります！！
+---
+
 # 成績タブのレポートの成績には「回答の確認」リンクがなくておかしいなと思ったそこのあなた！！
 
-Manaba Plusがmanabaのレポートの提出ページへのリンクを貼ります！！
+{{ $frontmatter.description }}
 
 ![](./report-link.gif)

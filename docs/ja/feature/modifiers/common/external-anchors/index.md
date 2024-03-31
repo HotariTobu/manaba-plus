@@ -1,5 +1,9 @@
+---
+description: Manaba Plusはmanabaの外部リンクを確認バルーンを表示させずに開けるようにします！！
+---
+
 # 外部リンクをクリックしたらそのままリンク先に移動してくれると思っていたそこのあなた！！
 
-Manaba Plusはmanabaの外部リンクを確認バルーンを表示させずに開けるようにします！！
+{{ $frontmatter.description }}
 
 ![](./external-anchors.gif)

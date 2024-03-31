@@ -1,5 +1,9 @@
+---
+description: Manaba Plusはmanaba上のPDFなどの添付ファイルをコースごとにフォルダ分けして一括ダウンロードすることができます！！
+---
+
 # いちいちページを移動してファイルをダウンロードするのが面倒くさいと思っているそこのあなた！！
 
-Manaba Plusはmanaba上のPDFなどの添付ファイルをコースごとにフォルダ分けして一括ダウンロードすることができます！！
+{{ $frontmatter.description }}
 
 ![](./contents.gif)

@@ -1,5 +1,9 @@
+---
+description: Manaba Plusならできます！！
+---
+
 # 課題提出でファイルをドラッグアンドドロップしたいと思ったそこのあなた！！
 
-Manaba Plusならできます！！
+{{ $frontmatter.description }}
 
 ![](./dnd.gif)

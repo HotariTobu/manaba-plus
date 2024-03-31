@@ -1,5 +1,9 @@
+---
+description: Manaba Plusはテキストを入力するタイプのレポートのテキストをバックアップします！！
+---
+
 # レポートが入力途中で消えた経験があるそこのあなた！！
 
-Manaba Plusはテキストを入力するタイプのレポートのテキストをバックアップします！！
+{{ $frontmatter.description }}
 
 ![](./backup.gif)

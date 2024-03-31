@@ -1,6 +1,10 @@
+---
+description: Manaba Plusは中大SSOのタイムアウトページにmanabaへのボタンを追加します！！
+---
+
 # タイムアウトしたからってログインページに移ってくれない中大SSOにキレ散らかしているそこのあなた！！
 
-Manaba Plusは中大SSOのタイムアウトページにmanabaへのボタンを追加します！！
+{{ $frontmatter.description }}
 
 ![](./timeout.gif)
 ![](./internal-server-error.gif)

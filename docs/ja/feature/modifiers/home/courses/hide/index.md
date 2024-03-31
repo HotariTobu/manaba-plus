@@ -1,6 +1,10 @@
+---
+description: Manaba Plusはmanabaのトップページのコースを非表示にすることができます！！
+---
+
 # 「使わないコース」を表示するって誰得なの？と思っているそこのあなた！！
 
-Manaba Plusはmanabaのトップページのコースを非表示にすることができます！！
+{{ $frontmatter.description }}
 
 ![](./hide-card-courses.gif)
 ![](./hide-list-courses.gif)
