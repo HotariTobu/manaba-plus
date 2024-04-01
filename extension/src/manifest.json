@@ -10,8 +10,7 @@
     "128": "icon/128.png"
   },
   "permissions": [
-    "storage",
-    "downloads"
+    "storage"
   ],
   "action": {
     "default_popup": "src/pages/popup/index.html"
