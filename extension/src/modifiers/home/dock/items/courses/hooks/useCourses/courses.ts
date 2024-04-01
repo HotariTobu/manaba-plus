@@ -208,9 +208,7 @@ const initializeYears = (courses: Course[]) => {
   }
 
   const sorted = Array.from(newYears).sort()
-  if (sorted.length === 0) {
-    sorted.push(getFiscalYear())
-  }
+  sorted.push(getFiscalYear())
 
   store.years = new Set(sorted)
 }
