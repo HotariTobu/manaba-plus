@@ -2,7 +2,7 @@ import { defineArrangeMap, defineSelectorMap } from "@/types/config"
 
 export const arrangeMap = defineArrangeMap({
   privacy: {
-    selector: '#screenname, .pageheader-course-coursename a',
+    selector: '#screenname, .pageheader-course-coursename a:not(#coursename)',
     className: 'opacity-0',
   },
   makeResponsive: {
