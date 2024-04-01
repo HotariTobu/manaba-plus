@@ -68,6 +68,7 @@
         "$manaba-url$home_campusnews_*",
         "$manaba-url$home_coursetable",
         "$manaba-url$home_library_query",
+        "$manaba-url$home_library_reminder",
         "$manaba-url$home_preferences*",
         "$manaba-url$home_selfregistration_*",
         "$manaba-url$home_submitlog",
