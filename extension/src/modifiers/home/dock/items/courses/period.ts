@@ -202,9 +202,7 @@ const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
 
 periodsGetters["daito.manaba.jp"] = periodsGetters["room.chuo-u.ac.jp"]
 
-debug: {
-  console.log(periodsGetters)
-}
+console.log(periodsGetters)
 
 const { hostname } = location
 
