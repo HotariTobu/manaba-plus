@@ -51,8 +51,8 @@
     "dev": "vite",
     "wat": "vite build --watch --mode development",
     "build": "npm run build:chrome && npm run build:firefox",
-    "build:chrome": "cross-env BROWSER=chrome sh ./build.sh",
-    "build:firefox": "cross-env BROWSER=firefox sh ./build.sh",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "build:chrome": "cross-env BROWSER=chrome sh ./scripts/build.sh",
+    "build:firefox": "cross-env BROWSER=firefox sh ./scripts/build.sh",
+    "version": "sh ./scripts/version.sh"
   }
 }
