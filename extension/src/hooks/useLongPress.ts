@@ -102,13 +102,10 @@ export const useLongPress = (callback: () => void, options?: {
     }
   }
 
-  const onPointerUp = () => {
-    clear()
-  }
-
   return {
     onPointerDown,
     onPointerMove,
-    onPointerUp,
+    onPointerUp: clear,
+    onContextMenu: clear,
   }
 }

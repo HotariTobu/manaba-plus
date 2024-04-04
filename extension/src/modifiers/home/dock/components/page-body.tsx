@@ -47,10 +47,12 @@ export const PageBody = (props: {
     document.addEventListener('pointerdown', longPress.onPointerDown)
     document.addEventListener('pointermove', longPress.onPointerMove)
     document.addEventListener('pointerup', longPress.onPointerUp)
+    document.addEventListener('contextmenu', longPress.onContextMenu)
     return () => {
       document.removeEventListener('pointerdown', longPress.onPointerDown)
       document.removeEventListener('pointermove', longPress.onPointerMove)
       document.removeEventListener('pointerup', longPress.onPointerUp)
+      document.removeEventListener('contextmenu', longPress.onContextMenu)
     }
   }, [status])
 
