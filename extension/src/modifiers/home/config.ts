@@ -202,7 +202,7 @@ export const getThumbnailFormatUrl = (homeUrl: string) => {
  * @returns The fiscal year
  */
 export const getFiscalYear = (date: Date = new Date()) => {
-  if (date.getMonth() < 4) {
+  if (date.getMonth() < 3) {
     return date.getFullYear() - 1;
   }
   return date.getFullYear();
