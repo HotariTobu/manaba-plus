@@ -1,4 +1,5 @@
 import { DefaultTheme } from "vitepress";
+import { profileUrl } from '../../constants.json'
 
 /**
  * @see https://vitepress.dev/reference/default-theme-config
@@ -8,7 +9,7 @@ export const defineThemeConfig = (config: DefaultTheme.Config): DefaultTheme.Con
 
   socialLinks: [
     { icon: 'github', link: 'https://github.com/HotariTobu/manaba-plus' },
-    { icon: 'twitter', link: 'https://twitter.com/manaba_plus' }
+    { icon: 'twitter', link: profileUrl.X }
   ],
 
   footer: {
