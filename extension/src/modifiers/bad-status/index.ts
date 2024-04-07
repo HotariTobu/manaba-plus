@@ -3,8 +3,8 @@ import { t } from "@/utils/i18n";
 import { o } from '@/stores/options'
 import { transition } from './transition'
 import homeButton from './home-button';
-import { pushNotification } from '@/store';
 import { ff } from '@/utils/element';
+import { pushNotification } from '@/notification';
 
 // Make actions if the page is not a redirect page.
 if (ff('meta[name="redirect"]') === null) {
