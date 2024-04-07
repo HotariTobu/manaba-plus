@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import { defineThemeConfig } from "./themeConfig";
+import { surveyUrl } from '../../constants.json'
 
 export const ja = defineConfig({
   lang: 'ja',
@@ -10,7 +11,7 @@ export const ja = defineConfig({
       { text: 'ガイド', link: '/ja/guide/' },
       { text: '機能一覧', link: '/ja/feature/' },
       { text: '開発者向け', link: '/ja/development/' },
-      { text: 'ご意見 / ご要望', link: 'https://docs.google.com/forms/d/e/1FAIpQLSck4FPegpn6G3xgVcFrTTanJ1V4HggBnyrqtF8ombUX28yt9A/viewform?usp=sf_link' },
+      { text: 'ご意見 / ご要望', link: surveyUrl },
     ],
 
     sidebar: [

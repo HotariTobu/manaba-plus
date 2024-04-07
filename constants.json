@@ -1,5 +1,8 @@
 {
   "profileUrl": {
     "X": "https://twitter.com/manaba_plus"
-  }
+  },
+  "featureUrl": "https://hotaritobu.github.io/manaba-plus/ja/feature",
+  "exitSurveyUrl": "https://docs.google.com/forms/d/e/1FAIpQLSe3XnyLNppeeFV494btJsl86aN7cap27NW6Wyw7fT-GqGnarQ/viewform",
+  "surveyUrl": "https://docs.google.com/forms/d/e/1FAIpQLSck4FPegpn6G3xgVcFrTTanJ1V4HggBnyrqtF8ombUX28yt9A/viewform"
 }

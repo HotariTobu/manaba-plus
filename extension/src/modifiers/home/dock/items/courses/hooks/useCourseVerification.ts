@@ -4,7 +4,7 @@ import { ff } from "@/utils/element"
 import { t } from "@/utils/i18n"
 import { useEffect } from "react"
 import { periodsGetterSupported } from "../period"
-import {profileUrl} from '@/../../constants.json'
+import { profileUrl } from '@/../../constants.json'
 
 /**
  * Determine if the page has enough course data.
