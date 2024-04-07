@@ -61,6 +61,8 @@ export interface Period {
 
 type PeriodsGetter = (remarks: string) => Period[] | null
 
+const fallbackGetter = () => () => null
+
 const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
   "room.chuo-u.ac.jp": () => {
     const modules: Record<string, string> = {
@@ -198,6 +200,7 @@ const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
       return periods
     }
   },
+  "manaba.lms.tokushima-u.ac.jp": fallbackGetter,
 }
 
 periodsGetters["daito.manaba.jp"] = periodsGetters["room.chuo-u.ac.jp"]
@@ -206,7 +209,9 @@ console.log(periodsGetters)
 
 const { hostname } = location
 
-const rawGetPeriods = (periodsGetters[hostname] ?? (() => () => null))()
+const rawGetPeriods = (periodsGetters[hostname] ?? fallbackGetter)()
+
+export const periodsGetterSupported = hostname in periodsGetters
 
 export const getPeriods: PeriodsGetter = remarks => {
   const periods = rawGetPeriods(remarks)

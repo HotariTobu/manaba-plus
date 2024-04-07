@@ -118,6 +118,7 @@ export const selectorMap = defineSelectorMap({
   courses: {
     status: ':is(.course-card-status, .coursestatus) img',
     thumbnail: {
+      tab: 'a[href*="=thumbnail"]',
       source: '.coursecard-c, .coursecard-r',
       url: '.course-card-title a',
       code: '.coursecode',
@@ -129,6 +130,7 @@ export const selectorMap = defineSelectorMap({
       teachers: '.courseitemdetail:last-of-type',
     },
     list: {
+      tab: 'a[href*="=list"]',
       source: '.courselist-c, .courselist-r, .my-infolist-deactivecourse tr:not(.title)',
       url: '.courselist-title a',
       icon: 'img.inline',
@@ -139,6 +141,7 @@ export const selectorMap = defineSelectorMap({
       teachers: 'td:nth-of-type(4)',
     },
     timetable: {
+      tab: 'a[href*="=timetable"]',
       source: '.courselistweekly-c, .courselistweekly-r',
       url: 'a:first-of-type',
       title: 'a:first-of-type',
@@ -192,7 +195,7 @@ export const getRootUrl = (homeUrl: string) => {
  */
 export const getThumbnailFormatUrl = (homeUrl: string) => {
   const url = new URL(homeUrl)
-  url.searchParams.append('chglistformat', 'thumbnail')
+  url.searchParams.set('chglistformat', 'thumbnail')
   return url.href
 }
 

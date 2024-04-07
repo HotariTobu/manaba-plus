@@ -71,11 +71,17 @@
     "message": "Nothing. _(:3 」∠ )_"
   },
 
-  "home_courses_source_warning_description": {
+  "home_courses_verify_courses_source_description": {
     "message": "It's possible that some data about courses could not be getting. Do you want to reload the page?"
   },
-  "home_courses_source_warning_action": {
+  "home_courses_verify_courses_source_action": {
     "message": "Reload"
+  },
+  "home_courses_verify_period_getter_description": {
+    "message": "The initialization of the timetable should be failed. Please notify developers."
+  },
+  "home_courses_verify_period_getter_action": {
+    "message": "Open X"
   },
   "home_courses_module_default": {
     "message": "Module name"

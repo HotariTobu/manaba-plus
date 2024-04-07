@@ -1,32 +1,10 @@
 import { f, ff } from "@/utils/element"
-import { getFiscalYear, getThumbnailFormatUrl, selectorMap, statusRegex } from "../../../../../config"
+import { getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
 import { Course, statusTypes } from "../../types/course"
 import { dynamicStore, getYearModuleKey, store } from "../../store"
 import { Period, getPeriods } from "../../period"
 import { t } from "@/utils/i18n"
 import { CoordinatesMap } from "../../types/coordinate"
-import { toast } from "sonner"
-
-/**
- * Determine if the page has enough course data.
- * If not, prompt the user to load the thumbnail formatted courses page.
- */
-const checkCoursesSource = () => {
-  if (ff(selectorMap.courses.timetable.source) === null) {
-    return
-  }
-
-  const onClick = () => {
-    location.href = getThumbnailFormatUrl(location.href)
-  }
-
-  toast(t('home_courses_source_warning_description'), {
-    action: {
-      label: t('home_courses_source_warning_action'),
-      onClick,
-    }
-  })
-}
 
 /**
  * Create a function to get attribute values of descendants of the specific element.
@@ -313,8 +291,6 @@ const initializeStore = (courses: Course[]) => {
  * @returns An array of course objects
  */
 export const getCourses = () => {
-  setTimeout(checkCoursesSource)
-
   const courses = [
     ...f(selectorMap.courses.thumbnail.source).map(getThumbnailCourse),
     ...f(selectorMap.courses.list.source).map(getListCourse),

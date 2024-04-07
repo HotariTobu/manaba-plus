@@ -16,12 +16,14 @@ import { useRef } from "react"
 import { YearModuleSelect } from "./year-module-select"
 import { Button } from "@/components/ui/button"
 import { allCoursesPath, currentCoursesPath } from "../../../../config"
+import { useCourseVerification } from "../hooks/useCourseVerification"
 
 const Overlay = (props: {
   item: Course
 }) => <CourseCardBase className="shadow-xl w-80 h-fit absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 cursor-grabbing" course={props.item} sortable />
 
 export const CoursesContainer = () => {
+  useCourseVerification()
   const { coursesMap, setCoursesMap, storeCoursesMap, selectProps, yearModuleKey } = useCourses()
 
   const { status, setStatus } = usePageContext()
