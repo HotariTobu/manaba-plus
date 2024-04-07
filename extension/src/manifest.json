@@ -54,7 +54,15 @@
     },
     {
       "matches": [
-        "$manaba-url$course*_grade"
+        "$manaba-url$course_*"
+      ],
+      "js": [
+        "src/modifiers/course/index.ts"
+      ]
+    },
+    {
+      "matches": [
+        "$manaba-url$course_*_grade"
       ],
       "js": [
         "src/modifiers/grade/index.ts"
@@ -88,7 +96,7 @@
     },
     {
       "matches": [
-        "$manaba-url$course*_report_*"
+        "$manaba-url$course_*_report_*"
       ],
       "js": [
         "src/modifiers/report/index.ts"
