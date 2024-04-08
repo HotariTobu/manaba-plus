@@ -110,5 +110,15 @@
         "src/modifiers/syllabus/index.ts"
       ]
     }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/pages/contents/index.html"
+      ],
+      "matches": [
+        "$manaba-url$"
+      ]
+    }
   ]
 }

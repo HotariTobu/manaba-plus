@@ -29,6 +29,9 @@ export default defineConfig({
       manifest: getManifest,
       transformManifest: injectTailwindCSS,
       skipManifestValidation: true,
+      additionalInputs: [
+        "src/pages/contents/index.html",
+      ],
     }),
 
     // Remove debug code
