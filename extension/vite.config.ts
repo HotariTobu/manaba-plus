@@ -51,12 +51,15 @@ export default defineConfig({
       format: 'es',
     }),
     topLevelAwait({
-      include: ['**/index.js']
+      include: ['**/src/modifiers/**/index.js']
     }),
   ],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
     },
+  },
+  build: {
+    target: 'esnext'
   },
 });
