@@ -200,6 +200,52 @@ const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
       return periods
     }
   },
+  "manaba.rku.ac.jp": () => {
+    const modules: Record<string, string> = {
+      '春': 'spr',
+      '秋': 'aut',
+      '通': 'ful',
+      '\\[\\]': '[]',
+      '[]': 'ful',
+    }
+    const moduleGroup = joinKeysValues(modules)
+
+    const moduleRegex = new RegExp(moduleGroup, 'i')
+    const periodRegex = new RegExp(`${dayGroup}.*?(\\d+)`, 'ig')
+
+    return (remarks: string) => {
+      const moduleMatch = moduleRegex.exec(remarks)
+      if (moduleMatch === null) {
+        return null
+      }
+      const periodMatches = Array.from(remarks.matchAll(periodRegex))
+
+      const rawModule = moduleMatch[1].toLowerCase()
+      const module = modules[rawModule] ?? rawModule
+
+      const coordinates = periodMatches.map(periodMatch => {
+        const rawDay = periodMatch[1].toLowerCase()
+        const column = days[rawDay]
+        const row = parseInt(periodMatch[2]) - 1
+        return coordinateToNumber({
+          column,
+          row,
+        })
+      })
+
+      const moduleList = module === 'ful' ? ['spr', 'aut'] : [module]
+      const periods: Period[] = []
+
+      for (const module of moduleList) {
+        periods.push({
+          module,
+          coordinates,
+        })
+      }
+
+      return periods
+    }
+  },
   "manaba.lms.tokushima-u.ac.jp": fallbackGetter,
 }
 
