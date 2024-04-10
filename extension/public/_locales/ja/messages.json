@@ -92,6 +92,12 @@
   "home_courses_module_sec": {
     "message": "後期"
   },
+  "home_courses_module_spr": {
+    "message": "春"
+  },
+  "home_courses_module_aut": {
+    "message": "秋"
+  },
   "home_courses_module_spr_A": {
     "message": "春A"
   },
