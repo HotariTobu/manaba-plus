@@ -252,6 +252,8 @@ const periodsGetters: Record<string, (() => PeriodsGetter) | undefined> = {
 periodsGetters["daito.manaba.jp"] = periodsGetters["room.chuo-u.ac.jp"]
 periodsGetters["manaba.meisei-u.ac.jp"] = periodsGetters["room.chuo-u.ac.jp"]
 
+periodsGetters["cit.manaba.jp"] = periodsGetters["slms.mi.sanno.ac.jp"]
+
 console.log(periodsGetters)
 
 const { hostname } = location
