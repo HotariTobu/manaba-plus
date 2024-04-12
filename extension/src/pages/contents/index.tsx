@@ -7,7 +7,7 @@ import { mount } from "@/utils/mount";
 import { local, managed, session, sync } from '@/utils/useStorage';
 import { useState } from 'react';
 
-const Popup = () => {
+const App = () => {
   return (
     <div className='flex'>
       <div className='flex flex-col'>
@@ -21,4 +21,4 @@ const Popup = () => {
   )
 }
 
-mount(<Popup />, '#app')
+mount(<App />, '#app')

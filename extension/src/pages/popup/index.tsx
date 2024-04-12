@@ -22,7 +22,7 @@ debug: {
   }
 }
 
-const Popup = () => {
+const App = () => {
   const { Provider, providerProps } = usePageContextProvider()
   const [reset, setReset] = useState(false)
 
@@ -52,4 +52,4 @@ const Popup = () => {
   )
 }
 
-mount(<Popup />, '#app')
+mount(<App />, '#app')
