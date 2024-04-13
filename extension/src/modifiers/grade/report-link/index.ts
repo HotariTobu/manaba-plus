@@ -1,5 +1,5 @@
 import { c, f, ff } from '@/utils/element'
-import { fetchDOM } from '@/utils/fetch'
+import { safeFetchDOM } from '@/utils/fetch'
 import getDistance from '@/utils/editDistanceOnp'
 import { t } from '@/utils/i18n'
 import { distanceThreshold, getReportsUrl, selectorMap } from '../config'
@@ -16,8 +16,9 @@ let reportItems: ReportItem[] | null = null
  */
 const initReportItems = async () => {
   const reportsUrl = getReportsUrl(location.href)
-  const fetchResult = await fetchDOM(reportsUrl)
-  if ('message' in fetchResult) {
+  const fetchResult = await safeFetchDOM(reportsUrl)
+  if (!fetchResult.success) {
+    console.log(fetchResult.message)
     return
   }
 

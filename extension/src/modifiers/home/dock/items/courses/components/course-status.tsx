@@ -4,7 +4,7 @@ import { IconProps } from "@radix-ui/react-icons/dist/types"
 import { cn } from "@/lib/utils"
 import { type Course, StatusType } from "../types/course"
 import { statusSuffixes } from "../../../../config"
-import { fetchDOM } from "@/utils/fetch"
+import { safeFetchDOM } from "@/utils/fetch"
 import { f, ff } from "@/utils/element"
 import { selectorMap } from "../../../../config"
 
@@ -22,8 +22,9 @@ const Icons: Record<StatusType, ForwardRefExoticComponent<IconProps & React.RefA
  * @returns An assignment url, or null when cannot find assignment page
  */
 const getAssignmentHref = async (courseUrl: string) => {
-  const fetchResult = await fetchDOM(courseUrl)
-  if ('message' in fetchResult) {
+  const fetchResult = await safeFetchDOM(courseUrl)
+  if (!fetchResult.success) {
+    console.log(fetchResult.message)
     return null
   }
 

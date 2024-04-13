@@ -1,4 +1,4 @@
-import { fetchDOM } from '@/utils/fetch'
+import { unsafeFetchDOM } from '@/utils/fetch'
 import { Assignment } from '../../types/assignment'
 import { allAssignmentsPath, dateTimeRegex, selectorMap } from "../../../../../config"
 import { f, ff } from '@/utils/element'
@@ -89,12 +89,7 @@ export const getAssignments = async () => {
   }
   const url = rootUrl + allAssignmentsPath
 
-  const fetchResult = await fetchDOM(url)
-  if ('message' in fetchResult) {
-    throw new Error(fetchResult.message)
-  }
-
-  const doc = fetchResult.data
+  const doc = await unsafeFetchDOM(url)
 
   const assignments: Assignment[] = []
 

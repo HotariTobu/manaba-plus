@@ -1,7 +1,8 @@
 import { ScrapingNode } from "./types/scrapingNode";
 
-export const model: ScrapingNode[] = [
+export const scrapingModelBase: ScrapingNode[] = [
   {
+    id: 'news',
     urlPrefix: '_news',
     anchorSelector: '.newstext a',
     children: [
@@ -16,11 +17,13 @@ export const model: ScrapingNode[] = [
     anchorSelector: '.report-title a',
     children: [
       {
+        id: 'report_attachments',
         urlPrefix: null,
         anchorSelector: '.attachments a',
       },
       {
-        urlPrefix: '',
+    id: 'report_submissions',
+    urlPrefix: '',
         anchorSelector: 'a[href*="collectiondetail"]',
         children: [
           {
@@ -38,6 +41,7 @@ export const model: ScrapingNode[] = [
     ]
   },
   {
+    id: 'page',
     urlPrefix: '_page',
     anchorSelector: '.about-contents a',
     children: [
