@@ -8,6 +8,8 @@ import { local, managed, session, sync } from '@/utils/useStorage';
 import { useState } from 'react';
 
 const App = () => {
+  const [cancelHandlers, setCancelHandlers] = useState<(() => void)[]>([])
+  const download = cancelHandlers.length > 0
   return (
     <div className='flex'>
       <div className='flex flex-col'>
