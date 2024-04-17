@@ -23,5 +23,6 @@
     "format:eslint": "eslint --max-warnings=0 --fix \"**/*.{ts,js}\"",
     "dev:ext": "pnpm --filter extension dev",
     "dev:doc": "pnpm --filter docs dev"
-  }
+  },
+  "version": "0.0.1"
 }
