@@ -182,6 +182,12 @@
     "message": "現在のコースを表示する"
   },
 
+  "popup_dump_storage_label": {
+    "message": "ストレージのデータをすべてダンプする"
+  },
+  "popup_dump_storage_button": {
+    "message": "ダンプ"
+  },
   "popup_reset_label": {
     "message": "状態と設定をリセットする"
   },

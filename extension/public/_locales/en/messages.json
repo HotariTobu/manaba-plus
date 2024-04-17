@@ -182,6 +182,12 @@
     "message": "Show current courses"
   },
 
+  "popup_dump_storage_label": {
+    "message": "Dump all storage data"
+  },
+  "popup_dump_storage_button": {
+    "message": "Dump"
+  },
   "popup_reset_label": {
     "message": "Reset the state and the settings"
   },
