@@ -8,7 +8,7 @@ import { mount } from "@/utils/mount";
 import { local, managed, session, sync } from '@/utils/useStorage';
 import { useState } from 'react';
 
-let DumpButton = null
+let DumpButton = () => <></>
 
 debug: {
   const areas = {
