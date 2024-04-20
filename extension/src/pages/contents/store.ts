@@ -1,10 +1,18 @@
 import { createDynamicStore, createStore } from "@/utils/createStore";
+import { ScrapingNodeId } from "./model";
 
 export const [store] = await createStore(import.meta.dirname, {
-  downloadOnlyStarred: false,
-  downloadRemoved: false,
+  excludedSet: new Set<string>(),
+
+  downloadDestination: 'manaba',
+  downloadLimit: 5,
+
+  downloadOnlyStarred: false as boolean,
+  downloadRemoved: false as boolean,
+
+  defaultIgnoredSet: new Set<ScrapingNodeId>()
 })
 
 export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
-  ignoredSet: new Set<string>()
+  ignoredSet: null as Set<ScrapingNodeId> | null,
 })

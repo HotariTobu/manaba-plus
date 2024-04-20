@@ -1,8 +1,18 @@
+import { z } from "zod";
 import { ScrapingNode } from "./types/scrapingNode";
 
-export const scrapingModelBase: ScrapingNode[] = [
+const scrapingNodeIdSchema = z.enum([
+  'news',
+  'report_attachments',
+  'report_submissions',
+  'page',
+])
+export type ScrapingNodeId = z.infer<typeof scrapingNodeIdSchema>
+export const scrapingNodeIdEnum = scrapingNodeIdSchema.enum
+
+const scrapingModelBase: ScrapingNode[] = [
   {
-    id: 'news',
+    id: scrapingNodeIdEnum.news,
     urlPrefix: '_news',
     anchorSelector: '.newstext a',
     children: [
@@ -17,13 +27,13 @@ export const scrapingModelBase: ScrapingNode[] = [
     anchorSelector: '.report-title a',
     children: [
       {
-        id: 'report_attachments',
+        id: scrapingNodeIdEnum.report_attachments,
         urlPrefix: null,
         anchorSelector: '.attachments a',
       },
       {
-    id: 'report_submissions',
-    urlPrefix: '',
+        id: scrapingNodeIdEnum.report_submissions,
+        urlPrefix: '',
         anchorSelector: 'a[href*="collectiondetail"]',
         children: [
           {
@@ -41,7 +51,7 @@ export const scrapingModelBase: ScrapingNode[] = [
     ]
   },
   {
-    id: 'page',
+    id: scrapingNodeIdEnum.page,
     urlPrefix: '_page',
     anchorSelector: '.about-contents a',
     children: [
@@ -58,3 +68,28 @@ export const scrapingModelBase: ScrapingNode[] = [
     ]
   },
 ]
+
+export const getScrapingModel = (ignoreSet: Set<ScrapingNodeId>) => {
+  const thinOut = (nodes: ScrapingNode[]): ScrapingNode[] => nodes
+    .filter(node => {
+      const parseResult = scrapingNodeIdSchema.safeParse(node.id)
+      if (parseResult.success && ignoreSet.has(parseResult.data)) {
+        return false
+      }
+      else {
+        return true
+      }
+    })
+    .map(node => {
+      if (node.urlPrefix === null) {
+        return node
+      }
+      else {
+        return {
+          ...node,
+          children: thinOut(node.children)
+        }
+      }
+    })
+  return thinOut(scrapingModelBase)
+}

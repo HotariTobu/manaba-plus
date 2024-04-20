@@ -28,7 +28,7 @@
     filter?: (url: string) => Promise<boolean>
   }
 
-  interface ScrapingTrace {
+  interface __ScrapingTrace {
     /**
      * A key string got from the scraped page
      */

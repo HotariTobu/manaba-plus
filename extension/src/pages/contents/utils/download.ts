@@ -1,8 +1,33 @@
 import browser from "webextension-polyfill";
 
-type DownloadContext = {
+export type DownloadContext = {
+  /** The url of the file */
   url: string
+
+  /** The relative path where to place a downloaded file  */
   path: string
+}
+
+const downloadStatusCodes = [
+  'pending',
+  'downloading',
+  'interrupted',
+  'completed',
+] as const
+export type DownloadStatusCode = typeof downloadStatusCodes[number]
+
+export type DownloadStats = Record<DownloadStatusCode, number>
+
+export type DownloadStatus = {
+  code: Exclude<DownloadStatusCode, 'interrupted'>
+} | {
+  code: 'interrupted'
+  message: string
+}
+
+type DownloadItem = {
+  context: DownloadContext
+  status: DownloadStatus
 }
 
 /**
@@ -101,7 +126,7 @@ export const download = (limit: number) => {
 
   /**
    * The callback function for the downloading event.
-   * @param delta The info about changed properties in `DownloadItem`
+   * @param delta The info about changed properties in `browser.Downloads.DownloadItem`
    */
   const downloadCallback = async (
     delta: browser.Downloads.OnChangedDownloadDeltaType,
@@ -139,6 +164,24 @@ export const download = (limit: number) => {
     queueDownload()
   }
 
+  const getDownloadStatus = () => ({
+    /** The statistics about the downloading session */
+    stats: {
+      pending: pendingStack.length,
+      downloading: downloadingStack.size,
+      interrupted: interruptedStack.length,
+      completed: completedStack.length,
+    } satisfies DownloadStats,
+
+    /** <download context, status> */
+    items: [
+      ...pendingStack.map<DownloadItem>(context => ({context, status: { code: 'pending' }})),
+      ...Array.from(downloadingStack.values()).map<DownloadItem>(context => ({context, status: { code: 'downloading' }})),
+      ...interruptedStack.map<DownloadItem>(([context, message]) => ({context, status: { code: 'interrupted', message }})),
+      ...completedStack.map<DownloadItem>(context => ({context, status: { code: 'completed' }})),
+    ]
+  })
+
   /**
    * Dispose of the downloading session.
    */
@@ -162,6 +205,7 @@ export const download = (limit: number) => {
   return {
     queueDownload,
     reserveDownload,
+    getDownloadStatus,
     disposeDownload,
     cancelDownload,
   }

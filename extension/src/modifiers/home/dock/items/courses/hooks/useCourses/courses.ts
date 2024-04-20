@@ -1,7 +1,7 @@
 import { f, ff } from "@/utils/element"
 import { getFiscalYear, selectorMap, statusRegex } from "../../../../../config"
 import { Course, statusTypes } from "../../types/course"
-import { dynamicStore, getYearModuleKey, store } from "../../store"
+import { dynamicStore, getYearModuleKey, localStore, store } from "../../store"
 import { Period, getPeriods } from "../../period"
 import { t } from "@/utils/i18n"
 import { CoordinatesMap } from "../../types/coordinate"
@@ -283,6 +283,7 @@ const initializeStore = (courses: Course[]) => {
     dynamicStore.coordinatesMap.set(yearModuleKey, coordinatesMap)
   }
 
+  localStore.courses = courses
   initializeYears(courses)
   initializeModules(modules)
 }

@@ -99,6 +99,8 @@ export const arrangeMap = {
   }
 } satisfies ArrangeMap
 
+export const hiddenPosition = 'trash'
+
 export const selectorMap = {
   pageBody: '.pagebody',
   pageElements: {
@@ -113,7 +115,7 @@ export const selectorMap = {
       '.banner-list',
     ].join(', '),
     bottom: '',
-    trash: '',
+    [hiddenPosition]: '',
   },
   courses: {
     status: ':is(.course-card-status, .coursestatus) img',
@@ -168,7 +170,7 @@ export const classMap = {
     2: "outline-dashed outline-offset-2 outline-yellow-300",
     3: "outline-dashed outline-offset-2 outline-green-300",
     4: "outline-dashed outline-offset-2 outline-blue-300",
-    trash: "outline-dashed outline-offset-2 outline-slate-300",
+    [hiddenPosition]: "outline-dashed outline-offset-2 outline-slate-300",
   }
 } satisfies ClassMap
 

@@ -2,13 +2,23 @@ import { safeFetchDOM } from "@/utils/fetch";
 import { ScrapingNode } from "../types/scrapingNode";
 import { f } from "@/utils/element";
 
-type ScrapingResult = {
-  parentUrl: string
+type ScrapingTraceItem = {
+  label: string
   url: string
-  trace: string[]
 }
 
-type ScrapingOptions = {
+export type ScrapingResult = {
+/**
+ * A label and url list expressing the scraping path.
+ * parent <---> child
+ */
+  trace: ScrapingTraceItem[]
+
+  /** The end item of the scraping path */
+  target: ScrapingTraceItem
+}
+
+export type ScrapingOptions = {
   /** A callback called when some scraping result was gotten */
   onScrape: (result: ScrapingResult) => void,
 
@@ -16,7 +26,7 @@ type ScrapingOptions = {
   onError: (url: string, message: string) => void,
 
   /** A callback called when scraping was completed */
-  onComplete: () => void
+  onComplete?: (() => void) | undefined
 }
 
 /**
@@ -29,7 +39,7 @@ type ScrapingOptions = {
 export const scrape = (rootUrl: string, model: ScrapingNode[], options: ScrapingOptions) => {
   let canceled = false
 
-  const internalScrape = async (url: string, nodes: ScrapingNode[], trace: string[]) => {
+  const internalScrape = async (url: string, nodes: ScrapingNode[], trace: ScrapingTraceItem[]) => {
     if (canceled) {
       return
     }
@@ -37,7 +47,7 @@ export const scrape = (rootUrl: string, model: ScrapingNode[], options: Scraping
     const fetchPromises = nodes.map(node =>
       Promise.all([
         node,
-        safeFetchDOM(url + node.urlPrefix ?? '')
+        safeFetchDOM(url + (node.urlPrefix ?? ''))
       ])
     )
     const fetchResults = await Promise.all(fetchPromises)
@@ -52,22 +62,21 @@ export const scrape = (rootUrl: string, model: ScrapingNode[], options: Scraping
 
       const doc = fetchResult.data
       const anchors = f<HTMLAnchorElement>(node.anchorSelector, doc)
-      const items = anchors.map(({ href, textContent }) => ({
-        url: href,
+      const items = anchors.map<ScrapingTraceItem>(({ href, textContent }) => ({
         label: textContent === null ? '' : textContent.trim(),
+        url: href,
       }))
 
       if (node.urlPrefix === null) {
-        for (const { url, label } of items) {
+        for (const item of items) {
           options.onScrape({
-            parentUrl: doc.baseURI,
-            url,
-            trace: [label, ...trace],
+            trace,
+            target: item,
           })
         }
       } else {
-        for (const { url, label } of items) {
-          const scrapePromise = internalScrape(url, node.children, [label, ...trace])
+        for (const item of items) {
+          const scrapePromise = internalScrape(item.url, node.children, [...trace, item])
           scrapePromises.push(scrapePromise)
         }
       }
