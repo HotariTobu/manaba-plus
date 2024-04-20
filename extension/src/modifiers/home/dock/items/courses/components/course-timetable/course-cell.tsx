@@ -5,19 +5,19 @@ import { Course } from "../../types/course"
 import { CourseLink } from "../course-link"
 import { CourseStar } from "../course-star"
 import { CourseStatus } from "../course-status"
-import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
+import { createCustomDnDData } from "@/utils/defineCustomDnDData"
 import { PlusCircledIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import { MouseEvent } from "react"
 import { useDndContext } from "@dnd-kit/core"
 import { useSortableFocus } from "../../hooks/useSortableFocus"
 
-interface CourseCellData {
+type CourseCellData = {
   coordinate: number
   course: Course
 }
 
-export const [, createCourseCellData, getCourseCellData] = defineCustomDnDData<CourseCellData>()
+export const [, createCourseCellData, getCourseCellData] = createCustomDnDData<CourseCellData>()
 
 export const CourseCellBase = (props: {
   course: Course

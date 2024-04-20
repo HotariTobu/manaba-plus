@@ -1,4 +1,11 @@
-import { defineArrangeMap } from "@/types/config"
+import { ArrangeMap } from "@/types/config"
+
+export const arrangeMap = {
+  rem: {
+    selector: 'html',
+    className: 'text-[100%]'
+  },
+} satisfies ArrangeMap
 
 /**
  * Convert a root url into a home url.
@@ -8,10 +15,3 @@ import { defineArrangeMap } from "@/types/config"
 export const getHomeUrl = (rootUrl: string) => {
   return rootUrl + 'home'
 }
-
-export const arrangeMap = defineArrangeMap({
-  rem: {
-    selector: 'html',
-    className: 'text-[100%]'
-  }
-})

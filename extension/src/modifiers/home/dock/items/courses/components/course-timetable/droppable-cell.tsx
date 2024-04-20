@@ -1,13 +1,13 @@
 import { SortableItem } from "@/components/sortable/sortable-item"
-import { defineCustomDnDData } from "@/utils/defineCustomDnDData"
+import { createCustomDnDData } from "@/utils/defineCustomDnDData"
 
 export type DisabledAt = (coordinate: number) => boolean
 
-interface DroppableCellData {
+type DroppableCellData = {
   coordinate: number
 }
 
-export const [droppableCellDataId, createDroppableCellData, getDroppableCellData] = defineCustomDnDData<DroppableCellData>()
+export const [droppableCellDataId, createDroppableCellData, getDroppableCellData] = createCustomDnDData<DroppableCellData>()
 
 /** Droppable node for determining where a course is inserted into */
 export const DroppableCell = (props: DroppableCellData & {

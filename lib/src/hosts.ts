@@ -3,7 +3,7 @@ import { listFiles, readTextFile } from "./async-fs.js";
 
 const hostsPath = fs.resolve(import.meta.dirname, '../../hosts',)
 
-export interface Host {
+export type Host = {
   name: string
   source: string
   tags: string[]

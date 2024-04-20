@@ -112,7 +112,7 @@ export const unhide = <T extends Element>(target: string | T | T[], root: Docume
  * @param replacer A function that receives a selected element and returns a new element, or the the new element
  * @param root Root node which starts the query
  */
-export const replace = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T, unihde: () => void) => Element | null) | Element, root: Document | Element = document) => {
+export const replace = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T, unhide: () => void) => Element | null) | Element, root: Document | Element = document) => {
   getTargetElements(target, root).forEach(pastElement => {
     let element: Element | null
     if (replacer instanceof Element) {
@@ -139,7 +139,7 @@ export const replace = <T extends Element>(target: string | T | T[], replacer: (
  * @param where Insert position
  * @param root Root node which starts the query
  */
-export const move = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T, unihde: () => void) => Element | null) | Element, destination: string | Element, where: InsertPosition = 'afterbegin', root: Document | Element = document) => {
+export const move = <T extends Element>(target: string | T | T[], replacer: ((pastElement: T, unhide: () => void) => Element | null) | Element, destination: string | Element, where: InsertPosition = 'afterbegin', root: Document | Element = document) => {
   if (typeof destination === 'string') {
     const element = ff(destination, root)
     if (element === null) {

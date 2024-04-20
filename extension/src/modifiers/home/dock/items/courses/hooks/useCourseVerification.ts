@@ -4,7 +4,7 @@ import { ff } from "@/utils/element"
 import { t } from "@/utils/i18n"
 import { periodsGetterSupported } from "../period"
 import { profileUrl } from '@/../../constants.json'
-import { defineOnceHook } from "../../../../utils/defineOnceHook"
+import { createOnceHook } from "../../../../utils/defineOnceHook"
 
 /**
  * Determine if the page has enough course data.
@@ -44,7 +44,7 @@ const verifyPeriodGetter = () => {
   })
 }
 
-export const useCourseVerification = defineOnceHook(() => {
+export const useCourseVerification = createOnceHook(() => {
   setTimeout(verifyCoursesSource)
   setTimeout(verifyPeriodGetter)
 })

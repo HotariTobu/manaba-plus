@@ -3,7 +3,7 @@ import { Active, Collision, Data, Over } from "@dnd-kit/core";
 type CreateCustomDnDData<T> = (data: T) => Data
 type GetCustomDnDData<T> = (entry: Collision | Active | Over | null) => T | null
 
-export const defineCustomDnDData = <T extends Data>(): [string, CreateCustomDnDData<T>, GetCustomDnDData<T>] => {
+export const createCustomDnDData = <T extends Data>(): [string, CreateCustomDnDData<T>, GetCustomDnDData<T>] => {
   /** An id for custom sortable data */
   const customDnDDataId = crypto.randomUUID()
 

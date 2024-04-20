@@ -1,4 +1,4 @@
-export interface Module extends Record<string, string> {
+export type Module = {
   id: string
   label: string
 }

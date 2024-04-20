@@ -18,7 +18,7 @@ export const statusTypes = [
 ] as const
 export type StatusType = (typeof statusTypes)[number]
 
-export interface Course {
+export type Course = {
   /** A string to identify the course */
   id: string
 

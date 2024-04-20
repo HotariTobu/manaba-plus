@@ -1,5 +1,5 @@
 /** Represent a timetable cell coordinate */
-export interface Coordinate extends Record<string, number> {
+export type Coordinate = {
   column: number
   row: number
 }

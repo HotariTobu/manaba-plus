@@ -2,7 +2,7 @@ import browser from "webextension-polyfill";
 import type { StorageItem } from "@/types/storageItem";
 
 /** Has a behavior like the web extension API storage areas */
-export interface StorageAreaLike {
+export type StorageAreaLike = {
   get(keys?: null | string | string[] | Record<string, unknown>): Promise<Record<string, unknown>>;
   set(items: Record<string, unknown>): Promise<void>;
   remove(keys: string | string[]): Promise<void>;

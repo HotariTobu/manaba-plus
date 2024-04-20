@@ -1,12 +1,12 @@
-import { defineClassMap, defineSelectorMap } from "@/types/config"
+import { ClassMap, SelectorMap } from "@/types/config"
 
-export const selectorMap = defineSelectorMap({
+export const selectorMap = {
   selfRegistrationContainer: '.articlebody',
-})
+} satisfies SelectorMap
 
-export const classMap = defineClassMap({
+export const classMap = {
   selfRegistrationAnchor: 'block my-2',
-})
+} satisfies ClassMap
 
 /**
  * Convert a syllabus url into a self-registration url.

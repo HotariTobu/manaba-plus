@@ -6,7 +6,7 @@ export type SetPageStatus = (status: PageStatus) => void
 export const PageContext = createContext<PageStatus>('normal')
 export const PageSetterContext = createContext<SetPageStatus>(() => { })
 
-interface ProviderProps {
+type ProviderProps = {
   status: PageStatus,
   setStatus: SetPageStatus,
 }

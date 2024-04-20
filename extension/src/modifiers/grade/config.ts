@@ -1,11 +1,11 @@
-import { defineSelectorMap } from "@/types/config"
+import { SelectorMap } from "@/types/config"
 
-export const selectorMap = defineSelectorMap({
+export const selectorMap = {
   reportAnchor: '.report-title a',
   gradeRow: 'tr[class*="row"]',
   gradeTitle: '.grade-title',
   gradeCell: '.grade',
-})
+} satisfies SelectorMap
 
 // If distance between a grade title and a report one is less than or equal the threshold, link the grade and report.
 export const distanceThreshold = 0.6

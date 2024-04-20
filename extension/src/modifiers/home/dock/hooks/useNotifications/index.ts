@@ -1,8 +1,8 @@
 import { popNotifications } from "@/notification";
-import { defineOnceHook } from "../../../utils/defineOnceHook";
+import { createOnceHook } from "../../../utils/defineOnceHook";
 import { toast } from "sonner";
 
-export const useNotifications = defineOnceHook(() => {
+export const useNotifications = createOnceHook(() => {
   popNotifications().then(notifications => {
     for (const notification of notifications) {
       toast(notification)

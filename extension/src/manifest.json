@@ -36,8 +36,8 @@
         "src/modifiers/bad-status/redirect-check.ts"
       ],
       "css": [
-        "src/modifier.css",
-        "src/modifier-component.css"
+        "src/style/modifier.css",
+        "src/style/modifier-component.css"
       ]
     },
     {
@@ -48,8 +48,8 @@
         "src/modifiers/common/index.ts"
       ],
       "css": [
-        "src/modifier.css",
-        "src/modifier-component.css"
+        "src/style/modifier.css",
+        "src/style/modifier-component.css"
       ]
     },
     {

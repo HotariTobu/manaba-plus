@@ -20,7 +20,6 @@ const getMemorizedCourses = () => {
   }
 }
 
-
 /**
  * Get where the course should be located at.
  * @param course The course

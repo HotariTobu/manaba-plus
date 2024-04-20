@@ -28,7 +28,7 @@ export const hasSortableZoneData = (over: Over) => {
   }
 }
 
-interface SortableColumnProps extends Omit<SortableContextProps, 'id'> {
+export type SortableColumnProps = {
   containerId: UniqueIdentifier
   growOnlyWidth?: boolean
   growOnlyHeight?: boolean
@@ -36,7 +36,7 @@ interface SortableColumnProps extends Omit<SortableContextProps, 'id'> {
   style?: CSSProperties
   useDroppableProps?: Omit<UseDroppableArguments, 'id'>
   droppableDivProps?: Omit<HtmlHTMLAttributes<HTMLDivElement>, 'className' | 'style'>
-}
+} & Omit<SortableContextProps, 'id'>
 
 const useMinSize = (widthEnabled: boolean, heightEnabled: boolean) => {
   const [minWidth, setMinWidth] = useState(0)

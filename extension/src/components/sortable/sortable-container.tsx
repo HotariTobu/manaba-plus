@@ -26,15 +26,7 @@ export type DragOver = (event: DragOverEvent) => void
 export type DragEnd = (event: DragEndEvent) => void
 export type DragCancel = (event: DragCancelEvent) => void
 
-interface SortableContainerProps<I extends Item> extends
-  Omit<
-    DndContextProps,
-    'collisionDetection'
-    | 'onDragStart'
-    | 'onDragOver'
-    | 'onDragEnd'
-    | 'onDragCancel'
-  > {
+export type SortableContainerProps<I extends Item> = {
   itemsMap: ItemsMap<I>
   setItemsMap: (itemsMap: ItemsMap<I>) => void
 
@@ -49,7 +41,14 @@ interface SortableContainerProps<I extends Item> extends
 
   onDropped?: (itemsMap: ItemsMap<I>) => void
   setIsDragging?: (dragging: boolean) => void
-}
+} & Omit<
+  DndContextProps,
+  'collisionDetection'
+  | 'onDragStart'
+  | 'onDragOver'
+  | 'onDragEnd'
+  | 'onDragCancel'
+>
 
 export const SortableContainer = <I extends Item>({
   itemsMap,
@@ -108,7 +107,7 @@ export const SortableContainer = <I extends Item>({
     return sortableCollisions
   }
 
-  interface Data {
+  type Data = {
     containerId: UniqueIdentifier
     items: I[]
     index: number

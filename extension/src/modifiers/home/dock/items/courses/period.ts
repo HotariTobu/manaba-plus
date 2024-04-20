@@ -54,7 +54,7 @@ const days: Record<string, number> = {
 } as const
 const dayGroup = joinKeys(days)
 
-export interface Period {
+export type Period = {
   module: string
   coordinates: number[]
 }

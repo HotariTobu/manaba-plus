@@ -1,6 +1,6 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 
-export interface Item {
+export type Item = {
   id: UniqueIdentifier
 }
 

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import browser from "webextension-polyfill";
 
-interface DownloadContext {
+type DownloadContext = {
   url: string
   path: string
 }
@@ -41,33 +40,36 @@ export const escape = (text: string) => {
     .trim()
 }
 
-export const useDownload = (downloading: boolean, limit: number, interval = 1000) => {
-  const [status, setStatus] = useState(new Map())
-
-  /**
-   * An item stack that has pending files.
-   */
+/**
+ * Start a downloading session.
+ * @param limit The max number of synchronous downloading files
+ * @returns Methods to manipulate the downloading session.
+ */
+export const download = (limit: number) => {
+  /** An item stack that has pending files */
   const pendingStack: DownloadContext[] = []
 
-  /**
-   * An item stack that has downloading files.
-   */
+  /** An item stack that has downloading files */
   const downloadingStack: Map<number, DownloadContext> = new Map()
 
-  /**
-   * An item stack that has files interrupted from downloading.
-   */
+  /** An item stack that has files interrupted from downloading */
   const interruptedStack: [DownloadContext, string][] = []
 
-  /**
-   * An item stack that has files completed downloading.
-   */
+  /** An item stack that has files completed downloading */
   const completedStack: DownloadContext[] = []
+
+  /**
+   * Push an item to the pending stack for downloading.
+   * @param context The item
+   */
+  const reserveDownload = (context: DownloadContext) => {
+    pendingStack.push(context)
+  }
 
   /**
    * Start downloading an item and move it from `pendingStack` to `downloadingStack` if the count of `downloadingStack` is under `limit`.
    */
-  const request = async () => {
+  const queueDownload = async () => {
     if (limit <= downloadingStack.size) {
       return
     }
@@ -94,24 +96,6 @@ export const useDownload = (downloading: boolean, limit: number, interval = 1000
     } catch (error) {
       interruptedStack.push([context, String(error)])
       return
-    }
-  }
-
-  /**
-   * Push an item to the pending stack for downloading.
-   * @param context The item
-   */
-  const reserve = (context: DownloadContext) => {
-    pendingStack.push(context)
-  }
-
-  /**
-   * Clear the pending stack and cancel items from downloading.
-   */
-  const cancel = async function () {
-    pendingStack.splice(0)
-    for (const downloadId of downloadingStack.keys()) {
-      await browser.downloads.cancel(downloadId)
     }
   }
 
@@ -152,25 +136,33 @@ export const useDownload = (downloading: boolean, limit: number, interval = 1000
     }
 
     // Next download
-    request()
+    queueDownload()
   }
 
-  useEffect(() => {
-    if (!downloading) {
-      return
-    }
+  /**
+   * Dispose of the downloading session.
+   */
+  const disposeDownload = () => {
+    browser.downloads.onChanged.removeListener(downloadCallback)
+  }
 
-    const timerId = setInterval(request, interval)
-    browser.downloads.onChanged.addListener(downloadCallback)
-
-    return () => {
-      clearInterval(timerId)
-      browser.downloads.onChanged.removeListener(downloadCallback)
+  /**
+   * Clear the pending stack and cancel items from downloading.
+   */
+  const cancelDownload = async () => {
+    pendingStack.splice(0)
+    for (const downloadId of downloadingStack.keys()) {
+      await browser.downloads.cancel(downloadId)
     }
-  }, [downloading])
+    disposeDownload()
+  }
+
+  browser.downloads.onChanged.addListener(downloadCallback)
 
   return {
-    reserve,
-    cancel,
+    queueDownload,
+    reserveDownload,
+    disposeDownload,
+    cancelDownload,
   }
 }

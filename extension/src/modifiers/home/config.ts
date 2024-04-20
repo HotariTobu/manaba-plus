@@ -1,7 +1,7 @@
-import { defineArrangeMap, defineClassMap, defineSelectorMap } from "@/types/config"
+import { ArrangeMap, ClassMap, SelectorMap, } from "@/types/config"
 import { StatusType } from "./dock/items/courses/types/course"
 
-export const arrangeMap = defineArrangeMap({
+export const arrangeMap = {
   html: {
     selector: 'html',
     className: 'overflow-visible',
@@ -97,9 +97,9 @@ export const arrangeMap = defineArrangeMap({
       }
     }
   }
-})
+} satisfies ArrangeMap
 
-export const selectorMap = defineSelectorMap({
+export const selectorMap = {
   pageBody: '.pagebody',
   pageElements: {
     top: [
@@ -160,9 +160,9 @@ export const selectorMap = defineSelectorMap({
     course: '.mycourse-title a',
     deadline: 'td:nth-last-of-type(2)',
   }
-})
+} satisfies SelectorMap
 
-export const classMap = defineClassMap({
+export const classMap = {
   dropzone: {
     1: "outline-dashed outline-offset-2 outline-red-300",
     2: "outline-dashed outline-offset-2 outline-yellow-300",
@@ -170,7 +170,7 @@ export const classMap = defineClassMap({
     4: "outline-dashed outline-offset-2 outline-blue-300",
     trash: "outline-dashed outline-offset-2 outline-slate-300",
   }
-})
+} satisfies ClassMap
 
 /** The regex to determine whether a status icon is on or off */
 export const statusRegex = /.+on\.\w+$/

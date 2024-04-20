@@ -2,6 +2,7 @@ import { createDynamicStore, createStore } from "@/utils/createStore";
 import { Layout } from "../../types/layout";
 import { CoordinatesMap } from "./types/coordinate";
 import { Module } from "./types/module";
+import { Course } from "./types/course";
 
 export const [store] = await createStore(import.meta.dirname, {
   /** The selectable years */
@@ -26,6 +27,10 @@ export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
   /** <year-module-key, courses layout> Positions of courses in sortable containers */
   coursesLayout: new Map() as Layout,
 })
+
+export const [localStore] = await createStore(import.meta.dirname, {
+  courses: [] as Course[]
+}, 'local')
 
 /**
  * Combine a year and a module.

@@ -4,7 +4,7 @@ import { StorageArea, sync, useStorage } from "./useStorage";
 export type StoreItem = StorageItem | Map<string | number, StorageItem> | Set<string | number>
 export type Store = Record<string, StoreItem>
 
-export interface DynamicStoreItem<V extends StoreItem> {
+export type DynamicStoreItem<V extends StoreItem> = {
   has(key: string): boolean
   get(key: string): V
   set(key: string, value: V): void

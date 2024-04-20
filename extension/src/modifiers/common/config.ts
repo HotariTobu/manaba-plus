@@ -1,6 +1,6 @@
-import { defineArrangeMap, defineSelectorMap } from "@/types/config"
+import { ArrangeMap, SelectorMap, } from "@/types/config"
 
-export const arrangeMap = defineArrangeMap({
+export const arrangeMap = {
   privacy: {
     selector: '#screenname, .pageheader-course-coursename a:not(#coursename)',
     className: 'opacity-0',
@@ -9,12 +9,12 @@ export const arrangeMap = defineArrangeMap({
     selector: 'body',
     className: 'responsive',
   }
-})
+} satisfies ArrangeMap
 
-export const selectorMap = defineSelectorMap({
+export const selectorMap = {
   externalAnchor: 'a[href*="link_iframe_balloon"]',
   notes: '.memo, a[href="home_usermemo"]',
-})
+} satisfies SelectorMap
 
 /**
  * Extract an external url from a ballon url.

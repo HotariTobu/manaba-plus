@@ -1,11 +1,11 @@
-interface ScrapingBranchNode {
+type ScrapingBranchNode = {
   id?: string | undefined
   urlPrefix: string
   anchorSelector: string
   children: ScrapingNode[]
 }
 
-interface ScrapingLeafNode {
+type ScrapingLeafNode = {
   id?: string | undefined
   urlPrefix: null
   anchorSelector: string

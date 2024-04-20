@@ -2,18 +2,30 @@ import { safeFetchDOM } from "@/utils/fetch";
 import { ScrapingNode } from "../types/scrapingNode";
 import { f } from "@/utils/element";
 
-interface ScrapingResult {
+type ScrapingResult = {
   parentUrl: string
   url: string
   trace: string[]
 }
 
-interface ScrapingOptions {
+type ScrapingOptions = {
+  /** A callback called when some scraping result was gotten */
   onScrape: (result: ScrapingResult) => void,
+
+  /** A callback called when some error occurred on fetching */
   onError: (url: string, message: string) => void,
+
+  /** A callback called when scraping was completed */
   onComplete: () => void
 }
 
+/**
+ * Start a scraping session.
+ * @param rootUrl The root url from which the scraping is started
+ * @param model The scraping model
+ * @param options Callbacks of the scraping session
+ * @returns Methods to manipulate the scraping session
+ */
 export const scrape = (rootUrl: string, model: ScrapingNode[], options: ScrapingOptions) => {
   let canceled = false
 

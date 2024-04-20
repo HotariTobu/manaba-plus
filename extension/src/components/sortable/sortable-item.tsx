@@ -3,11 +3,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { useSortable, UseSortableArguments } from "@dnd-kit/sortable";
 import { Item } from "./item";
 
-interface SortableItemProps extends PropsWithChildren<Omit<UseSortableArguments, 'id'>> {
+export type SortableItemProps = {
   item: Item
   className?: string
   style?: CSSProperties
-}
+} & PropsWithChildren<Omit<UseSortableArguments, 'id'>>
 
 export const SortableItem = forwardRef<HTMLElement, SortableItemProps>(({ item, className, style, children, ...props }, ref) => {
   const {

@@ -1,7 +1,7 @@
 import { PointerEvent as ReactPointerEvent, useRef } from "react"
 
 /** Represents a coordinate of a point */
-interface Point {
+type Point = {
   screenX: number
   screenY: number
 }

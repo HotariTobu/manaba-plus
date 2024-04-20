@@ -4,30 +4,29 @@ import getDistance from '@/utils/editDistanceOnp'
 import { t } from '@/utils/i18n'
 import { distanceThreshold, getReportsUrl, selectorMap } from '../config'
 
-interface ReportItem {
+type ReportItem = {
   reportUrl: string
   reportTitle: string
 }
 
-let reportItems: ReportItem[] | null = null
-
 /**
  * Fetch report urls and their titles and prepare `reportItems`.
+ * @returns An array of ReportItem, otherwise null if error on fetching
  */
-const initReportItems = async () => {
+const getReportItems = async () => {
   const reportsUrl = getReportsUrl(location.href)
   const fetchResult = await safeFetchDOM(reportsUrl)
   if (!fetchResult.success) {
     console.log(fetchResult.message)
-    return
+    return null
   }
 
-  reportItems = f<HTMLAnchorElement>(selectorMap.reportAnchor, fetchResult.data)
-    .map(anchor => {
-      const reportUrl = anchor.href
-      const reportTitle = anchor.textContent ?? ''
-      return { reportUrl, reportTitle }
-    })
+  const reportItems = f<HTMLAnchorElement>(selectorMap.reportAnchor, fetchResult.data)
+    .map(anchor => ({
+      reportUrl: anchor.href,
+      reportTitle: anchor.textContent ?? '',
+    }))
+  return reportItems
 }
 
 /**
@@ -35,11 +34,7 @@ const initReportItems = async () => {
  * @param gradeTitle The title of the grade item
  * @returns The closest report item from the title
  */
-const getReportUrl = (gradeTitle: string) => {
-  if (reportItems === null) {
-    return null
-  }
-
+const getReportUrl = (reportItems: ReportItem[], gradeTitle: string) => {
   let nearestReportURL: string | null = null
   let minDistance = 1
 
@@ -67,8 +62,7 @@ const getReportUrl = (gradeTitle: string) => {
  * Determine if the grade is related to the assignment with the string distance.
  */
 const insertReportLink = async () => {
-  await initReportItems()
-
+  const reportItems = await getReportItems()
   if (reportItems === null) {
     return
   }
@@ -89,7 +83,7 @@ const insertReportLink = async () => {
       return
     }
 
-    const reportUrl = getReportUrl(gradeTitle)
+    const reportUrl = getReportUrl(reportItems, gradeTitle)
     if (reportUrl === null) {
       return
     }

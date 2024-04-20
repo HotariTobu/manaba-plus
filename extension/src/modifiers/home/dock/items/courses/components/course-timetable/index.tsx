@@ -15,7 +15,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { useCoordinatesMap } from "../../hooks/useCoordinatesMap"
 
 /** Bounding box of courses */
-interface BoundingBox {
+type BoundingBox = {
   left: number
   top: number
   width: number

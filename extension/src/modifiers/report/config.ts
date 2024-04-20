@@ -1,11 +1,11 @@
-import { defineClassMap, defineSelectorMap } from "@/types/config"
+import { SelectorMap } from "@/types/config"
 
-export const selectorMap = defineSelectorMap({
+export const selectorMap = {
   // form: 'form:has(.report-form)',
   form: '.form form',
   uploadButton: '.file-upload-button',
   textarea: 'form textarea',
-})
+} satisfies SelectorMap
 
 /**
  * Form data added before data submitted

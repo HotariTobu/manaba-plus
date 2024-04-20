@@ -139,10 +139,11 @@ const getTimetableCourse = (element: Element): Course => {
   })
 }
 
-interface PeriodInfo extends Period {
+/** Period data extended with course data */
+type PeriodInfo = {
   courseId: string,
   year: number,
-}
+} & Period
 
 /**
  * Get period info list of a course.
