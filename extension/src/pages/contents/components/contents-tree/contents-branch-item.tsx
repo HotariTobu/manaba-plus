@@ -3,9 +3,9 @@ import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@radix-ui/r
 import { TriangleRightIcon } from "@radix-ui/react-icons"
 import { useState } from "react"
 import { ContentsBranchNode, isContentsLeafNode } from "../../types/contentsNode"
-import { ContentsLink } from "./contents-link"
 import { Button } from "@/components/ui/button"
 import { ContentsLeafItem } from "./contents-leaf-item"
+import { ExternalLink } from "@/components/external-link"
 
 const ContentsBranchItem = (props: {
   label: string
@@ -20,7 +20,7 @@ const ContentsBranchItem = (props: {
             <TriangleRightIcon className={cn(open && 'rotate-90', "h-4 w-4 transition-transform")} />
           </Button>
         </CollapsibleTrigger>
-        <ContentsLink href={props.contentsBranch.url} label={props.label} />
+        <ExternalLink className="mx-2" href={props.contentsBranch.url} label={props.label} />
       </div>
       <CollapsibleContent className="ms-4 peer-hover:bg-primary/20 rounded-md">
         <ContentsTreeItem contentsBranch={props.contentsBranch} />

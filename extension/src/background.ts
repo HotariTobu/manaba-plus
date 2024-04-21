@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import { featureUrl, exitSurveyUrl } from '@/../../constants.json'
+import { homePageUrl, exitSurveyUrl } from '@/../../constants.json'
 import { t } from "@/utils/i18n";
 import { pushNotification } from "@/notification";
 
@@ -25,7 +25,7 @@ const getVersionString = (version?: string) => {
 browser.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install') {
     browser.tabs.create({
-      url: featureUrl
+      url: homePageUrl + t('feature_page_path')
     })
   }
   else if (details.reason === 'update') {

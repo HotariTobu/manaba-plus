@@ -6,6 +6,10 @@
     "message": "manabaの痒い所に手が届きます"
   },
 
+  "feature_page_path": {
+    "message": "/ja/feature"
+  },
+
   "alert_error_title": {
     "message": "エラー"
   },
@@ -199,6 +203,39 @@
   },
   "contents_page_description": {
     "message": "このページではmanabaのページの添付ファイルを一括ダウンロードします。"
+  },
+  "contents_start_download": {
+    "message": "ダウンロードスタート"
+  },
+  "contents_cancel_download": {
+    "message": "ダウンロードキャンセル"
+  },
+  "contents_stats_pending_count": {
+    "message": "待機中"
+  },
+  "contents_stats_downloading_count": {
+    "message": "ダウンロード中"
+  },
+  "contents_stats_interrupted_count": {
+    "message": "中断"
+  },
+  "contents_stats_completed_count": {
+    "message": "完了"
+  },
+  "contents_stats_excluded_count": {
+    "message": "重複"
+  },
+  "contents_stats_elapsed_time": {
+    "message": "経過時間"
+  },
+  "contents_last_download_date": {
+    "message": "最終日時"
+  },
+  "contents_download_dialog_guide_path": {
+    "message": "/ja/guide/download-dialog/"
+  },
+  "contents_download_dialog_guide_label": {
+    "message": "ダウンロード時に確認ダイアログが表示される場合"
   },
   "contents_error_message_NETWORK_FAILED": {
     "message": "インターネットから切断されました"

@@ -1,9 +1,9 @@
 import { CheckCircledIcon, ShadowIcon, DownloadIcon, CrossCircledIcon } from "@radix-ui/react-icons"
 import { ReactNode } from "react"
 import { ContentsStatus } from "../../types/contents"
-import { ContentsLink } from "./contents-link"
 import { ContentsLeafNode } from "../../types/contentsNode"
 import { getErrorMessage } from "../../utils/getErrorMessage"
+import { ExternalLink } from "@/components/external-link"
 
 export const ContentsLeafItem = (props: {
   label: string
@@ -21,7 +21,7 @@ export const ContentsLeafItem = (props: {
       <div className="w-9 h-9 flex justify-center items-center">
         {icons[props.contentsLeaf.status.code]}
       </div>
-      <ContentsLink href={props.contentsLeaf.url} label={props.label} />
+      <ExternalLink className="mx-2" href={props.contentsLeaf.url} label={props.label} />
       {props.contentsLeaf.status.code === 'interrupted' && (
         <div className="ms-auto text-red-400">{getErrorMessage(props.contentsLeaf.status.message)}</div>
       )}

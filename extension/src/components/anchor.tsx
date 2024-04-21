@@ -1,7 +1,7 @@
 import { AnchorHTMLAttributes, forwardRef } from "react";
 
 export type AnchorProps = {
-  href: string | null | undefined
+  href?: string | null | undefined
 } & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>
 
 export const Anchor = forwardRef<HTMLAnchorElement, AnchorProps>(({ href, ...props }, ref) => {

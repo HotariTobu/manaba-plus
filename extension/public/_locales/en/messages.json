@@ -6,6 +6,10 @@
     "message": "Add awesome modifications to manaba"
   },
 
+  "feature_page_path": {
+    "message": "/en/feature"
+  },
+
   "alert_error_title": {
     "message": "Error"
   },
@@ -199,6 +203,39 @@
   },
   "contents_page_description": {
     "message": "Download the attached files in manaba pages at once on this page."
+  },
+  "contents_start_download": {
+    "message": "Start Download"
+  },
+  "contents_cancel_download": {
+    "message": "Cancel Download"
+  },
+  "contents_stats_pending_count": {
+    "message": "Pending"
+  },
+  "contents_stats_downloading_count": {
+    "message": "Downloading"
+  },
+  "contents_stats_interrupted_count": {
+    "message": "Interrupted"
+  },
+  "contents_stats_completed_count": {
+    "message": "Completed"
+  },
+  "contents_stats_excluded_count": {
+    "message": "Duplicated"
+  },
+  "contents_stats_elapsed_time": {
+    "message": "Elapsed time"
+  },
+  "contents_last_download_date": {
+    "message": "Last download date"
+  },
+  "contents_download_dialog_guide_path": {
+    "message": "/en/guide/download-dialog/"
+  },
+  "contents_download_dialog_guide_label": {
+    "message": "If confirmation dialogs are displayed before downloading"
   },
   "contents_error_message_NETWORK_FAILED": {
     "message": "Internet disconnected"
