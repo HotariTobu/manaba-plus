@@ -1,6 +1,6 @@
 import { Toaster } from "sonner";
 import { ErrorBoundary } from "react-error-boundary";
-import { addClass, c, f, replace } from "@/utils/element"
+import { addClass, c, f, ff, replace } from "@/utils/element"
 import { mount } from "@/utils/mount"
 import type { NodeItem } from "./types/nodeItem"
 import { itemsMapFromLayout } from "./layout"
@@ -96,6 +96,11 @@ const cloneToItem = (clonePair: Pair) => {
 
 // Entry point
 export default () => {
+  // Skip if the page has no course container.
+  if (ff(selectorMap.courses.container) === null) {
+    return
+  }
+
   // Unset styles of the top html element.
   addClass(arrangeMap.html)
 

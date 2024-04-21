@@ -118,6 +118,7 @@ export const selectorMap = {
     [hiddenPosition]: '',
   },
   courses: {
+    container: '.my-infolist-mycourses',
     status: ':is(.course-card-status, .coursestatus) img',
     thumbnail: {
       tab: 'a[href*="=thumbnail"]',
