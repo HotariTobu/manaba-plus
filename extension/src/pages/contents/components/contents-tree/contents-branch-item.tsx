@@ -14,7 +14,7 @@ const ContentsBranchItem = (props: {
   const [open, setOpen] = useState(true)
   return (
     <Collapsible disabled={props.contentsBranch.children.size === 0} open={open} onOpenChange={setOpen}>
-      <div className="flex peer hover:bg-primary/20 rounded-md">
+      <div className="peer hover:bg-primary/20 grid grid-cols-[auto_minmax(0,_1fr)] rounded-md">
         <CollapsibleTrigger asChild>
           <Button variant="ghost" size="icon">
             <TriangleRightIcon className={cn(open && 'rotate-90', "h-4 w-4 transition-transform")} />
@@ -32,7 +32,7 @@ const ContentsBranchItem = (props: {
 export const ContentsTreeItem = (props: {
   contentsBranch: ContentsBranchNode
 }) => (
-  <div>
+  <>
     {Array.from(props.contentsBranch.children).map(([label, child]) => (
       <div key={label}>
         {isContentsLeafNode(child) ? (
@@ -42,5 +42,5 @@ export const ContentsTreeItem = (props: {
         )}
       </div>
     ))}
-  </div>
+  </>
 )

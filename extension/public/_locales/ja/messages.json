@@ -6,8 +6,19 @@
     "message": "manabaの痒い所に手が届きます"
   },
 
+  "alert_error_title": {
+    "message": "エラー"
+  },
+
+  "alert_info_initialization_required_title": {
+    "message": "初期化が必要です"
+  },
+  "alert_info_initialization_required_description": {
+    "message": "まずmanabaのトップページにアクセスしてください。"
+  },
+
   "notification_timeout": {
-    "message": "タイムアウトしていたので、ホーム画面に戻りました。"
+    "message": "タイムアウトしていたので、トップページに戻りました。"
   },
   "notification_version": {
     "message": "$extension_name$がバージョン$version$にアップデートされました！！",
@@ -181,5 +192,27 @@
   },
   "popup_reset_button": {
     "message": "リセット"
+  },
+
+  "contents_page_title": {
+    "message": "コンテンツ"
+  },
+  "contents_page_description": {
+    "message": "このページではmanabaのページの添付ファイルを一括ダウンロードします。"
+  },
+  "contents_error_message_NETWORK_FAILED": {
+    "message": "インターネットから切断されました"
+  },
+  "contents_error_message_COULD_NOT_START": {
+    "message": "ダウンロードを開始できませんでした"
+  },
+  "contents_error_message_FAILED": {
+    "message": "ダウンロードに失敗しました"
+  },
+  "contents_error_message_SERVER_BAD_CONTENT": {
+    "message": "ファイルにアクセスできませんでした"
+  },
+  "contents_error_message_USER_CANCELED": {
+    "message": "キャンセルされました"
   }
 }

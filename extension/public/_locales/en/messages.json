@@ -6,8 +6,19 @@
     "message": "Add awesome modifications to manaba"
   },
 
+  "alert_error_title": {
+    "message": "Error"
+  },
+
+  "alert_info_initialization_required_title": {
+    "message": "Initialization Required"
+  },
+  "alert_info_initialization_required_description": {
+    "message": "First, access manaba top page"
+  },
+
   "notification_timeout": {
-    "message": "Returned to the home page because it seems timed out."
+    "message": "Returned to the top page because it seems timed out."
   },
   "notification_version": {
     "message": "$extension_name$ was updated into version $version$!!",
@@ -181,5 +192,27 @@
   },
   "popup_reset_button": {
     "message": "Reset"
+  },
+
+  "contents_page_title": {
+    "message": "Contents"
+  },
+  "contents_page_description": {
+    "message": "Download the attached files in manaba pages at once on this page."
+  },
+  "contents_error_message_NETWORK_FAILED": {
+    "message": "Internet disconnected"
+  },
+  "contents_error_message_COULD_NOT_START": {
+    "message": "Could not start downloading"
+  },
+  "contents_error_message_FAILED": {
+    "message": "Failed to download"
+  },
+  "contents_error_message_SERVER_BAD_CONTENT": {
+    "message": "Could not access the file"
+  },
+  "contents_error_message_USER_CANCELED": {
+    "message": "Canceled"
   }
 }

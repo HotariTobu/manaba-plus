@@ -1,7 +1,9 @@
+import { InitAlert } from '@/components/init-alert';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { usePageContextProvider } from '@/modifiers/home/dock/hooks/usePageContext';
 import { AssignmentsContainer } from '@/modifiers/home/dock/items/assignment/components/assignments-container';
+import { isStoreInitializationRequired } from '@/store';
 import { t } from '@/utils/i18n';
 import { mount } from "@/utils/mount";
 import { local, managed, session, sync } from '@/utils/useStorage';
@@ -25,6 +27,14 @@ debug: {
 const App = () => {
   const { Provider, providerProps } = usePageContextProvider()
   const [reset, setReset] = useState(false)
+
+  if (isStoreInitializationRequired()) {
+    return (
+      <div className='m-4 w-[30rem]'>
+        <InitAlert />
+      </div>
+    )
+  }
 
   const handleReset = () => {
     setReset(true)
