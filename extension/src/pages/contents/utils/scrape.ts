@@ -7,18 +7,20 @@ type ScrapingTraceItem = {
   url: string
 }
 
+type ScrapingTrace = ReadonlyArray<ScrapingTraceItem>
+
 export type ScrapingResult = {
-/**
- * A label and url list expressing the scraping path.
- * parent <---> child
- */
-  trace: ScrapingTraceItem[]
+  /**
+   * A label and url list expressing the scraping path.
+   * parent <---> child
+   */
+  trace: ScrapingTrace
 
   /** The end item of the scraping path */
   target: ScrapingTraceItem
 }
 
-export type ScrapingOptions = {
+type ScrapingOptions = {
   /** A callback called when some scraping result was gotten */
   onScrape: (result: ScrapingResult) => void,
 
@@ -26,7 +28,7 @@ export type ScrapingOptions = {
   onError: (url: string, message: string) => void,
 
   /** A callback called when scraping was completed */
-  onComplete?: (() => void) | undefined
+  onComplete: () => void
 }
 
 /**
@@ -39,7 +41,7 @@ export type ScrapingOptions = {
 export const scrape = (rootUrl: string, model: ScrapingNode[], options: ScrapingOptions) => {
   let canceled = false
 
-  const internalScrape = async (url: string, nodes: ScrapingNode[], trace: ScrapingTraceItem[]) => {
+  const internalScrape = async (url: string, nodes: ScrapingNode[], trace: ScrapingTrace) => {
     if (canceled) {
       return
     }

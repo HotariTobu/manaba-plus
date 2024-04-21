@@ -3,10 +3,10 @@ import * as home from '@/modifiers/home/dock/items/courses/store';
 import { useState } from "react"
 import { toast } from "sonner"
 import { getScrapingModel } from "../model"
-import { store, dynamicStore } from "../store"
+import { store, dynamicStore, localStore } from "../store"
 import { ContentsStats, ContentsItem } from "../types/contents"
 import { download, DownloadContext, escape } from "../utils/download"
-import { ScrapingOptions, ScrapingResult, scrape } from "../utils/scrape"
+import { ScrapingResult, scrape } from "../utils/scrape"
 
 const interval = 1000
 
@@ -34,7 +34,8 @@ const getScrapingContext = () => {
       const ignoreSet = dynamicStore.ignoredSet.get(course.id) ?? store.defaultIgnoredSet
       const scrapingModel = getScrapingModel(ignoreSet)
       return {
-        rootUrl: course.code,
+        rootLabel: course.title,
+        rootUrl: course.url,
         scrapingModel,
       }
     })
@@ -63,54 +64,64 @@ export const useDownload = () => {
     const scrapingResultMap = new Map<string, ScrapingResult>()
 
     const { queueDownload, reserveDownload, getDownloadStatus, disposeDownload, cancelDownload } = download(store.downloadLimit)
-    cancelHandlers.push(cancelDownload)
+    newCancelHandlers.push(cancelDownload)
 
     const downloadDestination = escape(store.downloadDestination)
-    const scrapingOptions: ScrapingOptions = {
-      onScrape: result => {
-        const { url } = result.target
-        const pathItems = result.trace.map(({ label }) => escape(label))
+    const handleScrape = (result: ScrapingResult) => {
+      const { trace, target } = result
+      const { url } = target
+      const pathItems = trace
+        .concat(target)
+        .map(({ label }) => escape(label))
 
-        const downloadContext: DownloadContext = {
-          url,
-          path: joinPath(downloadDestination, ...pathItems)
-        }
+      const downloadContext: DownloadContext = {
+        url,
+        path: joinPath(downloadDestination, ...pathItems)
+      }
 
-        if (store.excludedSet.has(url)) {
-          excludedItems.push({
-            status: {
-              code: 'excluded',
-            },
-            ...result,
-          })
-        }
-        else {
-          scrapingResultMap.set(url, result)
-          reserveDownload(downloadContext)
-        }
-      },
-      onError: (url, message) => {
-        toast(`Scraping Error: ${message} @ ${url}`)
-      },
+      if (localStore.excludedSet.has(url)) {
+        excludedItems.push({
+          status: {
+            code: 'excluded',
+          },
+          ...result,
+        })
+      }
+      else {
+        scrapingResultMap.set(url, result)
+        reserveDownload(downloadContext)
+      }
     }
 
     const scrapingRootUrlSet = new Set<string>()
 
     const scrapingContext = getScrapingContext()
-    for (const { rootUrl, scrapingModel } of scrapingContext) {
+    for (const { rootLabel, rootUrl, scrapingModel } of scrapingContext) {
       if (rootUrl === null) {
         continue
       }
 
       scrapingRootUrlSet.add(rootUrl)
 
+      const source = {
+        label: rootLabel,
+        url: rootUrl,
+      }
       const { cancelScraping } = scrape(rootUrl, scrapingModel, {
-        ...scrapingOptions,
+        onScrape: ({ trace, target }) => {
+          handleScrape({
+            trace: [source, ...trace],
+            target,
+          })
+        },
+        onError: (url, message) => {
+          toast.error(`Scraping Error: ${message} @ ${url}`)
+        },
         onComplete: () => {
           scrapingRootUrlSet.delete(rootUrl)
         }
       })
-      cancelHandlers.push(cancelScraping)
+      newCancelHandlers.push(cancelScraping)
     }
 
     const timerId = setInterval(() => {
@@ -134,8 +145,8 @@ export const useDownload = () => {
         }))
       setContentsItems(newContentsItems)
 
-      store.excludedSet = new Set([
-        ...store.excludedSet,
+      localStore.excludedSet = new Set([
+        ...localStore.excludedSet,
         ...items
           .filter(({ status }) => status.code === 'completed')
           .map(({ context }) => context.url)
@@ -143,6 +154,10 @@ export const useDownload = () => {
 
       if (stats.pending > 0 || scrapingRootUrlSet.size > 0) {
         queueDownload()
+        return
+      }
+
+      if (stats.downloading > 0) {
         return
       }
 

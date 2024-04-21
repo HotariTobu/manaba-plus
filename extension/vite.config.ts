@@ -17,49 +17,53 @@ import path from "node:path";
 const browser = process.env.BROWSER || "chrome"
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  envDir: path.resolve(import.meta.dirname, '..'),
-  define: {
-    // __BROWSER__: JSON.stringify(browser),
-  },
-  plugins: [
-    react(),
-    webExtension({
-      browser,
-      manifest: getManifest,
-      transformManifest: injectTailwindCSS,
-      skipManifestValidation: true,
-      additionalInputs: [
-        "src/pages/contents/index.html",
-      ],
-    }),
-
-    // Remove debug code
-    process.env.NODE_ENV === 'production' && strip({
-      include: ['**/src/**/*.{ts,tsx}'],
-      labels: ['debug']
-    }),
-
-    // Make `import.meta` available in content scripts
-    importMeta({
-      basePath: import.meta.dirname,
-      include: ['**/src/**/*.{ts,tsx}']
-    }),
-
-    // Change output format iife -> es and wrap output js with async iif to use toplevel await
-    forceFormat({
-      format: 'es',
-    }),
-    topLevelAwait({
-      include: ['**/src/modifiers/**/index.js']
-    }),
-  ],
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "src"),
+export default defineConfig(({ mode }) => {
+  const prod = mode === 'production'
+  return {
+    envDir: path.resolve(import.meta.dirname, '..'),
+    define: {
+      // __BROWSER__: JSON.stringify(browser),
     },
-  },
-  build: {
-    target: 'esnext'
-  },
+    plugins: [
+      react(),
+      webExtension({
+        browser,
+        manifest: getManifest,
+        transformManifest: injectTailwindCSS,
+        skipManifestValidation: true,
+        additionalInputs: [
+          "src/pages/contents/index.html",
+        ],
+      }),
+
+      // Remove debug code
+      prod && strip({
+        include: ['**/src/**/*.{ts,tsx}'],
+        labels: ['debug']
+      }),
+
+      // Make `import.meta` available in content scripts
+      importMeta({
+        basePath: import.meta.dirname,
+        include: ['**/src/**/*.{ts,tsx}']
+      }),
+
+      // Change output format iife -> es and wrap output js with async iif to use toplevel await
+      forceFormat({
+        format: 'es',
+      }),
+      topLevelAwait({
+        include: ['**/src/modifiers/**/index.js']
+      }),
+    ],
+    resolve: {
+      alias: {
+        "@": path.resolve(import.meta.dirname, "src"),
+      },
+    },
+    build: {
+      target: 'esnext',
+      minify: prod,
+    },
+  }
 });
