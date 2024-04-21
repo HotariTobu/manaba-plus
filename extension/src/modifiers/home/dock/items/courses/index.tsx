@@ -5,7 +5,7 @@ import { CoursesContainer } from "./components/courses-container"
 // TODO: Lighten weight
 
 /** The courses node item */
-export const coursesItem: NodeItem = {
+export const CoursesItem: NodeItem = {
   id: import.meta.dirname,
   node: <RootContainer><CoursesContainer /></RootContainer>
 }

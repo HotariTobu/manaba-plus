@@ -7,9 +7,10 @@ import { itemsMapFromLayout } from "./layout"
 import { store } from "./store"
 import { arrangeMap, selectorMap } from "../config"
 import { PageBody } from "./components/page-body"
-import { coursesItem } from "./items/courses"
+import { CoursesItem } from "./items/courses"
 import { ErrorAlert } from "@/components/error-alert";
 import { AssignmentsItem } from "./items/assignment";
+import { ButtonsItem } from "./items/buttons";
 
 /** Key-value of positions and elements */
 type Pair = [string, HTMLElement]
@@ -109,8 +110,9 @@ export default () => {
     const itemPairs = clonePairs.map(cloneToItem)
 
     // Add the extension's sortable items.
-    itemPairs.push(['left', coursesItem])
+    itemPairs.push(['left', CoursesItem])
     itemPairs.push(['top', AssignmentsItem])
+    itemPairs.push(['trash', ButtonsItem])
 
     const itemsMap = itemsMapFromLayout(itemPairs, store.pageLayout)
 

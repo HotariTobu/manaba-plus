@@ -210,6 +210,9 @@
     "message": "Reset"
   },
 
+  "contents_page_button": {
+    "message": "Contents"
+  },
   "contents_page_title": {
     "message": "Contents"
   },
