@@ -208,7 +208,25 @@
     "message": "Start Download"
   },
   "contents_cancel_download": {
-    "message": "Cancel Download"
+    "message": "Stop Download"
+  },
+  "contents_cancel_download_title": {
+    "message": "Are you sure to stop downloading?"
+  },
+  "contents_cancel_download_description": {
+    "message": "This action cannot be undone. Cannot resume downloading."
+  },
+  "contents_cancel_download_cancel": {
+    "message": "Cancel"
+  },
+  "contents_cancel_download_action": {
+    "message": "Stop"
+  },
+  "contents_message_canceled": {
+    "message": "Downloading content was stopped."
+  },
+  "contents_message_completed": {
+    "message": "Downloading content was completed!!"
   },
   "contents_stats_pending_count": {
     "message": "Pending"
@@ -229,7 +247,12 @@
     "message": "Elapsed time"
   },
   "contents_last_download_date": {
-    "message": "Last download date"
+    "message": "It's $last_download_date$ that you downloaded contents at the last.",
+    "placeholders": {
+      "last_download_date": {
+        "content": "$1"
+      }
+    }
   },
   "contents_download_dialog_guide_path": {
     "message": "/en/guide/download-dialog/"

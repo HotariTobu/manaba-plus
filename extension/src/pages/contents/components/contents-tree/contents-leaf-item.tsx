@@ -17,14 +17,14 @@ export const ContentsLeafItem = (props: {
     completed: <CheckCircledIcon className="text-green-400" />,
   } satisfies Record<ContentsStatus['code'], ReactNode>
   return (
-    <div className="hover:bg-primary/20 grid grid-cols-[auto_minmax(0,_1fr)] rounded-md">
+    <div className="hover:bg-primary/20 gap-2 grid grid-cols-[auto_minmax(0,_1fr)_auto] items-center rounded-md">
       <div className="w-9 h-9 flex justify-center items-center">
         {icons[props.contentsLeaf.status.code]}
       </div>
-      <ExternalLink className="mx-2" href={props.contentsLeaf.url} label={props.label} />
-      {props.contentsLeaf.status.code === 'interrupted' && (
-        <div className="ms-auto text-red-400">{getErrorMessage(props.contentsLeaf.status.message)}</div>
-      )}
+      <ExternalLink href={props.contentsLeaf.url} label={props.label} />
+      <div className="text-red-400 me-4">
+        {props.contentsLeaf.status.code === 'interrupted' && getErrorMessage(props.contentsLeaf.status.message)}
+      </div>
     </div>
   )
 }

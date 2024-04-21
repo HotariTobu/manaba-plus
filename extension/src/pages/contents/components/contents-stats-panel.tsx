@@ -12,6 +12,18 @@ const ContentsStatsRow = (props: {
   </>
 )
 
+/**
+ * Get a string from a time number.
+ * @param milliseconds The time in milliseconds
+ * @returns Formatted time string like 1:23
+ */
+const getTimeString = (milliseconds: number) => {
+  const totalSeconds = milliseconds / 1000
+  const minutes = (totalSeconds / 60).toFixed().padStart(2, '0')
+  const seconds = (totalSeconds % 60).toFixed().padStart(2, '0')
+  return `${minutes}:${seconds}`
+}
+
 export const ContentsStatsPanel = (props: {
   contentsStats: ContentsStats | null
 }) => {
@@ -26,6 +38,7 @@ export const ContentsStatsPanel = (props: {
       <ContentsStatsRow label="interrupted_count" value={props.contentsStats.interrupted} />
       <ContentsStatsRow label="completed_count" value={props.contentsStats.completed} />
       <ContentsStatsRow label="excluded_count" value={props.contentsStats.excluded} />
+      <ContentsStatsRow label="elapsed_time" value={getTimeString(props.contentsStats.elapsedTime)} />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { ScrapingResult } from "../utils/scrape"
 
 export type ContentsStats = {
   excluded: number
+  elapsedTime: number
 } & DownloadStats
 
 export type ContentsStatus = {

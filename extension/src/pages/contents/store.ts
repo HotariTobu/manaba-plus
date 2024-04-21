@@ -17,4 +17,5 @@ export const [dynamicStore] = await createDynamicStore(import.meta.dirname, {
 
 export const [localStore] = await createStore(import.meta.dirname, {
   excludedSet: new Set<string>(),
+  lastDownloadTime: null as number | null,
 }, 'local')

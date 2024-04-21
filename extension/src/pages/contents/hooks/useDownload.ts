@@ -46,11 +46,19 @@ const joinPath = (...paths: string[]) => {
   return paths.join('/')
 }
 
+/**
+ * The callback to prevent closing the tab while downloading
+ */
+const preventClosing = (event: Event) => {
+  event.preventDefault()
+  return false
+}
+
 type CancelHandler = () => void
 
 export const useDownload = () => {
+  const [status, setStatus] = useState<'initialized' | 'downloading' | 'canceled' | 'completed'>('initialized')
   const [cancelHandlers, setCancelHandlers] = useState<CancelHandler[]>([])
-  const downloading = cancelHandlers.length > 0
 
   const [contentsStats, setContentsStats] = useState<ContentsStats | null>(null)
   const [contentsItems, setContentsItems] = useState<ContentsItem[]>([])
@@ -60,7 +68,7 @@ export const useDownload = () => {
 
     const excludedItems: ContentsItem[] = []
 
-    /** <download url, parent url> */
+    /** <download url, scraping result> */
     const scrapingResultMap = new Map<string, ScrapingResult>()
 
     const { queueDownload, reserveDownload, getDownloadStatus, disposeDownload, cancelDownload } = download(store.downloadLimit)
@@ -93,6 +101,7 @@ export const useDownload = () => {
       }
     }
 
+    /** Represents still scraping url sources */
     const scrapingRootUrlSet = new Set<string>()
 
     const scrapingContext = getScrapingContext()
@@ -109,6 +118,7 @@ export const useDownload = () => {
       }
       const { cancelScraping } = scrape(rootUrl, scrapingModel, {
         onScrape: ({ trace, target }) => {
+          // Inject the course trace item.
           handleScrape({
             trace: [source, ...trace],
             target,
@@ -124,11 +134,31 @@ export const useDownload = () => {
       newCancelHandlers.push(cancelScraping)
     }
 
+    newCancelHandlers.push(() => {
+      // Make pending items' status "interrupted by cancellation."
+      setContentsItems(prevContentsItems =>
+        prevContentsItems.map(item =>
+          item.status.code === 'pending' ? {
+            ...item,
+            status: {
+              code: 'interrupted',
+              message: 'USER_CANCELED'
+            }
+          } : item
+        )
+      )
+    })
+
+    const startTime = Date.now()
+
+    // Run per one second.
     const timerId = setInterval(() => {
       const { stats, items } = getDownloadStatus()
 
+      // Update states.
       setContentsStats({
         excluded: excludedItems.length,
+        elapsedTime: Date.now() - startTime,
         ...stats,
       })
 
@@ -145,6 +175,7 @@ export const useDownload = () => {
         }))
       setContentsItems(newContentsItems)
 
+      // Update the set of courses that should be excluded from downloading.
       localStore.excludedSet = new Set([
         ...localStore.excludedSet,
         ...items
@@ -163,14 +194,27 @@ export const useDownload = () => {
 
       // If completely finished downloading...
 
-      clearInterval(timerId)
+      setStatus('completed')
       disposeDownload()
-      setCancelHandlers([])
+      cleanUp()
+      localStore.lastDownloadTime = Date.now()
     }, interval)
 
+    setStatus('downloading')
+
     newCancelHandlers.push(() => {
-      clearInterval(timerId)
+      setStatus('canceled')
     })
+
+    window.addEventListener('beforeunload', preventClosing, false)
+
+    const cleanUp = () => {
+      setCancelHandlers([])
+      clearInterval(timerId)
+      window.removeEventListener('beforeunload', preventClosing, false)
+    }
+
+    newCancelHandlers.push(cleanUp)
 
     setCancelHandlers(newCancelHandlers)
   }
@@ -179,11 +223,10 @@ export const useDownload = () => {
     for (const cancelHandler of cancelHandlers) {
       cancelHandler()
     }
-    setCancelHandlers([])
   }
 
   return {
-    downloading,
+    status,
     contentsStats,
     contentsItems,
     startDownload,

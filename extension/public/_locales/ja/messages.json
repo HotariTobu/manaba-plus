@@ -205,10 +205,28 @@
     "message": "このページではmanabaのページの添付ファイルを一括ダウンロードします。"
   },
   "contents_start_download": {
-    "message": "ダウンロードスタート"
+    "message": "ダウンロード開始"
   },
   "contents_cancel_download": {
-    "message": "ダウンロードキャンセル"
+    "message": "ダウンロード中止"
+  },
+  "contents_cancel_download_title": {
+    "message": "本当にダウンロードを中止しますか？"
+  },
+  "contents_cancel_download_description": {
+    "message": "この操作は取り消せません。ダウンロードを再開することはできません。"
+  },
+  "contents_cancel_download_cancel": {
+    "message": "キャンセル"
+  },
+  "contents_cancel_download_action": {
+    "message": "中止"
+  },
+  "contents_message_canceled": {
+    "message": "コンテンツのダウンロードは中止されました。"
+  },
+  "contents_message_completed": {
+    "message": "コンテンツのダウンロードが完了しました！！"
   },
   "contents_stats_pending_count": {
     "message": "待機中"
@@ -229,7 +247,12 @@
     "message": "経過時間"
   },
   "contents_last_download_date": {
-    "message": "最終日時"
+    "message": "最後にコンテンツをダウンロードしたのは$last_download_date$です。",
+    "placeholders": {
+      "last_download_date": {
+        "content": "$1"
+      }
+    }
   },
   "contents_download_dialog_guide_path": {
     "message": "/ja/guide/download-dialog/"

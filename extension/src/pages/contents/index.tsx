@@ -12,11 +12,23 @@ import { PageContainer } from "../components/page-container";
 import { ContentsStatsPanel } from "./components/contents-stats-panel";
 import { ExternalLink } from "@/components/external-link";
 import { Separator } from '@/components/ui/separator';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { localStore } from './store';
 
 document.title = t('contents_page_title')
 
 const Page = () => {
-  const { downloading, contentsStats, contentsItems, startDownload, cancelDownload } = useDownload()
+  const { status, contentsStats, contentsItems, startDownload, cancelDownload } = useDownload()
 
   if (isStoreInitializationRequired()) {
     return (
@@ -31,14 +43,36 @@ const Page = () => {
       <ScrollArea>
         <div className='mx-4 my-2 w-96 gap-4 flex flex-col'>
           <div className='text-lg'>{t('contents_page_description')}</div>
-          <div className='grid'>
-            {downloading ? (
-              <Button onClick={cancelDownload}>{t('contents_cancel_download')}</Button>
-            ) : (
-              <Button onClick={startDownload}>{t('contents_start_download')}</Button>
-            )}
-          </div>
+          {status === 'downloading' ? (
+            <AlertDialog>
+              <Button asChild>
+                <AlertDialogTrigger>
+                  {t('contents_cancel_download')}
+                </AlertDialogTrigger>
+              </Button>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('contents_cancel_download_title')}</AlertDialogTitle>
+                  <AlertDialogDescription>{t('contents_cancel_download_description')}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t('contents_cancel_download_cancel')}</AlertDialogCancel>
+                  <AlertDialogAction onClick={cancelDownload}>{t('contents_cancel_download_action')}</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          ) : (
+            <Button onClick={startDownload}>{t('contents_start_download')}</Button>
+          )}
+          {status === 'canceled' ? (
+            <div className='text-base'>{t('contents_message_canceled')}</div>
+          ) : status === 'completed' && (
+            <div className='text-base'>{t('contents_message_completed')}</div>
+          )}
           <ContentsStatsPanel contentsStats={contentsStats} />
+          {localStore.lastDownloadTime === null || (
+            <div>{t('contents_last_download_date', new Date(localStore.lastDownloadTime).toLocaleString())}</div>
+          )}
           <ExternalLink href={homePageUrl + t('contents_download_dialog_guide_path')} label={t('contents_download_dialog_guide_label')} />
         </div>
         <ScrollBar orientation="vertical" />

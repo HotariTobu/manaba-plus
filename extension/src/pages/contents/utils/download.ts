@@ -175,10 +175,10 @@ export const download = (limit: number) => {
 
     /** <download context, status> */
     items: [
-      ...pendingStack.map<DownloadItem>(context => ({context, status: { code: 'pending' }})),
-      ...Array.from(downloadingStack.values()).map<DownloadItem>(context => ({context, status: { code: 'downloading' }})),
-      ...interruptedStack.map<DownloadItem>(([context, message]) => ({context, status: { code: 'interrupted', message }})),
-      ...completedStack.map<DownloadItem>(context => ({context, status: { code: 'completed' }})),
+      ...pendingStack.map<DownloadItem>(context => ({ context, status: { code: 'pending' } })),
+      ...Array.from(downloadingStack.values()).map<DownloadItem>(context => ({ context, status: { code: 'downloading' } })),
+      ...interruptedStack.map<DownloadItem>(([context, message]) => ({ context, status: { code: 'interrupted', message } })),
+      ...completedStack.map<DownloadItem>(context => ({ context, status: { code: 'completed' } })),
     ]
   })
 
