@@ -107,6 +107,12 @@
   "home_courses_module_sec": {
     "message": "2nd sem"
   },
+  "home_courses_module_spr": {
+    "message": "Spring"
+  },
+  "home_courses_module_aut": {
+    "message": "Autumn"
+  },
   "home_courses_module_spr_A": {
     "message": "Spring A"
   },
@@ -191,6 +197,12 @@
     "message": "Show current courses"
   },
 
+  "popup_dump_storage_label": {
+    "message": "Dump all storage data"
+  },
+  "popup_dump_storage_button": {
+    "message": "Dump"
+  },
   "popup_reset_label": {
     "message": "Reset the state and the settings"
   },

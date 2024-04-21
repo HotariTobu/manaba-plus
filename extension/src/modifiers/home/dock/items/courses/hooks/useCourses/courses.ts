@@ -87,7 +87,7 @@ const getThumbnailCourse = (element: Element): Course => {
     year: toNullableInt(ff(selectorMap.courses.thumbnail.year, element)?.firstChild?.textContent) ?? getFiscalYear(),
 
     linked: typeof a(selectorMap.courses.thumbnail.linked) === 'string',
-    remarks: a(selectorMap.courses.thumbnail.remarks),
+    remarks: a(selectorMap.courses.thumbnail.remarks)?.replace(/\d{4}/, '') ?? null,
     teachers: a(selectorMap.courses.thumbnail.teachers),
     status: getStatus(element),
   })

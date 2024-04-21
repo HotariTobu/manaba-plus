@@ -4,25 +4,49 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { usePageContextProvider } from '@/modifiers/home/dock/hooks/usePageContext';
 import { AssignmentsContainer } from '@/modifiers/home/dock/items/assignment/components/assignments-container';
 import { isStoreInitializationRequired } from '@/store';
+import { downloadText } from '@/utils/downloadText';
 import { t } from '@/utils/i18n';
 import { mount } from "@/utils/mount";
 import { local, managed, session, sync } from '@/utils/useStorage';
 import { useState } from 'react';
 import browser from "webextension-polyfill";
 
+let DumpButton = () => <></>
+
 debug: {
   const areas = {
-    local: local,
-    managed: managed,
-    session: session,
-    sync: sync,
+    local,
+    managed,
+    session,
+    sync,
   }
-  for (const [name, area] of Object.entries(areas)) {
+
+  const areaEntries = Object.entries(areas)
+  const dataPromises = areaEntries.map(async ([name, area]) => {
     const values = await area.get()
-    console.log(name)
-    console.log(values)
+    return [name, values]
+  })
+
+  const dataEntries = await Promise.all(dataPromises)
+  const data = Object.fromEntries(dataEntries)
+
+  console.log(data)
+
+  DumpButton = () => {
+    const handleDump = () => {
+      const dataText = JSON.stringify(data, null, 2)
+      downloadText('storage.txt', dataText)
+    }
+
+    return (
+      <div className='gap-2 flex items-center'>
+        {t('popup_dump_storage_label')}
+        <Button onClick={handleDump}>{t('popup_dump_storage_button')}</Button>
+      </div>
+    )
   }
 }
+
 
 const Popup = () => {
   const { Provider, providerProps } = usePageContextProvider()
@@ -50,6 +74,7 @@ const Popup = () => {
           <Button asChild>
             <a href={browser.runtime.getURL('src/pages/contents/index.html')} target="_blank">コンテンツ</a>
           </Button>
+          <DumpButton />
           <AssignmentsContainer />
           <ScrollBar orientation="vertical" />
           <div className='gap-2 flex items-center'>

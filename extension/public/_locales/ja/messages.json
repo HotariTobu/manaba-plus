@@ -107,6 +107,12 @@
   "home_courses_module_sec": {
     "message": "後期"
   },
+  "home_courses_module_spr": {
+    "message": "春"
+  },
+  "home_courses_module_aut": {
+    "message": "秋"
+  },
   "home_courses_module_spr_A": {
     "message": "春A"
   },
@@ -191,6 +197,12 @@
     "message": "現在のコースを表示する"
   },
 
+  "popup_dump_storage_label": {
+    "message": "ストレージのデータをすべてダンプする"
+  },
+  "popup_dump_storage_button": {
+    "message": "ダンプ"
+  },
   "popup_reset_label": {
     "message": "状態と設定をリセットする"
   },

@@ -128,7 +128,7 @@ export const selectorMap = {
       title: '.course-card-title a',
       year: '.courseitemdetail:first-of-type',
       linked: '.courselink-state',
-      remarks: '.courseitemdetail:first-of-type span',
+      remarks: '.courseitemdetail:first-of-type',
       teachers: '.courseitemdetail:last-of-type',
     },
     list: {
