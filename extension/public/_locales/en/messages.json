@@ -274,5 +274,80 @@
   },
   "contents_error_message_USER_CANCELED": {
     "message": "Canceled"
+  },
+  "contents_options_dialog_trigger": {
+    "message": "Contents Options"
+  },
+  "contents_options_dialog_title": {
+    "message": "Options of Contents Download"
+  },
+  "contents_options_dialog_description": {
+    "message": "Here you can configure how to download attachments from manaba pages."
+  },
+  "contents_options_downloadDestination_title": {
+    "message": "Download Destination"
+  },
+  "contents_options_downloadDestination_description": {
+    "message": "The folder name in which downloaded files will be saved. The files will be put in the default download folder if the field is empty."
+  },
+  "contents_options_downloadLimit_title": {
+    "message": "Sync Download Num"
+  },
+  "contents_options_downloadLimit_description": {
+    "message": "The max value of files downloaded synchronously. Due to browser limitations, this number may not be downloaded at the same time."
+  },
+  "contents_options_downloadStarredOnly_title": {
+    "message": "Download ⭐ Courses only"
+  },
+  "contents_options_downloadStarredOnly_description": {
+    "message": "When turned on, only content from courses marked with ⭐ will be downloaded. When turned off, content from courses without a ⭐ will also be downloaded."
+  },
+  "contents_options_downloadHiddenToo_title": {
+    "message": "Download Hidden Courses too"
+  },
+  "contents_options_downloadHiddenToo_description": {
+    "message": "When turned on, it will also download content from hidden courses. When turned off, hidden course content will not be downloaded."
+  },
+  "contents_options_download_news_title": {
+    "message": "Download Course News"
+  },
+  "contents_options_download_news_description": {
+    "message": "When turned on, downloads content found in course news. When turned off, content in Course News will not be downloaded."
+  },
+  "contents_options_download_report_attachments_title": {
+    "message": "Download Assignments"
+  },
+  "contents_options_download_report_attachments_description": {
+    "message": "When turned on,  downloads the content in the assignments. When turned off, the content in the assignments will not be downloaded."
+  },
+  "contents_options_download_report_submissions_title": {
+    "message": "Download Submissions"
+  },
+  "contents_options_download_report_submissions_description": {
+    "message": "When turned on, downloads submissions on the mutual review page. When turned off, submissions on the the mutual review page will not be downloaded."
+  },
+  "contents_options_download_page_title": {
+    "message": "Download Resources"
+  },
+  "contents_options_download_page_description": {
+    "message": "When turned on, downloads content found in course resources. When turned off, content in course resources will not be downloaded."
+  },
+  "contents_options_delete_history_title": {
+    "message": "Clear Download History"
+  },
+  "contents_options_delete_history_description": {
+    "message": "Clears internally stored history to prevent duplicate content downloads."
+  },
+  "contents_options_delete_history_alert_title": {
+    "message": "Are you sure to clear the download history?"
+  },
+  "contents_options_delete_history_alert_description": {
+    "message": "This action cannot be undone. All content will be downloaded again."
+  },
+  "contents_options_delete_history_alert_cancel": {
+    "message": "Cancel"
+  },
+  "contents_options_delete_history_alert_action": {
+    "message": "Clear"
   }
 }

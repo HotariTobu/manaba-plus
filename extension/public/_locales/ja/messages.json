@@ -274,5 +274,80 @@
   },
   "contents_error_message_USER_CANCELED": {
     "message": "キャンセルされました"
+  },
+  "contents_options_dialog_trigger": {
+    "message": "コンテンツ設定"
+  },
+  "contents_options_dialog_title": {
+    "message": "コンテンツダウンロードの設定"
+  },
+  "contents_options_dialog_description": {
+    "message": "ここではどのようにmanabaのページの添付ファイルをダウンロードするかを設定できます。"
+  },
+  "contents_options_downloadDestination_title": {
+    "message": "ダウンロード先"
+  },
+  "contents_options_downloadDestination_description": {
+    "message": "ダウンロードされたコンテンツが保存されるフォルダの名前です。空白にすると既定のダウンロードフォルダに直接保存されます。"
+  },
+  "contents_options_downloadLimit_title": {
+    "message": "同時ダウンロード数"
+  },
+  "contents_options_downloadLimit_description": {
+    "message": "同時にダウンロードされるコンテンツ数の上限値です。ブラウザの制限により、この数で同時にダウンロードできないことがあります。"
+  },
+  "contents_options_downloadStarredOnly_title": {
+    "message": "⭐がついたコースのみダウンロードする"
+  },
+  "contents_options_downloadStarredOnly_description": {
+    "message": "オンにすると、⭐がついたコースのコンテンツのみをダウンロードします。オフにすると、⭐がついていないコースのコンテンツもダウンロードされます。"
+  },
+  "contents_options_downloadHiddenToo_title": {
+    "message": "非表示にされているコースもダウンロードする"
+  },
+  "contents_options_downloadHiddenToo_description": {
+    "message": "オンにすると、非表示にされているコースのコンテンツもダウンロードします。オフにすると、非表示にされているコースのコンテンツはダウンロードされません。"
+  },
+  "contents_options_download_news_title": {
+    "message": "コースニュースをダウンロードする"
+  },
+  "contents_options_download_news_description": {
+    "message": "オンにすると、コースニュースにあるコンテンツをダウンロードします。オフにすると、コースニュースにあるコンテンツはダウンロードされません。"
+  },
+  "contents_options_download_report_attachments_title": {
+    "message": "レポートをダウンロードする"
+  },
+  "contents_options_download_report_attachments_description": {
+    "message": "オンにすると、レポートにあるコンテンツをダウンロードします。オフにすると、レポートにあるコンテンツはダウンロードされません。"
+  },
+  "contents_options_download_report_submissions_title": {
+    "message": "提出物をダウンロードする"
+  },
+  "contents_options_download_report_submissions_description": {
+    "message": "オンにすると、レポートの相互閲覧画面にある提出物をダウンロードします。オフにすると、レポートの相互閲覧画面にある提出物はダウンロードされません。"
+  },
+  "contents_options_download_page_title": {
+    "message": "コースコンテンツをダウンロードする"
+  },
+  "contents_options_download_page_description": {
+    "message": "オンにすると、コースコンテンツにあるコンテンツをダウンロードします。オフにすると、コースコンテンツにあるコンテンツはダウンロードされません。"
+  },
+  "contents_options_delete_history_title": {
+    "message": "ダウンロード履歴の消去"
+  },
+  "contents_options_delete_history_description": {
+    "message": "コンテンツの重複ダウンロードを防ぐために内部に保存している履歴を消去します。"
+  },
+  "contents_options_delete_history_alert_title": {
+    "message": "本当にダウンロード履歴を消去しますか？"
+  },
+  "contents_options_delete_history_alert_description": {
+    "message": "この操作は取り消せません。全てのコンテンツが再度ダウンロードされるようになります。"
+  },
+  "contents_options_delete_history_alert_cancel": {
+    "message": "キャンセル"
+  },
+  "contents_options_delete_history_alert_action": {
+    "message": "消去"
   }
 }

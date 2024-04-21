@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { localStore } from './store';
 import { ContentsProgress } from './components/contents-progress';
+import { ContentsOptions } from './components/contents-options';
+import { DownloadIcon, StopIcon } from '@radix-ui/react-icons';
 
 document.title = t('contents_page_title')
 
@@ -52,6 +54,7 @@ const Page = () => {
             <AlertDialog>
               <Button asChild>
                 <AlertDialogTrigger>
+                  <StopIcon className='w-4 h-4 me-2' />
                   {t('contents_cancel_download')}
                 </AlertDialogTrigger>
               </Button>
@@ -67,8 +70,12 @@ const Page = () => {
               </AlertDialogContent>
             </AlertDialog>
           ) : (
-            <Button onClick={startDownload}>{t('contents_start_download')}</Button>
+            <Button onClick={startDownload}>
+              <DownloadIcon className='w-4 h-4 me-2' />
+              {t('contents_start_download')}
+            </Button>
           )}
+          <ContentsOptions />
           {status === 'canceled' ? (
             <div className='text-base'>{t('contents_message_canceled')}</div>
           ) : status === 'completed' && (

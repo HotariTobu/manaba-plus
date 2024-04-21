@@ -8,8 +8,13 @@ import { ContentsStats, ContentsItem } from "../types/contents"
 import { download, DownloadContext, escape } from "../utils/download"
 import { ScrapingResult, scrape } from "../utils/scrape"
 
+/** The interval time for download in milliseconds */
 const interval = 1000
 
+/**
+ * Create scraping context data from store values.
+ * @returns An array of the course label, the root url, and the scraping model
+ */
 const getScrapingContext = () => {
   const year = getFiscalYear()
   const yearModuleKey = home.getYearModuleKey(year, home.store.module)
@@ -17,11 +22,11 @@ const getScrapingContext = () => {
 
   const scrapingContext = home.localStore.courses
     .filter(course => {
-      if (store.downloadOnlyStarred && !home.dynamicStore.star.get(course.id)) {
+      if (store.downloadStarredOnly && !home.dynamicStore.star.get(course.id)) {
         return false
       }
 
-      if (!store.downloadRemoved) {
+      if (!store.downloadHiddenToo) {
         const position = coursesLayout.get(course.id)
         if (position === hiddenPosition) {
           return false
@@ -42,8 +47,19 @@ const getScrapingContext = () => {
   return scrapingContext
 }
 
+/**
+ * Join path parts with the path separator.
+ * @param paths The path parts
+ * @returns A joined path string
+ */
 const joinPath = (...paths: string[]) => {
-  return paths.join('/')
+  const path = paths.join('/')
+  if (path.startsWith('/')) {
+    return path.substring(1)
+  }
+  else {
+    return path
+  }
 }
 
 /**
@@ -151,7 +167,7 @@ export const useDownload = () => {
 
     const startTime = Date.now()
 
-    // Run per one second.
+    // Run per `interval`.
     const timerId = setInterval(() => {
       const { stats, items } = getDownloadStatus()
 

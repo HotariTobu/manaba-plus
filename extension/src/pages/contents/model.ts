@@ -69,6 +69,11 @@ const scrapingModelBase: ScrapingNode[] = [
   },
 ]
 
+/**
+ * Create a scraping model from a set of scraping node ids.
+ * @param ignoreSet The set of id to thin out the scraping tree
+ * @returns A scraping model along the id set
+ */
 export const getScrapingModel = (ignoreSet: Set<ScrapingNodeId>) => {
   const thinOut = (nodes: ScrapingNode[]): ScrapingNode[] => nodes
     .filter(node => {
