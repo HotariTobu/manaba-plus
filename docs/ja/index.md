@@ -22,7 +22,7 @@ features:
   - icon: 📝
     title: ⭐️課題一覧⭐️
     details: 色分けされた課題の一覧をトップページに表示
-  # - icon: 📁
-  #   title: ⭐️コンテンツ⭐️
-  #   details: 各コースの添付ファイルを一括ダウンロード
+  - icon: 📁
+    title: ⭐️コンテンツ⭐️
+    details: 各コースの添付ファイルを一括ダウンロード
 ---
