@@ -21,7 +21,7 @@ export const ja = defineConfig({
           { text: '使ってみる', link: '/ja/guide/' },
           { text: '対応している学校のリスト', link: '/ja/guide/host-list' },
           { text: '好きなバージョンを追加する', link: '/ja/guide/manual-load/' },
-          // { text: 'ダウンロードの確認ダイアログ', link: '/ja/guide/download-dialog/' },
+          { text: 'ダウンロードの確認ダイアログ', link: '/ja/guide/download-dialog/' },
           // { text: 'Googleカレンダーの通知設定', link: '/ja/guide/google-calendar/' },
         ]
       },
@@ -45,7 +45,7 @@ export const ja = defineConfig({
           { text: 'DnDで提出', link: '/ja/feature/modifiers/report/dnd/' },
           { text: 'シラバスから自己登録', link: '/ja/feature/modifiers/syllabus/self-registration/' },
           // { text: 'ダウンロードのお誘い', link: '/ja/feature/pages/contents/notification/' },
-          // { text: 'コンテンツのダウンロード', link: '/ja/feature/pages/contents/' },
+          { text: 'コンテンツのダウンロード', link: '/ja/feature/pages/contents/' },
           { text: 'ポップアップページ', link: '/ja/feature/pages/popup/' },
         ]
       },
