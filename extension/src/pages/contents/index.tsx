@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { mount } from "@/utils/mount";
 import { useDownload } from './hooks/useDownload';
 import { ContentsTree } from './components/contents-tree';
-import { Toaster } from 'sonner';
 import { isStoreInitializationRequired } from '@/store';
 import { InitAlert } from '@/components/init-alert';
 import { t } from "@/utils/i18n";
@@ -24,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { localStore } from './store';
+import { ContentsProgress } from './components/contents-progress';
 
 document.title = t('contents_page_title')
 
@@ -39,7 +39,12 @@ const Page = () => {
   }
 
   return (
-    <PageContainer className='grid grid-cols-[auto_auto_minmax(0,_1fr)]'>
+    <PageContainer className='grid grid-cols-[auto_auto_minmax(0,_1fr)] grid-rows-[auto_minmax(0,_1fr)]'>
+      <div className='col-span-3'>
+        {status === 'downloading' && (
+          <ContentsProgress contentsStats={contentsStats} />
+        )}
+      </div>
       <ScrollArea>
         <div className='mx-4 my-2 w-96 gap-4 flex flex-col'>
           <div className='text-lg'>{t('contents_page_description')}</div>
