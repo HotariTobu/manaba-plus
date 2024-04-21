@@ -71,14 +71,14 @@ const Popup = () => {
     <Provider {...providerProps}>
       <ScrollArea className='w-[48rem] h-[32rem]'>
         <div className='m-2 gap-2 flex flex-col'>
-          <DumpButton />
           <ContentsButton />
           <AssignmentsContainer />
-          <ScrollBar orientation="vertical" />
           <div className='gap-2 flex items-center'>
             {t('popup_reset_label')}
             <Button onClick={handleReset} disabled={reset}>{t('popup_reset_button')}</Button>
           </div>
+          <DumpButton />
+          <ScrollBar orientation="vertical" />
         </div>
       </ScrollArea>
     </Provider>
