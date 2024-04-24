@@ -10,12 +10,5 @@ const addResponsiveClass = () => {
 }
 
 export default () => {
-  addResponsiveClass()
-
-  debug: {
-    // TailwindCSS CDN script overrides the body class, so we add classes again.
-    setTimeout(() => {
-      addResponsiveClass()
-    }, 1000);
-  }
+  setTimeout(addResponsiveClass, 1000)
 }
