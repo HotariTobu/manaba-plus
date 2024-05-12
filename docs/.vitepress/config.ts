@@ -3,7 +3,8 @@ import { en } from './en'
 import { ja } from './ja'
 
 /** The prefix path */
-const base = '/manaba-plus/'
+// const base = '/manaba-plus/'
+const base = '/'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
