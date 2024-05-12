@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import { defineThemeConfig } from "./themeConfig";
+import { githubUrl } from '../../constants.json'
 
 export const en = defineConfig({
   lang: 'en',
@@ -7,7 +8,7 @@ export const en = defineConfig({
 
   themeConfig: defineThemeConfig({
     editLink: {
-      pattern: 'https://github.com/HotariTobu/manaba-plus/edit/main/docs/:path',
+      pattern: `${githubUrl}/edit/main/docs/:path`,
       text: 'Edit this page on GitHub'
     },
 

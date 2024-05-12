@@ -1,6 +1,7 @@
 import { defineConfig } from "vitepress";
 import { defineThemeConfig } from "./themeConfig";
 import { surveyUrl } from '../../constants.json'
+import { githubUrl } from '../../constants.json'
 
 export const ja = defineConfig({
   lang: 'ja',
@@ -58,7 +59,7 @@ export const ja = defineConfig({
     ],
 
     editLink: {
-      pattern: 'https://github.com/HotariTobu/manaba-plus/edit/main/docs/:path',
+      pattern: `${githubUrl}/edit/main/docs/:path`,
       text: 'GitHubでこのページを編集する'
     },
 
