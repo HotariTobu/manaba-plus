@@ -1,7 +1,6 @@
 import { defineConfig } from "vitepress";
 import { defineThemeConfig } from "./themeConfig";
-import { surveyUrl } from '../../constants.json'
-import { githubUrl } from '../../constants.json'
+import { githubUrl, surveyUrl } from '../../constants.json'
 
 export const ja = defineConfig({
   lang: 'ja',
